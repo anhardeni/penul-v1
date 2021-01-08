@@ -1,0 +1,212 @@
+
+    public function actionCreate()
+
+    {
+
+        $model                      = new Courses();
+
+        $structure                  = new CourseStructure();
+
+        $modelsCourseInstructors    = [new CourseInstructors];  
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
+
+        {
+
+            $modelsCourseInstructors = Model::createMultiple(CourseInstructors::classname());
+
+            Model::loadMultiple($modelsCourseInstructors, Yii::$app->request->post());         
+
+
+            // validate all models
+
+            $valid = $model->validate();
+
+            $valid = Model::validateMultiple($modelsCourseInstructors) && $valid;
+
+            
+
+            $model->attributes = $_POST['Course'];
+
+            $model->course_start_date = date('Y-m-d', strtotime($_POST['Course']['course_start_date']));
+
+            $model->created_by = Yii::$app->getid->getId();
+
+            $model->created_at = new \yii\db\Expression('NOW()');   
+
+
+        if(!is_null($coursefile))
+
+        {
+
+            foreach ($this->coursefile as $file) 
+
+            {
+
+                $model->course_file_name = $coursefile->name;
+
+                $ext = end((explode(".", $coursefile->name)));
+
+                // generate a unique file name to prevent duplicate filenames
+
+                $model->course_file_path = Yii::$app->security->generateRandomString().".{$ext}";
+
+                // the path to save file, you can set an uploadPath
+
+                // in Yii::$app->params (as used in example below)
+
+                //$Photo = Yii::getAlias('@web').'/../data/ins_images/no-photo.png';
+
+                Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/../web/data/course_admin_files/course_files/';
+
+                 // $model->course_file_path->saveAs(Yii::getAlias('@webroot').'/data/course_admin_files/course_files/'.$model->course_file_path = 'Course_'.date("d-m-Y_His").'.'.$model->course_file_path->extension);
+
+                //$model->course_file_path->saveAs(Yii::$app->basePath.'/web/data/course_admin_files/course_files/'.$model->course_file_path = 'Course_'.date("d-m-Y_His").'.'.$model->course_file_path);
+
+                $path = Yii::$app->params['uploadPath'] . $model->course_file_path;
+
+                $file->saveAs($path);
+
+            }//foreach
+
+        }  
+
+        $valid = $structure->validate();
+
+
+            if ($valid) 
+
+            {
+
+                $transaction = \Yii::$app->db->beginTransaction();
+
+                try {
+
+                    if ($flag = $model->save(false)) 
+
+                    {                        
+
+                    // check if topic format 
+
+                      if($model->course_format == Courses::TYPE_TOPIC) 
+
+                      {      
+
+                          //loop through and make the course structure with topic#
+
+                            // do your topic related stuff 
+
+                          for( $i = 1; $i <= $model->course_format_no; $i++ )
+
+                          {
+
+//                            $structure = new CourseStructure();
+
+                                $structure->created_by = Yii::$app->getid->getId();
+
+                                $structure->created_at = new \yii\db\Expression('NOW()');                                
+
+                                $structure->course_id = $model->course_id;                  
+
+                                $structure->structure_name = $model->course_format . $i;
+
+                                $structure->structure_id = $i;
+
+
+                              // fill in other course structure data here
+
+      //                        $structure->save();
+
+                                  if (! ($flag = $structure->save(false))) 
+
+                                  {
+
+                                      $transaction->rollBack();
+
+                                      break;
+
+                                  }                        
+
+                          }
+
+                      }
+
+                        // check if weekly format 
+
+                        if($model->course_format == Courses::TYPE_WEEKLY)
+
+                        {
+
+                          // do your weekly related stuff 
+
+        //                  var_dump('hello');
+
+                          //var_dump ($model->getErrors()); die();
+
+                        }                        
+
+                        
+
+                        foreach ($modelsCourseInstructors as $modelCourseInstructors) 
+
+                        {
+
+                            $modelCourseInstructors->course_id = $model->course_id;
+
+                            if (! ($flag = $modelCourseInstructors->save(false))) 
+
+                            {
+
+                                $transaction->rollBack();
+
+                                break;
+
+                            }
+
+                        }
+
+                    }
+
+                    if ($flag) 
+
+                    {
+
+                        $transaction->commit();
+
+                        return $this->redirect(['view', 'id' => $model->course_id]);
+
+                    }
+
+                } 
+
+                catch (Exception $e) 
+
+                {
+
+                    $transaction->rollBack();
+
+                }
+
+            }            
+
+        }
+
+        else
+
+        {
+
+            return $this->render('create', [
+
+                'model' => $model,
+
+                'structure' => $structure,
+
+                'modelsCourseInstructors' => (empty($modelsCourseInstructors)) ? [new CourseInstructors] : $modelsCourseInstructors
+
+            ]);            
+
+        }
+
+    }
+
+

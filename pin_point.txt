@@ -1,0 +1,28 @@
+pin point 06/12/2020:	
+	*cetak template rha ver 0 -----------------> y
+	*import data ke penul trasak cek require data
+	*cek video ckeditor php mysql--------------->Y
+	* elemenm tarik data------------------>Y
+	* form tarik data ke penyaji
+	* perbaikan elemen data rha - kk - nhpu========Y
+	* tambah kolom ppn dan pph di rha ====> X
+	* menyelesaikan format kk dan nhpu===Y
+	* data pib/jenis dokumen belum ada
+	* penambahan elemen table temaheader
+	* tabel risalah penul tambahkan kolom seri barang
+
+
+	-penomoran NHPU kurang 1 karakter (contoh:001/NHPU/KPU.03/BD.04/2021) ------->ok
+    -data tanggal dokumen belum ter-link============>y
+    -kolom "nilai seharusnya" pada RHA dan KK belum sesuai (seharusnya sama dengan "nilai diberitahukan")
+    -penomoran untuk kertas kerja belum tersedia------------>ok
+
+	*copy from detail ke entry rha ( validari field yg haru disi 4 field jendok dll)
+	*upload ttd
+	* revisi report bissa sum plugins opentbs
+
+	* form entry untuk ini => tambahan pak, biasanya ada beberapa RHA dari satu perusahaan oleh Pusat digabung jadi 1 NPP, sehingga ST KK dan NHPU nya juga jadi 1 pak, apakah bisa diakomodir dgn aplikasi yg saat ini pak? 
+
+	*gridview filtersetelahimport data datatranska ============> ok
+	* export file sesuai format simpul
+	masstre detail tema ===link tema

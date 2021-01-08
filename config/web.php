@@ -8,20 +8,23 @@ $config = [
     'id' => 'Template',
     'name' => 'Application',
     // set target language to be Indonesia
-  'language' => 'id-ID',
+    'language' => 'id-ID',
     'as access' => [
-     'class' => '\hscstudio\mimin\components\AccessControl',
-     'allowActions' => [
+       'class' => '\hscstudio\mimin\components\AccessControl',
+       'allowActions' => [
         // add wildcard allowed action here!
        // 'site/*',
         'debug/*',
         'mimin/*', // only in dev mode
+        
+
+
     ],
 ],
 
 
-   'modules' => [
-        'datecontrol' =>  [
+'modules' => [
+    'datecontrol' =>  [
         'class' => 'kartik\datecontrol\Module',
 
         // format settings for displaying each date attribute (ICU format example)
@@ -64,39 +67,63 @@ $config = [
                     'options' => ['class'=>'form-control'],
                 ]
             ]
-       ]
+        ]
     ],
 
+    'api' => [
+            'class' => 'app\modules\api\api',
+            ],
+   
 
-   'gridview' =>  [
+    'gridview' =>  [
         'class' => '\kartik\grid\Module'
         // enter optional module parameters below - only if you need to
         // use your own export download action or custom translation
         // message source
         // 'downloadAction' => 'gridview/export/download',
         // 'i18n' => []
-    ],
-     'mimin' => [
+            ],
+    'mimin' => [
         'class' => '\hscstudio\mimin\Module',
     ],
 
-   ],
+    'controllerMap' => [
+        'file' => 'mdm\\upload\\FileController', // use to show or download file
+    ],
 
-  // set source language to be English
-  'sourceLanguage' => 'en-US',
-    'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
-    'components' => [
+],
 
+// set source language to be English
+'sourceLanguage' => 'en-US',
+'basePath' => dirname(__DIR__),
+'bootstrap' => ['log'],
 
-       'authManager' => [
+'components' => [
+
+    'db' => $db,
+
+    'assetManager' => [
+        'bundles' => [
+            'wbraganca\dynamicform\DynamicFormAsset' => [
+                'sourcePath' => '@app/web/js',
+                'js' => [
+                    'yii2-dynamic-form.js'
+                ],
+            ],
+        ],
+    ],
+    'authManager' => [
         'class' => 'yii\rbac\DbManager', // only support DbManager
     ],
-        'request' => [
+    'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'y2B_PhmMeo1G4hPY0dO7KfNled31dl6L',
+        'cookieValidationKey' => 'y2B_PhmMeo1G4hPY0dO7KfNled31dl6L',
 
-        ],
+        'parsers' =>[
+                'application/json' => 'yii\web\JsonParser',
+        ]
+
+    ],
         /*
         'view' => [
           'theme' => [
@@ -107,32 +134,35 @@ $config = [
         ],
 */
         'urlManager' => [
-       'class' => 'yii\web\UrlManager',
+         'class' => 'yii\web\UrlManager',
        // Hide index.php
-       'showScriptName' => false,
+         'showScriptName' => false,
        // Use pretty URLs
-       'enablePrettyUrl' => true,
-       'rules' => [
-       ],
-   ],
-      'cache' => [
-            'class' => 'yii\caching\FileCache',
-        ],
-        'user' => [
-            'identityClass' => 'app\models\User',
+         'enablePrettyUrl' => true,
+         // 'rules' => [
+         //    'class'=> 'yii\rest\UrlRule',
+         //    //'pluralize' => false,
+         //    'controller'=> 'jendok-rest'
+         // ],
+     ],
+     'cache' => [
+        'class' => 'yii\caching\FileCache',
+    ],
+    'user' => [
+        'identityClass' => 'app\models\User',
             //'enableAutoLogin' => true,
-            'enableSession' => true,
-            'authTimeout' => 60*30,
-        ],
-        'errorHandler' => [
-            'errorAction' => 'site/error',
-        ],
-        'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
+        'enableSession' => true,
+        'authTimeout' => 60*30,
+    ],
+    'errorHandler' => [
+        'errorAction' => 'site/error',
+    ],
+    'mailer' => [
+        'class' => 'yii\swiftmailer\Mailer',
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
-            'useFileTransport' => true,
+        'useFileTransport' => true,
 			/*
 			// if using Gmail
 			// turn on at less secure apps
@@ -183,14 +213,14 @@ if (YII_ENV_DEV) {
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         'generators' => [
-        'myCrud' => [
-            'class' => 'app\templates\crud\Generator',
-            'templates' => [
-                'my' => '@app/Templates/crud/default',
-            ]
+            'myCrud' => [
+                'class' => 'app\templates\crud\Generator',
+                'templates' => [
+                    'my' => '@app/Templates/crud/default',
+                ]
+            ],
+            
         ],
-        
-    ],
     ];
 }
 
