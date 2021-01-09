@@ -947,6 +947,14 @@ public function actionPindahdata($id)
               $model->trf_ppn_t = (float)$sheetData[$baseRow]['Z'];
               $model->trf_pph_t = (float)$sheetData[$baseRow]['AA'];
 
+              $model->trf_ppn = (float)$sheetData[$baseRow]['AB'];
+              $model->trf_pph = (float)$sheetData[$baseRow]['AC'];
+              $model->trf_ppnbm = (float)$sheetData[$baseRow]['AD'];
+              $model->trf_ppnbm_t = (float)$sheetData[$baseRow]['AE'];
+              $model->trf_bmad = (float)$sheetData[$baseRow]['AF'];
+              $model->trf_bmad_t = (float)$sheetData[$baseRow]['AG'];
+
+
           // if ((string)$sheetData[$baseRow]['P'] == "HH")(  $model ->jalur = "Hijau");
           // if ((string)$sheetData[$baseRow]['P'] == "HL")(  $model ->jalur = "Hijau");
           // if ((string)$sheetData[$baseRow]['P'] == "HM")(  $model ->jalur = "Hijau");
@@ -968,9 +976,6 @@ public function actionPindahdata($id)
               $model->pph_t_nilai_akhir = floor(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *   $model->trf_pph_t )- $model->pph_nilai_awal);
 
               $model->total_tagihan = floor($model->bm_t_nilai_akhir +  $model->ppn_t_nilai_akhir + $model->pph_t_nilai_akhir);
-
-
-
 
           // if ((string)$sheetData[$baseRow]['P'] == "HH")(  $model ->jalur = "Hijau");
           // if ((string)$sheetData[$baseRow]['P'] == "HL")(  $model ->jalur = "Hijau");
@@ -1248,9 +1253,9 @@ public function actionPindahdata($id)
           //  $path1= 'QUH6Mq6AjRY2IUp5dRZz0Ht2sYpd2bsV.jpg';};
 
 
-          
-          if (($path) === null ){
-                $path='QUH6Mq6AjRY2IUp5dRZz0Ht2sYpd2bsV.jpg';
+
+           if (($path) === null ){
+            $path='QUH6Mq6AjRY2IUp5dRZz0Ht2sYpd2bsV.jpg';
                //return $path ;
           }
           elseif (($path) === '' ){
@@ -1271,77 +1276,77 @@ public function actionPindahdata($id)
           // }
           // else{ 
           //   $path1= $ctkKasi -> web_filename;};
-        
 
-           if (($path02) === null ){
+
+            if (($path02) === null ){
            // $path2= $ctkPenyajidata1 -> web_filename;
               $path2='QUH6Mq6AjRY2IUp5dRZz0Ht2sYpd2bsV.jpg';
                //return $path ;
-          }
-          elseif (($path02) === '' ){
+            }
+            elseif (($path02) === '' ){
             //$path2= $ctkPenyajidata1 -> web_filename;
               $path2='QUH6Mq6AjRY2IUp5dRZz0Ht2sYpd2bsV.jpg';
                //return $path ;
-          }
-          else{ 
-            $path2= $ctkPenyajidata1 -> web_filename;};
+            }
+            else{ 
+              $path2= $ctkPenyajidata1 -> web_filename;};
            //$path2='QUH6Mq6AjRY2IUp5dRZz0Ht2sYpd2bsV.jpg';};
            // if ($row['telp'] === NULL) { $no_telp = 'NULL'; }
            //  elseif ($row['telp'] === '') { $no_telp ='belum ada'; } 
            //  else { $no_telp = $row['telp']; };
 
-           $OpenTBS->VarRef['xfilettd']= Yii::$app->params['uploadPath'].$path;  
+              $OpenTBS->VarRef['xfilettd']= Yii::$app->params['uploadPath'].$path;  
            //$OpenTBS->VarRef['xfilettd1']= Yii::$app->params['uploadPath'].$path1;  
-           $OpenTBS->VarRef['xfilettd2']= Yii::$app->params['uploadPath'].$path2;
+              $OpenTBS->VarRef['xfilettd2']= Yii::$app->params['uploadPath'].$path2;
           // $xfilettd2_picture = Yii::$app->params['uploadPath'].$path2;
           // $TBS->PlugIn(OPENTBS_MERGE_SPECIAL_ITEMS);  
 
 
-           $b1 = [];
-           foreach($ctkPenulDatatransaks as $ctkPenulDatatransakss){
-            $b1[] = [
+              $b1 = [];
+              foreach($ctkPenulDatatransaks as $ctkPenulDatatransakss){
+                $b1[] = [
              //'id' => $ctksrtb1 -> id,
-             'kode_kantor'=>$ctkPenulDatatransakss-> kode_kantor,
-             'pib'=>$ctkPenulDatatransakss-> pib,
-             'tglpib'=>$ctkPenulDatatransakss-> tglpib,
-             'npwp_imp'=>$ctkPenulDatatransakss-> npwp_imp,
-             'imp'=>$ctkPenulDatatransakss-> imp,
-             'seri_brg'=>$ctkPenulDatatransakss-> seri_brg,
-             'uraian_brg'=>$ctkPenulDatatransakss-> uraian_brg,
-             'hs'=>$ctkPenulDatatransakss-> hs,
-             'trf_bm'=>$ctkPenulDatatransakss-> trf_bm,
-             'bm_nilai_awal'=>$ctkPenulDatatransakss-> bm_nilai_awal,
-             'nilaipabean_awal'=>$ctkPenulDatatransakss-> nilaipabean_awal,
-             'hs_t'=>$ctkPenulDatatransakss-> hs_t,
-             'trf_bm_t'=>$ctkPenulDatatransakss-> trf_bm_t,
-             'bm_t_nilai_akhir'=>$ctkPenulDatatransakss-> bm_t_nilai_akhir,
-             'nilaipabean_akhir'=>$ctkPenulDatatransakss-> nilaipabean_akhir,
+                 'kode_kantor'=>$ctkPenulDatatransakss-> kode_kantor,
+                 'pib'=>$ctkPenulDatatransakss-> pib,
+                 'tglpib'=>$ctkPenulDatatransakss-> tglpib,
+                 'npwp_imp'=>$ctkPenulDatatransakss-> npwp_imp,
+                 'imp'=>$ctkPenulDatatransakss-> imp,
+                 'seri_brg'=>$ctkPenulDatatransakss-> seri_brg,
+                 'uraian_brg'=>$ctkPenulDatatransakss-> uraian_brg,
+                 'hs'=>$ctkPenulDatatransakss-> hs,
+                 'trf_bm'=>$ctkPenulDatatransakss-> trf_bm,
+                 'bm_nilai_awal'=>$ctkPenulDatatransakss-> bm_nilai_awal,
+                 'nilaipabean_awal'=>$ctkPenulDatatransakss-> nilaipabean_awal,
+                 'hs_t'=>$ctkPenulDatatransakss-> hs_t,
+                 'trf_bm_t'=>$ctkPenulDatatransakss-> trf_bm_t,
+                 'bm_t_nilai_akhir'=>$ctkPenulDatatransakss-> bm_t_nilai_akhir,
+                 'nilaipabean_akhir'=>$ctkPenulDatatransakss-> nilaipabean_akhir,
 
-           ];
-         }       
-         $OpenTBS->MergeBlock('a1' ,$b1);
+               ];
+             }       
+             $OpenTBS->MergeBlock('a1' ,$b1);
 
 
-         $b2 = [];
-         foreach($ctkPenulDatatransaks as $ctkPenulDatatransakss2){
-          $b2[] = [
+             $b2 = [];
+             foreach($ctkPenulDatatransaks as $ctkPenulDatatransakss2){
+              $b2[] = [
              //'id' => $ctksrtb1 -> id,
-           'kode_kantor'=>$ctkPenulDatatransakss2-> kode_kantor,
-           'pib'=>$ctkPenulDatatransakss2-> pib,
-           'tglpib'=>$ctkPenulDatatransakss2-> tglpib,
-           'npwp_imp'=>$ctkPenulDatatransakss2-> npwp_imp,
-           'imp'=>$ctkPenulDatatransakss2-> imp,
-           'bm_t_nilai_akhir'=>$ctkPenulDatatransakss2-> bm_t_nilai_akhir,
-           'ppn_nilai_awal'=>$ctkPenulDatatransakss2-> ppn_nilai_awal,
-           'ppn_t_nilai_akhir'=>$ctkPenulDatatransakss2-> ppn_t_nilai_akhir,
-           'pph_nilai_awal'=>$ctkPenulDatatransakss2-> pph_nilai_awal,
-           'pph_t_nilai_akhir'=>$ctkPenulDatatransakss2-> pph_t_nilai_akhir,
-           'ppnbm_t_nilai_akhir'=>$ctkPenulDatatransakss2-> ppnbm_t_nilai_akhir,
-           'denda'=>$ctkPenulDatatransakss2-> denda,
-           'total_tagihan'=>$ctkPenulDatatransakss2-> total_tagihan,
-           ];
-       }       
-       $OpenTBS->MergeBlock('a2' ,$b2);
+               'kode_kantor'=>$ctkPenulDatatransakss2-> kode_kantor,
+               'pib'=>$ctkPenulDatatransakss2-> pib,
+               'tglpib'=>$ctkPenulDatatransakss2-> tglpib,
+               'npwp_imp'=>$ctkPenulDatatransakss2-> npwp_imp,
+               'imp'=>$ctkPenulDatatransakss2-> imp,
+               'bm_t_nilai_akhir'=>$ctkPenulDatatransakss2-> bm_t_nilai_akhir,
+               'ppn_nilai_awal'=>$ctkPenulDatatransakss2-> ppn_nilai_awal,
+               'ppn_t_nilai_akhir'=>$ctkPenulDatatransakss2-> ppn_t_nilai_akhir,
+               'pph_nilai_awal'=>$ctkPenulDatatransakss2-> pph_nilai_awal,
+               'pph_t_nilai_akhir'=>$ctkPenulDatatransakss2-> pph_t_nilai_akhir,
+               'ppnbm_t_nilai_akhir'=>$ctkPenulDatatransakss2-> ppnbm_t_nilai_akhir,
+               'denda'=>$ctkPenulDatatransakss2-> denda,
+               'total_tagihan'=>$ctkPenulDatatransakss2-> total_tagihan,
+             ];
+           }       
+           $OpenTBS->MergeBlock('a2' ,$b2);
 
         //var_dump($path);
         //var_dump($path1);
@@ -1353,7 +1358,7 @@ public function actionPindahdata($id)
           //die( ) ;
 
 
-        
+
          //$OpenTBS->Show(OPENTBS_DOWNLOAD, 'kkp_signed'.$id.'.xlsx'); // Also merges all [onshow] automatic fields.  
          $OpenTBS->Show(OPENTBS_DOWNLOAD, 'kkp_signed'.$id.'.docx'); // Also merges all [onshow] automatic fields. 
          exit;
@@ -1361,7 +1366,7 @@ public function actionPindahdata($id)
         //  return $ctksrt->renderAjax();
        }
 
-   public function actionImportdatadirect02($id)
+       public function actionImportdatadirect02($id)
        {
       //$query = New Query();
          $query = \app\models\PenulDatatransaks::find()->where(['link_header' => $id]);
@@ -1472,4 +1477,4 @@ public function actionPindahdata($id)
 
       }
 
-     }
+    }

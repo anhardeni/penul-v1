@@ -26,3 +26,12 @@ pin point 06/12/2020:
 	*gridview filtersetelahimport data datatranska ============> ok
 	* export file sesuai format simpul
 	masstre detail tema ===link tema
+
+	tambah fieldTRF_PPN_AWAL
+TRF_PPN
+TRF_PPH
+TRF_PPNBM
+TRF_PPNBM_t
+TRF_BMAD
+TRF_BMAD_t
+tampilan risalah penul tidak bisa difilter

@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-
 /* @var $this yii\web\View */
 /* @var $model app\models\RisalahPenul0 */
 /* @var $form yii\widgets\ActiveForm */
@@ -34,11 +33,19 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'seri_brg')->textInput() ?>
 
-    <?= $form->field($model, 'keputusan_npp')->dropDownList([ 'DAPAT DILAKUKAN PENUL' => 'DAPAT DILAKUKAN PENUL', 'DILAKUKAN PENUL (SEBAGIAN)' => 'DILAKUKAN PENUL (SEBAGIAN)', 'TIDAK-DAPAT DILAKUKAN PENUL' => 'TIDAK-DAPAT DILAKUKAN PENUL', ], ['prompt' => '']) ?>
+    <?= $form->field($model, 'keputusan_npp')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'fpkeputusan_NPP')->dropDownList([ 'setuju' => 'Setuju', 'tolak ada SPKTNP' => 'Tolak ada SPKTNP', 'tolak sedang Audit' => 'Tolak sedang Audit', ], ['prompt' => '']) ?>
 
     <?= $form->field($model, 'fpket_NPP')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'laop')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'laop_tgl')->textInput() ?>
+
+    <?= $form->field($model, 'kkp')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'kkp_tgl')->textInput() ?>
 
     <?= $form->field($model, 'npp')->textInput(['maxlength' => true]) ?>
 
@@ -48,7 +55,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'st_tgl')->textInput() ?>
 
-    <?= $form->field($model, 'pfpd')->textInput() ?>
+    <?= $form->field($model, 'pfpd')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'nhpu')->textInput(['maxlength' => true]) ?>
 
@@ -86,13 +93,31 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'status_akhir_banding')->textInput() ?>
 
-    <?= $form->field($model, 'kasi')->textInput() ?>
+    <?= $form->field($model, 'npp_rha_gab_1npp')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'kabid')->textInput() ?>
+    <?= $form->field($model, 'npp_tgl_rha_gab_1npp')->textInput() ?>
 
-    <?= $form->field($model, 'analis')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'st_rha_gab_1npp')->textInput(['maxlength' => true]) ?>
 
- 
+    <?= $form->field($model, 'st_tgl_rha_gab_1npp')->textInput() ?>
+
+    <?= $form->field($model, 'nhpu_rha_gab_1npp')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'nhpu_tgl_rha_gab_1npp')->textInput() ?>
+
+    <?= $form->field($model, 'kasi')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'kabid')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'analis1')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'analis2')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'analis3')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'penyaji_data1')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'ket_risalah')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

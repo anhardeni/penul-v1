@@ -13,9 +13,6 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
-        'options' => [
-            'data-pjax' => 1
-        ],
     ]); ?>
 
     <?= $form->field($model, 'id') ?>
@@ -38,9 +35,19 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'seri_brg') ?>
 
+    <?php // echo $form->field($model, 'keputusan_npp') ?>
+
     <?php // echo $form->field($model, 'fpkeputusan_NPP') ?>
 
     <?php // echo $form->field($model, 'fpket_NPP') ?>
+
+    <?php // echo $form->field($model, 'laop') ?>
+
+    <?php // echo $form->field($model, 'laop_tgl') ?>
+
+    <?php // echo $form->field($model, 'kkp') ?>
+
+    <?php // echo $form->field($model, 'kkp_tgl') ?>
 
     <?php // echo $form->field($model, 'npp') ?>
 
@@ -88,13 +95,31 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'status_akhir_banding') ?>
 
+    <?php // echo $form->field($model, 'npp_rha_gab_1npp') ?>
+
+    <?php // echo $form->field($model, 'npp_tgl_rha_gab_1npp') ?>
+
+    <?php // echo $form->field($model, 'st_rha_gab_1npp') ?>
+
+    <?php // echo $form->field($model, 'st_tgl_rha_gab_1npp') ?>
+
+    <?php // echo $form->field($model, 'nhpu_rha_gab_1npp') ?>
+
+    <?php // echo $form->field($model, 'nhpu_tgl_rha_gab_1npp') ?>
+
     <?php // echo $form->field($model, 'kasi') ?>
 
     <?php // echo $form->field($model, 'kabid') ?>
 
-    <?php // echo $form->field($model, 'analis') ?>
+    <?php // echo $form->field($model, 'analis1') ?>
 
-    <?php // echo $form->field($model, 'ket risalah') ?>
+    <?php // echo $form->field($model, 'analis2') ?>
+
+    <?php // echo $form->field($model, 'analis3') ?>
+
+    <?php // echo $form->field($model, 'penyaji_data1') ?>
+
+    <?php // echo $form->field($model, 'ket_risalah') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

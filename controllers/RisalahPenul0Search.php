@@ -18,8 +18,8 @@ class RisalahPenul0Search extends RisalahPenul0
     public function rules()
     {
         return [
-            [['id', 'seri_brg', 'pfpd', 'kasi', 'kabid'], 'integer'],
-            [['noagenda', 'nd', 'nd_tgl', 'rha', 'rha_tgl', 'perusahaan', 'pib', 'tglpib', 'fpkeputusan_NPP','keputusan_npp' ,'fpket_NPP', 'npp', 'npp_tgl', 'st', 'st_tgl', 'nhpu', 'nhpu_tgl', 'spktnp', 'spktnp_tgl', 'spktnp_jthtempo', 'sspcp', 'sspcp_tgl', 'ntb', 'ntpn', 'status_akhir_banding', 'analis', 'ket_risalah'], 'safe'],
+            [['id', 'seri_brg'], 'integer'],
+            [['noagenda', 'nd', 'nd_tgl', 'rha', 'rha_tgl', 'perusahaan', 'pib', 'tglpib', 'keputusan_npp', 'fpkeputusan_NPP', 'fpket_NPP', 'laop', 'laop_tgl', 'kkp', 'kkp_tgl', 'npp', 'npp_tgl', 'st', 'st_tgl', 'pfpd', 'nhpu', 'nhpu_tgl', 'spktnp', 'spktnp_tgl', 'spktnp_jthtempo', 'sspcp', 'sspcp_tgl', 'ntb', 'ntpn', 'status_akhir_banding', 'npp_rha_gab_1npp', 'npp_tgl_rha_gab_1npp', 'st_rha_gab_1npp', 'st_tgl_rha_gab_1npp', 'nhpu_rha_gab_1npp', 'nhpu_tgl_rha_gab_1npp', 'kasi', 'kabid', 'analis1', 'analis2', 'analis3', 'penyaji_data1', 'ket_risalah'], 'safe'],
             [['bm', 'bmad', 'bmi', 'bmdp', 'ppn', 'pph', 'denda', 'total_tagihan'], 'number'],
         ];
     }
@@ -65,9 +65,10 @@ class RisalahPenul0Search extends RisalahPenul0
             'rha_tgl' => $this->rha_tgl,
             'tglpib' => $this->tglpib,
             'seri_brg' => $this->seri_brg,
+            'laop_tgl' => $this->laop_tgl,
+            'kkp_tgl' => $this->kkp_tgl,
             'npp_tgl' => $this->npp_tgl,
             'st_tgl' => $this->st_tgl,
-            'pfpd' => $this->pfpd,
             'nhpu_tgl' => $this->nhpu_tgl,
             'spktnp_tgl' => $this->spktnp_tgl,
             'bm' => $this->bm,
@@ -80,8 +81,9 @@ class RisalahPenul0Search extends RisalahPenul0
             'total_tagihan' => $this->total_tagihan,
             'spktnp_jthtempo' => $this->spktnp_jthtempo,
             'sspcp_tgl' => $this->sspcp_tgl,
-            'kasi' => $this->kasi,
-            'kabid' => $this->kabid,
+            'npp_tgl_rha_gab_1npp' => $this->npp_tgl_rha_gab_1npp,
+            'st_tgl_rha_gab_1npp' => $this->st_tgl_rha_gab_1npp,
+            'nhpu_tgl_rha_gab_1npp' => $this->nhpu_tgl_rha_gab_1npp,
         ]);
 
         $query->andFilterWhere(['like', 'noagenda', $this->noagenda])
@@ -89,18 +91,30 @@ class RisalahPenul0Search extends RisalahPenul0
             ->andFilterWhere(['like', 'rha', $this->rha])
             ->andFilterWhere(['like', 'perusahaan', $this->perusahaan])
             ->andFilterWhere(['like', 'pib', $this->pib])
-            ->andFilterWhere(['like', 'fpkeputusan_NPP', $this->fpkeputusan_NPP])
             ->andFilterWhere(['like', 'keputusan_npp', $this->keputusan_npp])
+            ->andFilterWhere(['like', 'fpkeputusan_NPP', $this->fpkeputusan_NPP])
             ->andFilterWhere(['like', 'fpket_NPP', $this->fpket_NPP])
+            ->andFilterWhere(['like', 'laop', $this->laop])
+            ->andFilterWhere(['like', 'kkp', $this->kkp])
             ->andFilterWhere(['like', 'npp', $this->npp])
             ->andFilterWhere(['like', 'st', $this->st])
+            ->andFilterWhere(['like', 'pfpd', $this->pfpd])
             ->andFilterWhere(['like', 'nhpu', $this->nhpu])
             ->andFilterWhere(['like', 'spktnp', $this->spktnp])
             ->andFilterWhere(['like', 'sspcp', $this->sspcp])
             ->andFilterWhere(['like', 'ntb', $this->ntb])
             ->andFilterWhere(['like', 'ntpn', $this->ntpn])
             ->andFilterWhere(['like', 'status_akhir_banding', $this->status_akhir_banding])
-            ->andFilterWhere(['like', 'analis', $this->analis]);
+            ->andFilterWhere(['like', 'npp_rha_gab_1npp', $this->npp_rha_gab_1npp])
+            ->andFilterWhere(['like', 'st_rha_gab_1npp', $this->st_rha_gab_1npp])
+            ->andFilterWhere(['like', 'nhpu_rha_gab_1npp', $this->nhpu_rha_gab_1npp])
+            ->andFilterWhere(['like', 'kasi', $this->kasi])
+            ->andFilterWhere(['like', 'kabid', $this->kabid])
+            ->andFilterWhere(['like', 'analis1', $this->analis1])
+            ->andFilterWhere(['like', 'analis2', $this->analis2])
+            ->andFilterWhere(['like', 'analis3', $this->analis3])
+            ->andFilterWhere(['like', 'penyaji_data1', $this->penyaji_data1])
+            ->andFilterWhere(['like', 'ket_risalah', $this->ket_risalah]);
 
         return $dataProvider;
     }

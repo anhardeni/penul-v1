@@ -8,7 +8,7 @@ use hscstudio\mimin\components\Mimin;
 /* @var $model app\models\RisalahPenul0 */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Daftar Risalah Penul', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Daftar Risalah Penul0', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="risalah-penul0-view">
@@ -38,8 +38,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'pib',
             'tglpib',
             'seri_brg',
+            'keputusan_npp',
             'fpkeputusan_NPP',
             'fpket_NPP',
+            'laop',
+            'laop_tgl',
+            'kkp',
+            'kkp_tgl',
             'npp',
             'npp_tgl',
             'st',
@@ -63,10 +68,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'ntb',
             'ntpn',
             'status_akhir_banding',
+            'npp_rha_gab_1npp',
+            'npp_tgl_rha_gab_1npp',
+            'st_rha_gab_1npp',
+            'st_tgl_rha_gab_1npp',
+            'nhpu_rha_gab_1npp',
+            'nhpu_tgl_rha_gab_1npp',
             'kasi',
             'kabid',
-            'analis',
-            'ket risalah',
+            'analis1',
+            'analis2',
+            'analis3',
+            'penyaji_data1',
+            'ket_risalah',
         ],
     ]) ?>
 
