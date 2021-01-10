@@ -453,16 +453,25 @@ public function actionPindahdata($id)
       $ctkJenPelanggaran = \app\models\JenPelanggaran::find()->where (['id'=>$ctkPenulHeader->jen_pelanggaran])->one();
 
 
-              // Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/';
-              // $path = Yii::$app->params['uploadPath'] . $ctkAnalis2ttd->web_filename;
+          // Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/';
+         // $path = Yii::$app->params['uploadPath'] . $ctkAnalis2ttd->web_filename;
 
           // Initalize the TBS instance
           $OpenTBS = new \hscstudio\export\OpenTBS; // new instance of TBS
           $template = Yii::getAlias('@hscstudio/export').'/templates/opentbs/template_RHA_v1.xlsx';
           // $template = Yii::getAlias('@web').'/templatepenul/'.'templaterhav1.xlsx';
           //$TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN);
-          //$TBS->PlugIn(TBS_INSTALL,TBS_AGGREGATE);
+          //$OpenTBS->PlugIn(TBS_AGGREGATE);
+
            $OpenTBS->LoadTemplate($template); // Also merge some [onload] automatic fields (depends of the type of document).
+           
+if (isset($_POST['debug']) && ($_POST['debug']=='current')) $OpenTBS->Plugin(OPENTBS_DEBUG_XML_CURRENT, true); // Display the intented XML of the current sub-file, and exit.
+if (isset($_POST['debug']) && ($_POST['debug']=='info'))    $OpenTBS->Plugin(OPENTBS_DEBUG_INFO, true); // Display information about the document, and exit.
+if (isset($_POST['debug']) && ($_POST['debug']=='show'))    $OpenTBS->Plugin(OPENTBS_DEBUG_XML_SHOW); // Tells TBS to display information when the document is merged. No exit.
+
+
+
+
            $OpenTBS->VarRef['xid']=$ctkPenulHeader -> id;
            $OpenTBS->VarRef['xrha']=$ctkPenulHeader -> rha;
            $OpenTBS->VarRef['xtglrha']=$ctkPenulHeader -> rha_tgl ;
@@ -487,6 +496,7 @@ public function actionPindahdata($id)
 
            $OpenTBS->VarRef['xanalis2ttd']=$ctkAnalis2ttd -> web_filename;
            $OpenTBS->VarRef['xfilettd']= $path ;
+           $OpenTBS->PlugIn(OPENTBS_MERGE_SPECIAL_ITEMS);
 
            $b1 = [];
            foreach($ctkPenulDatatransaks as $ctkPenulDatatransakss){
@@ -544,25 +554,16 @@ public function actionPindahdata($id)
          ];
        }       
        $OpenTBS->MergeBlock('a2' ,$b2);
+             
 
-       
-       
-       
-
-      // var_dump(strip_tags($ctkPenulHeader -> analisa_prosedur_rha));
-       // var_dump($issuingcountrys->name);
-       // var_dump($issuingauthoritiesb1->name_authorities);
-      //  var_dump($ctksrt ->jenis_reference);
-       //  var_dump($unitpenerbits->unit_penerbit_en);
+        // var_dump($unitpenerbits->unit_penerbit_en);
         // var_dump($path);
         // die( ) ;
 
           // $OpenTBS->Show(OPENTBS_DOWNLOAD, 'rha'.'.xlsx'); // Also merges all [onshow] automatic fields.
          $OpenTBS->Show(OPENTBS_DOWNLOAD, 'rha'.$id.'.xlsx'); // Also merges all [onshow] automatic fields.  
          exit;
-        //  //return $this -> reload();
-        //  return $ctksrt->renderAjax();
-       }
+        }
 
        public function actionCetakkkp($id)
        {
@@ -590,19 +591,7 @@ public function actionPindahdata($id)
            $OpenTBS->VarRef['xkasi']=$ctkKasi -> name;
            $OpenTBS->VarRef['xkabid']=$ctkKabid -> name;
            $OpenTBS->VarRef['xpenyajidata1']=$ctkPenyajidata1 -> name;
-         // $OpenTBS->VarRef['xno_srtpemberitahuan']= $ctksrt -> no_srtpemberitahuan;
-         // $OpenTBS->VarRef['xtgl_srtpemberitahuan']=$ctksrt -> tgl_srtpemberitahuan;
-         // $OpenTBS->VarRef['xska_nomor']= $ctksrt -> ska_nomor;
-         // $OpenTBS->VarRef['xskatglterbit']=$ctksrt -> ska_tgl_terbit;
-         // $OpenTBS->VarRef['xska_jml_item_tercantum']= $ctksrt -> ska_jml_item_tercantum;
-         // $OpenTBS->VarRef['xska_jml_item_tidaksesuai']= $ctksrt-> ska_jml_item_tidaksesuai;
-         // $OpenTBS->VarRef['xnobpj']= $ctksrt -> nomorbpj_sspcp;
-         // $OpenTBS->VarRef['xtglbpj']= $ctksrt-> tglbpj_sspcp;
-         // $OpenTBS->VarRef['xtgljatuhtempo']= $ctksrt -> tgljatuhtempo;
-         // $OpenTBS->VarRef['xtglagms']= $ctksrt -> tglagenda;
-         // $OpenTBS->VarRef['xformalaju']=$ctksrt -> formalaju;
-         // $OpenTBS->VarRef['xpendpt']=$ctksrt -> pendpt;
-
+      
            $b1 = [];
            foreach($ctkPenulDatatransaks as $ctkPenulDatatransakss){
             $b1[] = [
@@ -622,16 +611,7 @@ public function actionPindahdata($id)
              'trf_bm_t'=>$ctkPenulDatatransakss-> trf_bm_t,
              'bm_t_nilai_akhir'=>$ctkPenulDatatransakss-> bm_t_nilai_akhir,
              'nilaipabean_akhir'=>$ctkPenulDatatransakss-> nilaipabean_akhir,
-            //  'ppn_nilai_awal'=>$ctkPenulDatatransakss-> ppn_nilai_awal,
-            //  'ppn_t_nilai_akhir'=>$ctkPenulDatatransakss-> ppn_t_nilai_akhir,
-             // 'pph_nilai_awal'=>$ctkPenulDatatransakss-> pph_nilai_awal,
-             // 'pph_t_nilai_akhir'=>$ctkPenulDatatransakss-> pph_t_nilai_akhir,
-             // 'ppnbm_t_nilai_akhir'=>$ctkPenulDatatransakss-> ppnbm_t_nilai_akhir,
-             // 'denda'=>$ctkPenulDatatransakss-> denda,
-             // 'total_tagihan'=>$ctkPenulDatatransakss-> total_tagihan,
-
-
-           ];
+                 ];
          }       
          $OpenTBS->MergeBlock('a1' ,$b1);
 
@@ -889,6 +869,9 @@ public function actionPindahdata($id)
         //  return $ctksrt->renderAjax();
        }
 
+
+
+
        public function actionImportdatadirect($id)
        {
       //$query = New Query();
@@ -946,13 +929,16 @@ public function actionPindahdata($id)
               $model->nilaipabean_akhir = (double)$sheetData[$baseRow]['Y'];
               $model->trf_ppn_t = (float)$sheetData[$baseRow]['Z'];
               $model->trf_pph_t = (float)$sheetData[$baseRow]['AA'];
-
               $model->trf_ppn = (float)$sheetData[$baseRow]['AB'];
               $model->trf_pph = (float)$sheetData[$baseRow]['AC'];
               $model->trf_ppnbm = (float)$sheetData[$baseRow]['AD'];
               $model->trf_ppnbm_t = (float)$sheetData[$baseRow]['AE'];
               $model->trf_bmad = (float)$sheetData[$baseRow]['AF'];
               $model->trf_bmad_t = (float)$sheetData[$baseRow]['AG'];
+               $model->trf_bk = (float)$sheetData[$baseRow]['AH'];
+              $model->trf_bk_t = (float)$sheetData[$baseRow]['AI'];
+               $model->bk_nilai_awal = (float)$sheetData[$baseRow]['AJ'];
+               $model->bk_nilai_akhir = (float)$sheetData[$baseRow]['AK'];
 
 
           // if ((string)$sheetData[$baseRow]['P'] == "HH")(  $model ->jalur = "Hijau");
@@ -970,10 +956,13 @@ public function actionPindahdata($id)
            //   $model->nilaipabean_akhir = ($model->nilaipabean_awal);
          // selisih BM , PPN dan pph
               $model->bm_t_nilai_akhir = floor($model->trf_bm_t/100 *  $model->nilaipabean_akhir)- ($model->trf_bm/100 *  $model->nilaipabean_awal) ;
-
               $model->ppn_t_nilai_akhir = floor(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *  $model->trf_ppn_t ) - $model->ppn_nilai_awal);
 
               $model->pph_t_nilai_akhir = floor(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *   $model->trf_pph_t )- $model->pph_nilai_awal);
+
+              // $model->ppnbm_t_nilai_akhir = floor(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *   $model->trf_ppnbm_t )- ($model->ppnbm_nilai_awal));
+
+
 
               $model->total_tagihan = floor($model->bm_t_nilai_akhir +  $model->ppn_t_nilai_akhir + $model->pph_t_nilai_akhir);
 

@@ -60,7 +60,7 @@ $gridColumns=[['class' => 'yii\grid\SerialColumn'],
 
 
 ?>
-<h1>Import Data penul PPH  2.5 %</h1>
+<h1>Import Data penul </h1>
 <?php
 $form = ActiveForm::begin([
     'options' => ['enctype'=> 'multipart/form-data'],
