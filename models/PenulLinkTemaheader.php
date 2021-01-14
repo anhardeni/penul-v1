@@ -56,6 +56,7 @@ class PenulLinkTemaheader extends \yii\db\ActiveRecord
             //            'updatedByAttribute' => false,
             
             TimestampBehavior::className(),
+           // 'value' => new Expression('NOW()'),
         ];
     }
 

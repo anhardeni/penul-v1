@@ -35,3 +35,4 @@ TRF_PPNBM_t
 TRF_BMAD
 TRF_BMAD_t
 tampilan risalah penul tidak bisa difilter
+perbaikan view query risalah penul dari AND ke OR

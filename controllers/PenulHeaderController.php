@@ -178,10 +178,7 @@ class PenulHeaderController extends Controller
       'modelsPenulDatatransaks' => (empty($modelsPenulDatatransaks)) ? [new PenulDatatransaks] : $modelsPenulDatatransaks
     ]);
   }
-
-
-
-  
+ 
 
     /**
      * Deletes an existing PenulHeader model.
@@ -472,51 +469,51 @@ if (isset($_POST['debug']) && ($_POST['debug']=='show'))    $OpenTBS->Plugin(OPE
 
 
 
-           $OpenTBS->VarRef['xid']=$ctkPenulHeader -> id;
-           $OpenTBS->VarRef['xrha']=$ctkPenulHeader -> rha;
-           $OpenTBS->VarRef['xtglrha']=$ctkPenulHeader -> rha_tgl ;
-           $OpenTBS->VarRef['xkesimpulan_rha_nilaipotensi']=$ctkPenulHeader -> kesimpulan_rha_nilaipotensi;
-           $OpenTBS->VarRef['xjendok']= $ctkJendok -> name;
-           $OpenTBS->VarRef['xjendok1']= $ctkJendok -> name;
-           $OpenTBS->VarRef['xjendok2']= $ctkJendok -> name;
-           $OpenTBS->VarRef['xjen_pelanggaran']= $ctkJenPelanggaran -> name;
-           $vowel = array("&nbsp", ";", "â");
-           $OpenTBS->VarRef['xanalisa_prosedur_rha']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha));
-           $OpenTBS->VarRef['xanalisa_prosedur_rha2']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha2));
-           $OpenTBS->VarRef['xanalisa_prosedur_rha3']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha3));
-           $OpenTBS->VarRef['xanalisa_prosedur_rha4']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha4));
-           $OpenTBS->VarRef['xanalisa_prosedur_rha5']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha5));
-           $OpenTBS->VarRef['xanalisa_prosedur_rha6']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha6));
-           $OpenTBS->VarRef['xanalisa_prosedur_rha7']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha7));
+$OpenTBS->VarRef['xid']=$ctkPenulHeader -> id;
+$OpenTBS->VarRef['xrha']=$ctkPenulHeader -> rha;
+$OpenTBS->VarRef['xtglrha']=$ctkPenulHeader -> rha_tgl ;
+$OpenTBS->VarRef['xkesimpulan_rha_nilaipotensi']=$ctkPenulHeader -> kesimpulan_rha_nilaipotensi;
+$OpenTBS->VarRef['xjendok']= $ctkJendok -> name;
+$OpenTBS->VarRef['xjendok1']= $ctkJendok -> name;
+$OpenTBS->VarRef['xjendok2']= $ctkJendok -> name;
+$OpenTBS->VarRef['xjen_pelanggaran']= $ctkJenPelanggaran -> name;
+$vowel = array("&nbsp", ";", "â");
+$OpenTBS->VarRef['xanalisa_prosedur_rha']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha));
+$OpenTBS->VarRef['xanalisa_prosedur_rha2']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha2));
+$OpenTBS->VarRef['xanalisa_prosedur_rha3']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha3));
+$OpenTBS->VarRef['xanalisa_prosedur_rha4']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha4));
+$OpenTBS->VarRef['xanalisa_prosedur_rha5']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha5));
+$OpenTBS->VarRef['xanalisa_prosedur_rha6']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha6));
+$OpenTBS->VarRef['xanalisa_prosedur_rha7']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha7));
 
-           $OpenTBS->VarRef['xpenyaji1']=$ctkAnalisPenyaji1 -> name;
-           $OpenTBS->VarRef['xanalis1']=$ctkAnalis1 -> name;
-           $OpenTBS->VarRef['xanalis2']=$ctkAnalis2 -> name;
-           $OpenTBS->VarRef['xanalis3']=$ctkAnalis3 -> name;
+$OpenTBS->VarRef['xpenyaji1']=$ctkAnalisPenyaji1 -> name;
+$OpenTBS->VarRef['xanalis1']=$ctkAnalis1 -> name;
+$OpenTBS->VarRef['xanalis2']=$ctkAnalis2 -> name;
+$OpenTBS->VarRef['xanalis3']=$ctkAnalis3 -> name;
 
-           $OpenTBS->VarRef['xanalis2ttd']=$ctkAnalis2ttd -> web_filename;
-           $OpenTBS->VarRef['xfilettd']= $path ;
-           $OpenTBS->PlugIn(OPENTBS_MERGE_SPECIAL_ITEMS);
+$OpenTBS->VarRef['xanalis2ttd']=$ctkAnalis2ttd -> web_filename;
+$OpenTBS->VarRef['xfilettd']= $path ;
+$OpenTBS->PlugIn(OPENTBS_MERGE_SPECIAL_ITEMS);
 
-           $b1 = [];
-           foreach($ctkPenulDatatransaks as $ctkPenulDatatransakss){
-            $b1[] = [
+$b1 = [];
+foreach($ctkPenulDatatransaks as $ctkPenulDatatransakss){
+  $b1[] = [
              //'id' => $ctksrtb1 -> id,
-             'kode_kantor'=>$ctkPenulDatatransakss-> kode_kantor,
-             'pib'=>$ctkPenulDatatransakss-> pib,
-             'tglpib'=>$ctkPenulDatatransakss-> tglpib,
-             'npwp_imp'=>$ctkPenulDatatransakss-> npwp_imp,
-             'imp'=>$ctkPenulDatatransakss-> imp,
-             'seri_brg'=>$ctkPenulDatatransakss-> seri_brg,
-             'uraian_brg'=>$ctkPenulDatatransakss-> uraian_brg,
-             'hs'=>$ctkPenulDatatransakss-> hs,
-             'trf_bm'=>$ctkPenulDatatransakss-> trf_bm,
-             'bm_nilai_awal'=>$ctkPenulDatatransakss-> bm_nilai_awal,
-             'nilaipabean_awal'=>$ctkPenulDatatransakss-> nilaipabean_awal,
-             'hs_t'=>$ctkPenulDatatransakss-> hs_t,
-             'trf_bm_t'=>$ctkPenulDatatransakss-> trf_bm_t,
-             'bm_t_nilai_akhir'=>$ctkPenulDatatransakss-> bm_t_nilai_akhir,
-             'nilaipabean_akhir'=>$ctkPenulDatatransakss-> nilaipabean_akhir,
+   'kode_kantor'=>$ctkPenulDatatransakss-> kode_kantor,
+   'pib'=>$ctkPenulDatatransakss-> pib,
+   'tglpib'=>$ctkPenulDatatransakss-> tglpib,
+   'npwp_imp'=>$ctkPenulDatatransakss-> npwp_imp,
+   'imp'=>$ctkPenulDatatransakss-> imp,
+   'seri_brg'=>$ctkPenulDatatransakss-> seri_brg,
+   'uraian_brg'=>$ctkPenulDatatransakss-> uraian_brg,
+   'hs'=>$ctkPenulDatatransakss-> hs,
+   'trf_bm'=>$ctkPenulDatatransakss-> trf_bm,
+   'bm_nilai_awal'=>$ctkPenulDatatransakss-> bm_nilai_awal,
+   'nilaipabean_awal'=>$ctkPenulDatatransakss-> nilaipabean_awal,
+   'hs_t'=>$ctkPenulDatatransakss-> hs_t,
+   'trf_bm_t'=>$ctkPenulDatatransakss-> trf_bm_t,
+   'bm_t_nilai_akhir'=>$ctkPenulDatatransakss-> bm_t_nilai_akhir,
+   'nilaipabean_akhir'=>$ctkPenulDatatransakss-> nilaipabean_akhir,
              // 'ppn_nilai_awal'=>$ctkPenulDatatransakss-> ppn_nilai_awal,
              // 'ppn_t_nilai_akhir'=>$ctkPenulDatatransakss-> ppn_t_nilai_akhir,
              // 'pph_nilai_awal'=>$ctkPenulDatatransakss-> pph_nilai_awal,
@@ -528,33 +525,33 @@ if (isset($_POST['debug']) && ($_POST['debug']=='show'))    $OpenTBS->Plugin(OPE
              // nilaipabean_akhir
 
 
-           ];
-         }       
-         $OpenTBS->MergeBlock('a1' ,$b1);
+ ];
+}       
+$OpenTBS->MergeBlock('a1' ,$b1);
 
 
-         $b2 = [];
-         foreach($ctkPenulDatatransaks as $ctkPenulDatatransakss2){
-          $b2[] = [
+$b2 = [];
+foreach($ctkPenulDatatransaks as $ctkPenulDatatransakss2){
+  $b2[] = [
              //'id' => $ctksrtb1 -> id,
-           'kode_kantor'=>$ctkPenulDatatransakss2-> kode_kantor,
-           'pib'=>$ctkPenulDatatransakss2-> pib,
+   'kode_kantor'=>$ctkPenulDatatransakss2-> kode_kantor,
+   'pib'=>$ctkPenulDatatransakss2-> pib,
 
-           'tglpib'=>$ctkPenulDatatransakss2-> tglpib,
-           'npwp_imp'=>$ctkPenulDatatransakss2-> npwp_imp,
-           'imp'=>$ctkPenulDatatransakss2-> imp,
-           'bm_t_nilai_akhir'=>$ctkPenulDatatransakss2-> bm_t_nilai_akhir,
-           'ppn_nilai_awal'=>$ctkPenulDatatransakss2-> ppn_nilai_awal,
-           'ppn_t_nilai_akhir'=>$ctkPenulDatatransakss2-> ppn_t_nilai_akhir,
-           'pph_nilai_awal'=>$ctkPenulDatatransakss2-> pph_nilai_awal,
-           'pph_t_nilai_akhir'=>$ctkPenulDatatransakss2-> pph_t_nilai_akhir,
-           'ppnbm_t_nilai_akhir'=>$ctkPenulDatatransakss2-> ppnbm_t_nilai_akhir,
-           'denda'=>$ctkPenulDatatransakss2-> denda,
-           'total_tagihan'=>$ctkPenulDatatransakss2-> total_tagihan,
-         ];
-       }       
-       $OpenTBS->MergeBlock('a2' ,$b2);
-             
+   'tglpib'=>$ctkPenulDatatransakss2-> tglpib,
+   'npwp_imp'=>$ctkPenulDatatransakss2-> npwp_imp,
+   'imp'=>$ctkPenulDatatransakss2-> imp,
+   'bm_t_nilai_akhir'=>$ctkPenulDatatransakss2-> bm_t_nilai_akhir,
+   'ppn_nilai_awal'=>$ctkPenulDatatransakss2-> ppn_nilai_awal,
+   'ppn_t_nilai_akhir'=>$ctkPenulDatatransakss2-> ppn_t_nilai_akhir,
+   'pph_nilai_awal'=>$ctkPenulDatatransakss2-> pph_nilai_awal,
+   'pph_t_nilai_akhir'=>$ctkPenulDatatransakss2-> pph_t_nilai_akhir,
+   'ppnbm_t_nilai_akhir'=>$ctkPenulDatatransakss2-> ppnbm_t_nilai_akhir,
+   'denda'=>$ctkPenulDatatransakss2-> denda,
+   'total_tagihan'=>$ctkPenulDatatransakss2-> total_tagihan,
+ ];
+}       
+$OpenTBS->MergeBlock('a2' ,$b2);
+
 
         // var_dump($unitpenerbits->unit_penerbit_en);
         // var_dump($path);
@@ -563,7 +560,7 @@ if (isset($_POST['debug']) && ($_POST['debug']=='show'))    $OpenTBS->Plugin(OPE
           // $OpenTBS->Show(OPENTBS_DOWNLOAD, 'rha'.'.xlsx'); // Also merges all [onshow] automatic fields.
          $OpenTBS->Show(OPENTBS_DOWNLOAD, 'rha'.$id.'.xlsx'); // Also merges all [onshow] automatic fields.  
          exit;
-        }
+       }
 
        public function actionCetakkkp($id)
        {
@@ -591,7 +588,7 @@ if (isset($_POST['debug']) && ($_POST['debug']=='show'))    $OpenTBS->Plugin(OPE
            $OpenTBS->VarRef['xkasi']=$ctkKasi -> name;
            $OpenTBS->VarRef['xkabid']=$ctkKabid -> name;
            $OpenTBS->VarRef['xpenyajidata1']=$ctkPenyajidata1 -> name;
-      
+
            $b1 = [];
            foreach($ctkPenulDatatransaks as $ctkPenulDatatransakss){
             $b1[] = [
@@ -611,7 +608,7 @@ if (isset($_POST['debug']) && ($_POST['debug']=='show'))    $OpenTBS->Plugin(OPE
              'trf_bm_t'=>$ctkPenulDatatransakss-> trf_bm_t,
              'bm_t_nilai_akhir'=>$ctkPenulDatatransakss-> bm_t_nilai_akhir,
              'nilaipabean_akhir'=>$ctkPenulDatatransakss-> nilaipabean_akhir,
-                 ];
+           ];
          }       
          $OpenTBS->MergeBlock('a1' ,$b1);
 
@@ -682,17 +679,31 @@ if (isset($_POST['debug']) && ($_POST['debug']=='show'))    $OpenTBS->Plugin(OPE
            $OpenTBS->VarRef['xid']=$ctkPenulHeader -> id;
            $OpenTBS->VarRef['xnhpu']=$ctkPenulHeader -> nhpu;
 
+           // $formatter = Yii::$app->formatter;
+           // $formatter->asDate('2014-01-01', 'long')
 
-           $OpenTBS->VarRef['xtglnhpu']=$ctkPenulHeader -> nhpu_tgl;
+
+           // Yii::$app->formatter->asDate('now', 'yyyy-MM-dd');
+           // Yii::$app->formatter->asDate('now', 'php:Y-m-d'); 
+
+
+         //  $OpenTBS->VarRef['xtglnhpu']=format($ctkPenulHeader ->((nhpu_tgl), 'php:dd-mm-yyyy'));
+           $nhpu_tgl = $ctkPenulHeader -> nhpu_tgl;
+           $OpenTBS->VarRef['xtglnhpu']= Yii::$app->formatter->asDate($nhpu_tgl, 'php:d-m-Y');
            $OpenTBS->VarRef['xnpp']=$ctkPenulHeader -> npp;
+
            $OpenTBS->VarRef['xst']=$ctkPenulHeader -> st;
            $OpenTBS->VarRef['xtglst']=$ctkPenulHeader -> st_tgl;
+
            $OpenTBS->VarRef['xrha']=$ctkPenulHeader -> rha;
            $OpenTBS->VarRef['xtglrha']=$ctkPenulHeader -> rha_tgl;
+
            $OpenTBS->VarRef['xst1']=$ctkPenulHeader -> st;
            $OpenTBS->VarRef['xtglst1']=$ctkPenulHeader -> st_tgl;
+
            $OpenTBS->VarRef['xlaop']=$ctkPenulHeader -> laop;
            $OpenTBS->VarRef['xtgllaop']=$ctkPenulHeader -> laop_tgl;
+
            $OpenTBS->VarRef['xkesimpulanlaop']=$ctkPenulHeader -> kesimpulan_laop;
            $OpenTBS->VarRef['xnilaipotensi']=$ctkPenulHeader -> kesimpulan_rha_nilaipotensi;
            $OpenTBS->VarRef['xjumlahpt']=$ctkPenulHeader -> kesimpulan_rha_jum_pt;
@@ -809,8 +820,8 @@ if (isset($_POST['debug']) && ($_POST['debug']=='show'))    $OpenTBS->Plugin(OPE
              // 'hs_t'=>$ctkPenulDatatransakss-> hs_t,
              // 'trf_bm_t'=>$ctkPenulDatatransakss-> trf_bm_t,
              // 'bm_t_nilai_akhir'=>$ctkPenulDatatransakss-> bm_t_nilai_akhir,
-            //  'ppn_nilai_awal'=>$ctkPenulDatatransakss-> ppn_nilai_awal,
-            //  'ppn_t_nilai_akhir'=>$ctkPenulDatatransakss-> ppn_t_nilai_akhir,
+             // 'ppn_nilai_awal'=>$ctkPenulDatatransakss-> ppn_nilai_awal,
+             // 'ppn_t_nilai_akhir'=>$ctkPenulDatatransakss-> ppn_t_nilai_akhir,
              // 'pph_nilai_awal'=>$ctkPenulDatatransakss-> pph_nilai_awal,
              // 'pph_t_nilai_akhir'=>$ctkPenulDatatransakss-> pph_t_nilai_akhir,
              // 'ppnbm_t_nilai_akhir'=>$ctkPenulDatatransakss-> ppnbm_t_nilai_akhir,
@@ -859,7 +870,7 @@ if (isset($_POST['debug']) && ($_POST['debug']=='show'))    $OpenTBS->Plugin(OPE
 
         // var_dump($ctkPfpd->web_filename);die() ;
        //  var_dump($ctkPenulDatatransaks);die() ;
-         //  var_dump($OpenTBS->VarRef['xfilettd']); die() ;
+         //  var_dump($OpenTBS->VarRef['xtglnhpu']); die() ;
           // die() ; 
 
           // $OpenTBS->Show(OPENTBS_DOWNLOAD, 'rha'.'.xlsx'); // Also merges all [onshow] automatic fields.
@@ -935,10 +946,10 @@ if (isset($_POST['debug']) && ($_POST['debug']=='show'))    $OpenTBS->Plugin(OPE
               $model->trf_ppnbm_t = (float)$sheetData[$baseRow]['AE'];
               $model->trf_bmad = (float)$sheetData[$baseRow]['AF'];
               $model->trf_bmad_t = (float)$sheetData[$baseRow]['AG'];
-               $model->trf_bk = (float)$sheetData[$baseRow]['AH'];
+              $model->trf_bk = (float)$sheetData[$baseRow]['AH'];
               $model->trf_bk_t = (float)$sheetData[$baseRow]['AI'];
-               $model->bk_nilai_awal = (float)$sheetData[$baseRow]['AJ'];
-               $model->bk_nilai_akhir = (float)$sheetData[$baseRow]['AK'];
+              $model->bk_nilai_awal = (float)$sheetData[$baseRow]['AJ'];
+              $model->bk_nilai_akhir = (float)$sheetData[$baseRow]['AK'];
 
 
           // if ((string)$sheetData[$baseRow]['P'] == "HH")(  $model ->jalur = "Hijau");
@@ -955,10 +966,10 @@ if (isset($_POST['debug']) && ($_POST['debug']=='show'))    $OpenTBS->Plugin(OPE
 
            //   $model->nilaipabean_akhir = ($model->nilaipabean_awal);
          // selisih BM , PPN dan pph
-              $model->bm_t_nilai_akhir = floor($model->trf_bm_t/100 *  $model->nilaipabean_akhir)- ($model->trf_bm/100 *  $model->nilaipabean_awal) ;
-              $model->ppn_t_nilai_akhir = floor(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *  $model->trf_ppn_t ) - $model->ppn_nilai_awal);
+              $model->bm_t_nilai_akhir = (float)(($model->trf_bm_t/100 *  $model->nilaipabean_akhir)- ($model->trf_bm/100 *  $model->nilaipabean_awal)) ;
+              $model->ppn_t_nilai_akhir = (float)(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *  $model->trf_ppn_t/100 ) - $model->ppn_nilai_awal);
 
-              $model->pph_t_nilai_akhir = floor(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *   $model->trf_pph_t )- $model->pph_nilai_awal);
+              $model->pph_t_nilai_akhir = (float)(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *   $model->trf_pph_t/100 )- $model->pph_nilai_awal);
 
               // $model->ppnbm_t_nilai_akhir = floor(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *   $model->trf_ppnbm_t )- ($model->ppnbm_nilai_awal));
 
@@ -1425,13 +1436,19 @@ if (isset($_POST['debug']) && ($_POST['debug']=='show'))    $OpenTBS->Plugin(OPE
 
            //   $model->nilaipabean_akhir = ($model->nilaipabean_awal);
          // selisih BM , PPN dan pph
-              $model->bm_t_nilai_akhir = floor($model->trf_bm_t/100 *  $model->nilaipabean_akhir)- ($model->trf_bm/100 *  $model->nilaipabean_awal) ;
+              $model->bm_t_nilai_akhir = float($model->trf_bm_t/100 *$model->nilaipabean_akhir)-($model->trf_bm/100 * $model->nilaipabean_awal) ;
 
-              $model->ppn_t_nilai_akhir = floor(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *  $model->trf_ppn_t ) - $model->ppn_nilai_awal);
+               $model->ppn_t_nilai_akhir = float((((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+$model->nilaipabean_akhir)) *  $model->trf_ppn_t/100 ) - $model->ppn_nilai_awal);
 
-              $model->pph_t_nilai_akhir = floor(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *   $model->trf_pph_t )- $model->pph_nilai_awal);
+               $model->pph_t_nilai_akhir = float((((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir)) *   $model->trf_pph_t/100 ) - $model->pph_nilai_awal);
 
-              $model->total_tagihan = floor($model->bm_t_nilai_akhir +  $model->ppn_t_nilai_akhir + $model->pph_t_nilai_akhir);
+              // $model->ppn_t_nilai_akhir = float((($model->bm_t_nilai_akhir +  $model->nilaipabean_akhir) *  $model->trf_ppn_t ) - $model->ppn_nilai_awal);
+
+              // $model->pph_t_nilai_akhir = float((($model->bm_t_nilai_akhir +  $model->nilaipabean_akhir) *   $model->trf_pph_t ) - $model->pph_nilai_awal);
+
+
+
+              $model->total_tagihan = float($model->bm_t_nilai_akhir +  $model->ppn_t_nilai_akhir + $model->pph_t_nilai_akhir);
 
 
          // $model->seri_brg = (string)$sheetData[$baseRow]['O'];

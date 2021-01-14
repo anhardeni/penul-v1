@@ -81,7 +81,7 @@ $gridColumns=[['class' => 'yii\grid\SerialColumn'],
             // 'updated_by',
 
          ['class' => 'app\widgets\grid\ActionColumn',   'template' => Mimin::filterActionColumn([
-          'update','delete','view'],$this->context->route),    ],    ];
+          'view'],$this->context->route),    ],    ];
 
 
          /* @var $this yii\web\View */
