@@ -92,6 +92,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ]) ?>
             <?php }  ?> 
 
+              <?php  if ((Mimin::checkRoute($this->context->id."/exportexcel")))
+            { ?> <?= Html::a('export excel', ['exportexcel','id' => $model->id], ['class' => 'btn btn-info',
+                'data' => [
+                    'confirm' => 'Apakah Anda yakin ingin  cetak excel ??',
+                                    ],
+            ]) ?>
+            <?php }  ?> 
+
               <!-- <?php if ((Mimin::checkRoute($this->context->id."/importdatadirect")))
             { ?>
              <?= Html::a('importdata direct PPh 7.5%', ['importdatadirect02','id' => $model->id], ['class' => 'btn btn-warning',
@@ -100,8 +108,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     ],
             ]) ?>
             <?php }  ?>  -->
-            
-          </div>
+            </div>
               </p>
 
             <!-- <button class="btn btn-warning" id="toggle-modal-1">Launch Modal</button>
@@ -149,7 +156,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'nhpu',
         'nhpu_tgl',
         'analisa_prosedur_rha',
-            //'created_at',
+        'created_at:datetime',
            // 'created_by',
           //  'updated_at',
           //  'updated_by',

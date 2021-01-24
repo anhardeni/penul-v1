@@ -178,7 +178,7 @@ class PenulHeaderController extends Controller
       'modelsPenulDatatransaks' => (empty($modelsPenulDatatransaks)) ? [new PenulDatatransaks] : $modelsPenulDatatransaks
     ]);
   }
- 
+
 
     /**
      * Deletes an existing PenulHeader model.
@@ -966,14 +966,35 @@ $OpenTBS->MergeBlock('a2' ,$b2);
 
            //   $model->nilaipabean_akhir = ($model->nilaipabean_awal);
          // selisih BM , PPN dan pph
-              $model->bm_t_nilai_akhir = (float)(($model->trf_bm_t/100 *  $model->nilaipabean_akhir)- ($model->trf_bm/100 *  $model->nilaipabean_awal)) ;
-              $model->ppn_t_nilai_akhir = (float)(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *  $model->trf_ppn_t/100 ) - $model->ppn_nilai_awal);
+              $model->bm_t_nilai_akhir = (float)(($model->trf_bm_t/100 *  $model->nilaipabean_akhir)- ($model->trf_bm/100 *  $model->nilaipabean_awal));
 
-              $model->pph_t_nilai_akhir = (float)(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *   $model->trf_pph_t/100 )- $model->pph_nilai_awal);
+
+              if (($model->ppn_nilai_awal) > 0   ){
+            $model->ppn_t_nilai_akhir = (float)(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *  $model->trf_ppn_t/100 ) - $model->ppn_nilai_awal); // potensi ppn
+            ;
+          //     return $path ;
+          }else{ 
+            $model->ppn_t_nilai_akhir = 0 ; // potensi ppn
+          };
+
+              // $model->ppn_t_nilai_akhir = (float)(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *  $model->trf_ppn_t/100 ) - $model->ppn_nilai_awal); // potensi ppn
+
+              
+            if (($model->pph_nilai_awal) > 0  ){
+          $model->pph_t_nilai_akhir = (float)(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *   $model->trf_pph_t/100 )- $model->pph_nilai_awal); // potensi pph
+            ;
+          //     return $path ;
+          }else{ 
+            $model->pph_t_nilai_akhir = 0 ; // potensi ppn
+          };
+
+
+
+
+
+              // $model->pph_t_nilai_akhir = (float)(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *   $model->trf_pph_t/100 )- $model->pph_nilai_awal); // potensi pph
 
               // $model->ppnbm_t_nilai_akhir = floor(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *   $model->trf_ppnbm_t )- ($model->ppnbm_nilai_awal));
-
-
 
               $model->total_tagihan = floor($model->bm_t_nilai_akhir +  $model->ppn_t_nilai_akhir + $model->pph_t_nilai_akhir);
 
@@ -1011,8 +1032,8 @@ $OpenTBS->MergeBlock('a2' ,$b2);
             Yii::$app->getSession()->setFlash('success', 'Success');
       // echo $baseRow;
       // var_dump($model->trf_bm_t);
-      //  var_dump($model->total_tagihan);
-      //  die( ) ;
+       // var_dump($model->pph_t_nilai_akhir);
+       // die( ) ;
           }
           else{
             Yii::$app->getSession()->setFlash('error', 'Error');
@@ -1438,9 +1459,9 @@ $OpenTBS->MergeBlock('a2' ,$b2);
          // selisih BM , PPN dan pph
               $model->bm_t_nilai_akhir = float($model->trf_bm_t/100 *$model->nilaipabean_akhir)-($model->trf_bm/100 * $model->nilaipabean_awal) ;
 
-               $model->ppn_t_nilai_akhir = float((((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+$model->nilaipabean_akhir)) *  $model->trf_ppn_t/100 ) - $model->ppn_nilai_awal);
+              $model->ppn_t_nilai_akhir = float((((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+$model->nilaipabean_akhir)) *  $model->trf_ppn_t/100 ) - $model->ppn_nilai_awal);
 
-               $model->pph_t_nilai_akhir = float((((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir)) *   $model->trf_pph_t/100 ) - $model->pph_nilai_awal);
+              $model->pph_t_nilai_akhir = float((((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir)) *   $model->trf_pph_t/100 ) - $model->pph_nilai_awal);
 
               // $model->ppn_t_nilai_akhir = float((($model->bm_t_nilai_akhir +  $model->nilaipabean_akhir) *  $model->trf_ppn_t ) - $model->ppn_nilai_awal);
 

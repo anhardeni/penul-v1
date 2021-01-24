@@ -36,3 +36,7 @@ TRF_BMAD
 TRF_BMAD_t
 tampilan risalah penul tidak bisa difilter
 perbaikan view query risalah penul dari AND ke OR
+
+kumpulin csv  dan format tabel di local( SPKTnp ,putusan banding, risalahbanding ,sptnp dari power bi, )
+
+phpspreadsheet next level, with template

@@ -42,20 +42,6 @@ $gridColumns=[['class' => 'yii\grid\SerialColumn'],
                 ],
                 'filterInputOptions' => ['placeholder' => 'penyaji', 'id' => 'grid--penyaji_data1']
             ],
-//'penyajiData1.name',
-
-    //         [
-    // 'attribute' => 'penyaji_data1',
-    // 'filter' => \yii\helpers\ArrayHelper::map(\app\models\PenulAnalisPenyaji::find()->orderBy('id')->asArray()->all(), 'id','name'),
- // //   'filterType' => GridView::\kartik\widgets\Select2(),
- //    'filterWidgetOptions' => [
- //        'options' => ['prompt' => ''],
- //        'pluginOptions' => [
- //            'allowClear' => true,
- //            'width'=>'resolve'
- //        ],
- //    ],
-//],
            //  'penyaji_data1',
             // 'analis1',
             // 'analis2',

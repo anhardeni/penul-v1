@@ -29,7 +29,7 @@ use Yii;
  * @property float|null $TRF_PPNBM_AKHIR
  * @property float|null $TRF_BMAD_AWAL
  * @property float|null $TRF_BMAD_AKHIR
- * @property string|null $UR_KET_RHA Penetapan Hs code 2
+ * @property string|null $UR_KET_RHA
  * @property float|null $POTENSI_BEA
  * @property float|null $POTENSI_BMAD
  * @property float|null $POTENSI_PPN
@@ -103,7 +103,7 @@ class Uploadsimpul extends \yii\db\ActiveRecord
             'TRF_PPNBM_AKHIR' => 'Trf Ppnbm Akhir',
             'TRF_BMAD_AWAL' => 'Trf Bmad Awal',
             'TRF_BMAD_AKHIR' => 'Trf Bmad Akhir',
-            'UR_KET_RHA' => 'Penetapan Hs code 2',
+            'UR_KET_RHA' => 'Uraiaan RHA',
             'POTENSI_BEA' => 'Potensi Bea',
             'POTENSI_BMAD' => 'Potensi Bmad',
             'POTENSI_PPN' => 'Potensi Ppn',

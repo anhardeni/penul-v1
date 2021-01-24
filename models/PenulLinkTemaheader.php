@@ -134,6 +134,10 @@ class PenulLinkTemaheader extends \yii\db\ActiveRecord
         return $this->hasOne(PenulTema::className(), ['id' => 'link_tema']);
     }
 
+    public function getLinkTemaName(){
+        $model=$this->link_tema;
+        return $model?$model->id:'';
+    }
 
      public function getUser()
     {
