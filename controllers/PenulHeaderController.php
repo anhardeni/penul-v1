@@ -20,6 +20,8 @@ use yii\db\Query;
 use yii\db\Command;
 use yii\db\Connection;
 use yii\data\ActiveDataProvider;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 /**
  * PenulHeaderController implements the CRUD actions for PenulHeader model.
@@ -979,12 +981,12 @@ $OpenTBS->MergeBlock('a2' ,$b2);
 
               // $model->ppn_t_nilai_akhir = (float)(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *  $model->trf_ppn_t/100 ) - $model->ppn_nilai_awal); // potensi ppn
 
-              
-            if (($model->pph_nilai_awal) > 0  ){
+
+          if (($model->pph_nilai_awal) > 0  ){
           $model->pph_t_nilai_akhir = (float)(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *   $model->trf_pph_t/100 )- $model->pph_nilai_awal); // potensi pph
-            ;
+          ;
           //     return $path ;
-          }else{ 
+        }else{ 
             $model->pph_t_nilai_akhir = 0 ; // potensi ppn
           };
 
@@ -996,7 +998,7 @@ $OpenTBS->MergeBlock('a2' ,$b2);
 
               // $model->ppnbm_t_nilai_akhir = floor(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *   $model->trf_ppnbm_t )- ($model->ppnbm_nilai_awal));
 
-              $model->total_tagihan = floor($model->bm_t_nilai_akhir +  $model->ppn_t_nilai_akhir + $model->pph_t_nilai_akhir);
+          $model->total_tagihan = floor($model->bm_t_nilai_akhir +  $model->ppn_t_nilai_akhir + $model->pph_t_nilai_akhir);
 
           // if ((string)$sheetData[$baseRow]['P'] == "HH")(  $model ->jalur = "Hijau");
           // if ((string)$sheetData[$baseRow]['P'] == "HL")(  $model ->jalur = "Hijau");
@@ -1021,50 +1023,50 @@ $OpenTBS->MergeBlock('a2' ,$b2);
          // $model->seri_brg = (string)$sheetData[$baseRow]['Q'];
          // $model->seri_brg = (string)$sheetData[$baseRow]['S'];
          // $model->seri_brg = (string)$sheetData[$baseRow]['T'];
-              $model->created_at = date('Y-m-d H:i:s');
-              $model->created_by = Yii::$app->user->identity->id ;
-              $model->updated_at = date('Y-m-d H:i:s');
-              $model->updated_by = Yii::$app->user->identity->id ;
+          $model->created_at = date('Y-m-d H:i:s');
+          $model->created_by = Yii::$app->user->identity->id ;
+          $model->updated_at = date('Y-m-d H:i:s');
+          $model->updated_by = Yii::$app->user->identity->id ;
 
-              $model->save();
-              $baseRow++;
-            }
-            Yii::$app->getSession()->setFlash('success', 'Success');
+          $model->save();
+          $baseRow++;
+        }
+        Yii::$app->getSession()->setFlash('success', 'Success');
       // echo $baseRow;
       // var_dump($model->trf_bm_t);
        // var_dump($model->pph_t_nilai_akhir);
        // die( ) ;
-          }
-          else{
-            Yii::$app->getSession()->setFlash('error', 'Error');
-          }
-        }
-
-        return $this->render('importdatadirect',[
-          'modelImport' => $modelImport,
-          'dataProvider' => $dataProvider,
-
-        ]);
-
       }
+      else{
+        Yii::$app->getSession()->setFlash('error', 'Error');
+      }
+    }
+
+    return $this->render('importdatadirect',[
+      'modelImport' => $modelImport,
+      'dataProvider' => $dataProvider,
+
+    ]);
+
+  }
 
 
 
-      public function actionCetaknhputtd($id)
-      {
+  public function actionCetaknhputtd($id)
+  {
 
 
-        $ctkPenulHeader = \app\models\PenulHeader::findOne($id);
-        $ctkPenulDatatransaks = \app\models\PenulDatatransaks::find()->andwhere (['link_header'=>$ctkPenulHeader->id,'flag_pusat' => 'setuju'])->all();
-        $ctkPenulDatatransaksImp = \app\models\PenulDatatransaks::find()->andwhere (['link_header'=>$ctkPenulHeader->id,'flag_pusat' => 'setuju'])->one();
-        $ctkAnalisPenyaji1 = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->penyaji_data1])->one();
-        $ctkPfpd = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->pfpd])->one();
-        $ctkKasi = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->kasi])->one();
-        $ctkKabid = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->kabid])->one();
-        $ctkJendok = \app\models\JenDok::find()->where (['id'=>$ctkPenulHeader->jen_dok])->one();
+    $ctkPenulHeader = \app\models\PenulHeader::findOne($id);
+    $ctkPenulDatatransaks = \app\models\PenulDatatransaks::find()->andwhere (['link_header'=>$ctkPenulHeader->id,'flag_pusat' => 'setuju'])->all();
+    $ctkPenulDatatransaksImp = \app\models\PenulDatatransaks::find()->andwhere (['link_header'=>$ctkPenulHeader->id,'flag_pusat' => 'setuju'])->one();
+    $ctkAnalisPenyaji1 = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->penyaji_data1])->one();
+    $ctkPfpd = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->pfpd])->one();
+    $ctkKasi = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->kasi])->one();
+    $ctkKabid = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->kabid])->one();
+    $ctkJendok = \app\models\JenDok::find()->where (['id'=>$ctkPenulHeader->jen_dok])->one();
 
 
-        Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/';
+    Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/';
             // $path = Yii::$app->params['uploadPath'] . $ctkPfpdttd->web_filename;
 
           // Initalize the TBS instance
@@ -1504,4 +1506,216 @@ $OpenTBS->MergeBlock('a2' ,$b2);
 
       }
 
-    }
+      public function actionExcelRha($id){
+
+        $ctkPenulHeader = \app\models\PenulHeader::findOne($id);
+        $ctkPenulDatatransaks = \app\models\PenulDatatransaks::find()->where (['link_header'=>$ctkPenulHeader->id])->all();
+        $ctkAnalisPenyaji1 = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->penyaji_data1])->one();
+        $ctkAnalis1 = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->analis1])->one();
+        $ctkAnalis2 = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->analis2])->one();
+        $ctkAnalis3 = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->analis3])->one();
+        $ctkAnalis2ttd = \app\models\PenulAnalisPenyaji::find('web_filename')->where (['id'=>$ctkPenulHeader->analis2])->one();
+        $ctkJendok = \app\models\JenDok::find()->where (['id'=>$ctkPenulHeader->jen_dok])->one();
+        $ctkJenPelanggaran = \app\models\JenPelanggaran::find()->where (['id'=>$ctkPenulHeader->jen_pelanggaran])->one();
+
+        $template = Yii::getAlias('@hscstudio/export').'/templates/opentbs/template_RHA_sp.xlsx';
+    //  $objReader = \PHPSpreadsheet_IOFactory::createReader('Excel2007');
+
+        $spreadsheet = IOFactory::load($template);
+
+        $spreadsheet->getActiveSheet()->getPageSetup()
+        ->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+        $spreadsheet->getActiveSheet()->getPageSetup()
+        ->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4); 
+
+
+        // Set document properties
+        $spreadsheet->getProperties()->setCreator('Dens_2021')
+        ->setLastModifiedBy('Maarten Balliauw')
+        ->setTitle('Office 2007 XLSX Test Document')
+        ->setSubject('Office 2007 XLSX Test Document')
+        ->setDescription('Test document for Office 2007 XLSX, generated using PHP classes.')
+        ->setKeywords('office 2007 openxml php')
+        ->setCategory('Test result file');
+
+        // Add some data
+       $baseRow=12; // line 2
+       //$baseRows=28 +  $baseRow ;
+
+       foreach($ctkPenulDatatransaks as $ctkPenulDatatransakss){
+        $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRow, $baseRow-11);
+        // $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRows, $baseRows-39);
+
+        $spreadsheet->getActiveSheet()->setCellValue('B'.$baseRow, $ctkPenulDatatransakss->kode_kantor);
+        //  $spreadsheet->getActiveSheet()->setCellValue('B'.$baseRows,$ctkPenulDatatransakss->kode_kantor );
+
+        $spreadsheet->getActiveSheet()->setCellValue('C'.$baseRow, $ctkPenulDatatransakss->pib);
+       //  $spreadsheet->getActiveSheet()->setCellValue('C'.$baseRows, $ctkPenulDatatransakss->pib);
+
+        $spreadsheet->getActiveSheet()->setCellValue('D'.$baseRow, $ctkPenulDatatransakss->tglpib);
+       //  $spreadsheet->getActiveSheet()->setCellValue('D'.$baseRows, $ctkPenulDatatransakss->tglpib);
+
+        $spreadsheet->getActiveSheet()->setCellValue('E'.$baseRow, $ctkPenulDatatransakss->npwp_imp);
+       // $spreadsheet->getActiveSheet()->setCellValue('E'.$baseRows, $ctkPenulDatatransakss->npwp_imp);
+
+        $spreadsheet->getActiveSheet()->setCellValue('F'.$baseRow, $ctkPenulDatatransakss->imp);
+        //  $spreadsheet->getActiveSheet()->setCellValue('F'.$baseRows, $ctkPenulDatatransakss->imp);
+
+        $spreadsheet->getActiveSheet()->setCellValue('G'.$baseRow, $ctkPenulDatatransakss->seri_brg);
+        // $spreadsheet->getActiveSheet()->setCellValue('G'.$baseRows, $ctkPenulDatatransakss->bm_t_nilai_akhir);
+
+        $spreadsheet->getActiveSheet()->setCellValue('H'.$baseRow, $ctkPenulDatatransakss->uraian_brg);
+        $spreadsheet->getActiveSheet()->setCellValue('I'.$baseRow, $ctkPenulDatatransakss->hs);
+
+        $spreadsheet->getActiveSheet()->setCellValue('J'.$baseRow, $ctkPenulDatatransakss->trf_bm);
+      //  $spreadsheet->getActiveSheet()->setCellValue('J'.$baseRows, $ctkPenulDatatransakss->ppn_t_nilai_akhir);
+
+        $spreadsheet->getActiveSheet()->setCellValue('K'.$baseRow, $ctkPenulDatatransakss->nilaipabean_awal);
+
+      //  $spreadsheet->getActiveSheet()->setCellValue('K'.$baseRows, $ctkPenulDatatransakss->pph_t_nilai_akhir);
+
+
+        $spreadsheet->getActiveSheet()->setCellValue('L'.$baseRow, $ctkPenulDatatransakss->hs_t);
+       //    $spreadsheet->getActiveSheet()->setCellValue('L'.$baseRows, $ctkPenulDatatransakss->ppnbm_t_nilai_akhir);
+
+
+        $spreadsheet->getActiveSheet()->setCellValue('M'.$baseRow, $ctkPenulDatatransakss->trf_bm_t);
+       // $spreadsheet->getActiveSheet()->setCellValue('M'.$baseRows, $ctkPenulDatatransakss->denda);
+
+        $spreadsheet->getActiveSheet()->setCellValue('N'.$baseRow, $ctkPenulDatatransakss->nilaipabean_akhir);
+
+       // $spreadsheet->getActiveSheet()->setCellValue('N'.$baseRows, $ctkPenulDatatransakss->total_tagihan);
+
+        $baseRow++;
+      }
+
+     
+      $baseRow1= $baseRow + 1; 
+      $baseRow2= $baseRow1 + 1; 
+      $baseRow3= $baseRow2 + 1; 
+      $baseRow4= $baseRow3 + 1; 
+      $baseRow5= $baseRow4 + 1; 
+      $baseRow6= $baseRow5 + 1; 
+      $baseRow7= $baseRow6 + 1; 
+      $baseRow8= $baseRow7 + 1; 
+      $baseRow9= $baseRow8 + 1;
+      $baseRow10= $baseRow9 + 1;
+      $baseRow11= $baseRow10 + 1;
+      $baseRow12= $baseRow11 + 1;
+      $baseRow13= $baseRow12 + 1;
+      $baseRow14= $baseRow13 + 1;
+      $baseRow15= $baseRow14 + 1;
+
+      $spreadsheet->setActiveSheetIndex(0);
+      $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRow1,'E.')
+      ->setCellValue('B'.$baseRow1,'ANALISIS/PROSEDUR');
+      $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRow2,'1')
+     ->setCellValue('B'.$baseRow2,'Undang-Undang Nomor 17 Tahun 2006 Tentang Perubahan atas Undang-Undang Nomor 10 Tahun 1995 Tentang Kepabeanan pada Pasal 17 ayat (1) menyebutkan bahwa Direktur Jenderal dapat menetapkan kembali tarif dan nilai pabean untuk penghitungan bea masuk dalam jangka waktu 2 (dua) tahun terhitung sejak tanggal pemberitahuan pabean.');
+     $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRow3,'2')
+     ->setCellValue('B'.$baseRow3,'Dokumen BC 2.0 terbit setelah berlakunya PMK 06/PMK.010/2017 yaitu tanggal 26 Januari 2017, menggunakan HS Klasifikasi 8 digit.');
+
+      // $spreadsheet->getActiveSheet()->setCellValue('B'.$baseRow3,'kembali tarif dan nilai pabean untuk penghitungan bea masuk dalam jangka waktu 2 (dua) tahun terhitung sejak tanggal pemberitahuan pabean.');
+     // ->setCellValue('O3', $ctkPenulHeader -> 'id')
+     // ->setCellValue('E3', $ctkJendok -> 'name')
+     // ->setCellValue('E4', $$ctkJenPelanggaran -> 'name');
+
+  $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRow14,'NO.')
+  ->setCellValue('B'.$baseRow14,'KODE KANTOR')
+  ->setCellValue('C'.$baseRow14,'NOMOR')
+  ->setCellValue('D'.$baseRow14,'TANGGAL')
+  ->setCellValue('E'.$baseRow14,'NPWP')
+  ->setCellValue('F'.$baseRow14,'PERUSAHAAN')
+  ->setCellValue('G'.$baseRow14,'BEA MASUK')
+  ->setCellValue('H'.$baseRow14,'BMAD/BMI/BMP')
+  ->setCellValue('I'.$baseRow14,'BEA KELUAR')
+  ->setCellValue('J'.$baseRow14,'PPN')
+  ->setCellValue('K'.$baseRow14,'PPh')
+  ->setCellValue('L'.$baseRow14,'PPnBM')
+  ->setCellValue('M'.$baseRow14,'DENDA')
+  ->setCellValue('N'.$baseRow14,'TOTAL');
+
+    $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRow15,'1.')
+  ->setCellValue('B'.$baseRow15,'2')
+  ->setCellValue('C'.$baseRow15,'3')
+  ->setCellValue('D'.$baseRow15,'4')
+  ->setCellValue('E'.$baseRow15,'5')
+  ->setCellValue('F'.$baseRow15,'6')
+  ->setCellValue('G'.$baseRow15,'7')
+  ->setCellValue('H'.$baseRow15,'8')
+  ->setCellValue('I'.$baseRow15,'9')
+  ->setCellValue('J'.$baseRow15,'10')
+  ->setCellValue('K'.$baseRow15,'11')
+  ->setCellValue('L'.$baseRow15,'12')
+  ->setCellValue('M'.$baseRow15,'13')
+  ->setCellValue('N'.$baseRow15,'14');
+
+
+$baseRows= $baseRow15 +  1;
+ foreach($ctkPenulDatatransaks as $ctkPenulDatatransaksss){
+    
+   $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRows, $baseRows);
+   $spreadsheet->getActiveSheet()->setCellValue('B'.$baseRows,$ctkPenulDatatransaksss->kode_kantor );
+   $spreadsheet->getActiveSheet()->setCellValue('C'.$baseRows, $ctkPenulDatatransaksss->pib);
+   $spreadsheet->getActiveSheet()->setCellValue('D'.$baseRows, $ctkPenulDatatransaksss->tglpib);
+   $spreadsheet->getActiveSheet()->setCellValue('E'.$baseRows, $ctkPenulDatatransaksss->npwp_imp);
+   $spreadsheet->getActiveSheet()->setCellValue('F'.$baseRows, $ctkPenulDatatransaksss->imp);
+   $spreadsheet->getActiveSheet()->setCellValue('G'.$baseRows, $ctkPenulDatatransaksss->bm_t_nilai_akhir);
+   $spreadsheet->getActiveSheet()->setCellValue('J'.$baseRows, $ctkPenulDatatransaksss->ppn_t_nilai_akhir);
+   $spreadsheet->getActiveSheet()->setCellValue('K'.$baseRows, $ctkPenulDatatransaksss->pph_t_nilai_akhir);
+   $spreadsheet->getActiveSheet()->setCellValue('L'.$baseRows, $ctkPenulDatatransaksss->ppnbm_t_nilai_akhir);
+   $spreadsheet->getActiveSheet()->setCellValue('M'.$baseRows, $ctkPenulDatatransaksss->denda);
+   $spreadsheet->getActiveSheet()->setCellValue('N'.$baseRows, $ctkPenulDatatransaksss->total_tagihan);
+   $baseRows++;
+ }
+
+
+        // Miscellaneous glyphs, UTF-8
+      $spreadsheet->getActiveSheet()->setCellValue('I1', $ctkPenulHeader ->rha);
+      $spreadsheet->getActiveSheet()->setCellValue('O3', $ctkPenulHeader ->id);
+      $spreadsheet->getActiveSheet()->setCellValue('E3', $ctkJendok ->name);
+      $spreadsheet->getActiveSheet()->setCellValue('E4', $ctkJenPelanggaran ->name);
+      $spreadsheet->getActiveSheet()->setCellValue('G9', '=E3');
+     //    $spreadsheet->getActiveSheet()->setCellValue('F31', '=G9');
+
+        // Rename worksheet
+      $spreadsheet->getActiveSheet()->setTitle('RHA');
+
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+      $spreadsheet->setActiveSheetIndex(0);
+
+
+
+
+//same ending
+      $response = Yii::$app->getResponse();
+      $headers = $response->getHeaders();
+
+            // Redirect output to a client’s web browser (Xlsx)
+      $headers->set('Content-Type', 'application/vnd.ms-excel');
+      $headers->set('Content-Disposition','attachment;filename="rha_new.xlsx"');
+
+      $headers->set('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+      $headers->set('Cache-Control: max-age=1');
+
+        // If you're serving to IE over SSL, then the following may be needed
+         $headers->set('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+         $headers->set('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+         $headers->set('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+         $headers->set('Pragma: public'); // HTTP/1.0
+         ob_start();        
+         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+         $writer->save("php://output");
+         $content = ob_get_contents();
+         ob_clean();
+         return $content;
+
+      //  exit;
+
+
+
+
+
+       }
+
+     }

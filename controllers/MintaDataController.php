@@ -104,18 +104,18 @@ class MintaDataController extends Controller
      */
     public function actionDelete($id)
     {
-        
-       try
-      {
+
+     try
+     {
         $this->findModel($id)->delete();
-      
-      }
-      catch(\yii\db\IntegrityException  $e)
-      {
-	Yii::$app->session->setFlash('error', "Data Tidak Dapat Dihapus Karena Dipakai Modul Lain");
-       } 
-         return $this->redirect(['index']);
+
     }
+    catch(\yii\db\IntegrityException  $e)
+    {
+       Yii::$app->session->setFlash('error', "Data Tidak Dapat Dihapus Karena Dipakai Modul Lain");
+   } 
+   return $this->redirect(['index']);
+}
 
     /**
      * Finds the MintaData model based on its primary key value.
@@ -164,15 +164,15 @@ class MintaDataController extends Controller
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $spreadsheet->setActiveSheetIndex(0);
 
-                 $response = Yii::$app->getResponse();
-                 $headers = $response->getHeaders();
+        $response = Yii::$app->getResponse();
+        $headers = $response->getHeaders();
         
             // Redirect output to a client’s web browser (Xlsx)
-         $headers->set('Content-Type', 'application/vnd.ms-excel');
-         $headers->set('Content-Disposition','attachment;filename="01simple.xlsx"');
+        $headers->set('Content-Type', 'application/vnd.ms-excel');
+        $headers->set('Content-Disposition','attachment;filename="01simple.xlsx"');
         // $headers->set('Cache-Control: max-age=0');
         // $headers->setheader('Cache-Control: max-age=1');
-     
+
 // If you're serving to IE over SSL, then the following may be needed
        //  $headers->set('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
        //  $headers->set('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
@@ -181,28 +181,108 @@ class MintaDataController extends Controller
 
        //header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
        // header('Content-Disposition: attachment;filename="01simple.xlsx"');
-        header('Cache-Control: max-age=0');
+        $headers->set('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
-        header('Cache-Control: max-age=1');
+        $headers->set('Cache-Control: max-age=1');
         
         // If you're serving to IE over SSL, then the following may be needed
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
-        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header('Pragma: public'); // HTTP/1.0
-ob_start();        
-$writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-$writer->save("php://output");
- $content = ob_get_contents();
- ob_clean();
- return $content;
+        $headers->set('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        $headers->set('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+       $headers->set('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        $headers->set('Pragma: public'); // HTTP/1.0
+        ob_start();        
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save("php://output");
+        $content = ob_get_contents();
+        ob_clean();
+        return $content;
 
       //  exit;
 
 
-      
-      
+
+
 
     }
 
-}
+    public function actionExcelForm(){
+
+      $searchModel = new MintaDataSearch();
+      $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+      $template = Yii::getAlias('@hscstudio/export').'/templates/opentbs/template_RHA_sp.xlsx';
+    //  $objReader = \PHPSpreadsheet_IOFactory::createReader('Excel2007');
+      
+      $spreadsheet = IOFactory::load($template);
+
+      $spreadsheet->getActiveSheet()->getPageSetup()
+      ->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+      $spreadsheet->getActiveSheet()->getPageSetup()
+      ->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4); 
+
+
+        // Set document properties
+      $spreadsheet->getProperties()->setCreator('Maarten Balliauw')
+      ->setLastModifiedBy('Maarten Balliauw')
+      ->setTitle('Office 2007 XLSX Test Document')
+      ->setSubject('Office 2007 XLSX Test Document')
+      ->setDescription('Test document for Office 2007 XLSX, generated using PHP classes.')
+      ->setKeywords('office 2007 openxml php')
+      ->setCategory('Test result file');
+
+        // Add some data
+       $baseRow=2; // line 2
+       foreach($dataProvider->getModels() as $mahasiswa){
+        $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRow, $baseRow-1);
+        $spreadsheet->getActiveSheet()->setCellValue('B'.$baseRow, $mahasiswa->perihal);
+        $spreadsheet->getActiveSheet()->setCellValue('C'.$baseRow, $mahasiswa->contents);
+        $baseRow++;
+    }
+
+        // Miscellaneous glyphs, UTF-8
+    // $spreadsheet->setActiveSheetIndex(0)
+    // ->setCellValue('A4', 'Miscellaneous glyphs')
+    // ->setCellValue('A5', 'éàèùâêîôûëïüÿäöüç');
+
+        // Rename worksheet
+    $spreadsheet->getActiveSheet()->setTitle('RHA');
+
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+    $spreadsheet->setActiveSheetIndex(0);
+
+
+
+
+//same ending
+    $response = Yii::$app->getResponse();
+    $headers = $response->getHeaders();
+
+            // Redirect output to a client’s web browser (Xlsx)
+    $headers->set('Content-Type', 'application/vnd.ms-excel');
+    $headers->set('Content-Disposition','attachment;filename="rha.xlsx"');
+
+    $headers->set('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+    $headers->set('Cache-Control: max-age=1');
+
+        // If you're serving to IE over SSL, then the following may be needed
+         $headers->set('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+         $headers->set('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+         $headers->set('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+         $headers->set('Pragma: public'); // HTTP/1.0
+         ob_start();        
+         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+         $writer->save("php://output");
+         $content = ob_get_contents();
+         ob_clean();
+         return $content;
+
+      //  exit;
+
+
+
+
+
+     }
+
+ }

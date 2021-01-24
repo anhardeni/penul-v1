@@ -92,10 +92,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ]) ?>
             <?php }  ?> 
 
-              <?php  if ((Mimin::checkRoute($this->context->id."/exportexcel")))
-            { ?> <?= Html::a('export excel', ['exportexcel','id' => $model->id], ['class' => 'btn btn-info',
+              <?php  if ((Mimin::checkRoute($this->context->id."/excel-rha")))
+            { ?> <?= Html::a('rha new', ['excel-rha','id' => $model->id], ['class' => 'btn btn-info',
                 'data' => [
-                    'confirm' => 'Apakah Anda yakin ingin  cetak excel ??',
+                    'confirm' => 'Apakah Anda yakin ingin  cetak rha new ??',
                                     ],
             ]) ?>
             <?php }  ?> 
