@@ -26,6 +26,9 @@ phpunit.phar
 # local phpunit config
 /phpunit.xml
 
+# app configs
+/config/db.php
+
 # user upload dir
 /web/uploads/*
 
