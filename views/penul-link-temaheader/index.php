@@ -3,21 +3,39 @@
 
 use hscstudio\mimin\components\Mimin;
 use yii\helpers\Html;
-use app\widgets\grid\GridView;
+//use app\widgets\grid\GridView;
 use yii\widgets\Pjax;
 //use kartik\select2\Select2;
-//use kartik\grid\GridView;
+use kartik\grid\GridView;
 
 $gridColumns=[['class' => 'yii\grid\SerialColumn'], 
             //'link_tema',
-            //'link_header',
-'keyword_specific',
-'dap_rha:ntext',
+// [
+//      'attribute' => 'link_tema', 
+//        'value' => 'penul_tema.tema'
+//        ],
+[
+    'attribute' => 'link_tema',
+    'label' => 'Tema',
+    'value' => function($model){
+                    return $model->getLinkTemaName();//getPenyajiData1Name()
+                },
+                 'filterType' => GridView::FILTER_SELECT2,
+                 'filter' => \yii\helpers\ArrayHelper::map(\app\models\PenulTema::find()->asArray()->all(), 'id','tema'),
+                 'filterWidgetOptions' => [
+                     'pluginOptions' => ['allowClear' => true],
+                 ],
+                'filterInputOptions' => ['placeholder' => 'tema', 'id' => 'grid--link_tema']
+            ],
 
- [
-     'attribute' => 'created_by', 
-       'value' => 'user.username'
-       
+            //'link_header',
+            'keyword_specific',
+            'dap_rha:ntext',
+
+            [
+             'attribute' => 'created_by', 
+             'value' => 'user.username'
+
 
 //     'width' => '200px',
 //     'value' => function ($model, $key, $index, $widget) { 
@@ -29,9 +47,9 @@ $gridColumns=[['class' => 'yii\grid\SerialColumn'],
 //         'pluginOptions' => ['allowClear' => true],
 //     ],
 //     'filterInputOptions' => ['placeholder' => 'username']
- ],
+         ],
 
- 
+
 
 
 // [
@@ -64,30 +82,30 @@ $gridColumns=[['class' => 'yii\grid\SerialColumn'],
             // 'updated_by',
             // 'updated_at',
 
-['class' => 'app\widgets\grid\ActionColumn',   'template' => Mimin::filterActionColumn([
-  'update','delete','view'],$this->context->route),    ],    ];
+         ['class' => 'app\widgets\grid\ActionColumn',   'template' => Mimin::filterActionColumn([
+          'view'],$this->context->route),    ],    ];
 
 
-/* @var $this yii\web\View */
-/* @var $searchModel app\controllers\PenulLinkTemaheaderSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+         /* @var $this yii\web\View */
+         /* @var $searchModel app\controllers\PenulLinkTemaheaderSearch */
+         /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Daftar Penul Link Temaheader';
-$this->params['breadcrumbs'][] = $this->title;
-?>
-<div class="penul-link-temaheader-index">
+         $this->title = 'Daftar Penul Link Temaheader';
+         $this->params['breadcrumbs'][] = $this->title;
+         ?>
+         <div class="penul-link-temaheader-index">
 
 
-    <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+            <?php Pjax::begin(); ?>
+            <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p> <?php if ((Mimin::checkRoute($this->context->id."/create"))){ ?>        <?=  Html::a('Penul Link Temaheader Baru', ['create'], ['class' => 'btn btn-success']) ?>
-    <?php } ?>    </p>
+            <p> <?php if ((Mimin::checkRoute($this->context->id."/create"))){ ?>        <?=  Html::a('Penul Link Temaheader Baru', ['create'], ['class' => 'btn btn-success']) ?>
+            <?php } ?>    </p>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => $gridColumns,      
-    ]); ?>
-    <?php Pjax::end(); ?>
-</div>
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => $gridColumns,      
+            ]); ?>
+            <?php Pjax::end(); ?>
+        </div>

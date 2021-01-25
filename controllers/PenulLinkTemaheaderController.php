@@ -10,6 +10,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use app\models\PenulHeader;
+use app\model\User;
+use yii\db\Expressions;
 
 /**
  * PenulLinkTemaheaderController implements the CRUD actions for PenulLinkTemaheader model.
@@ -236,7 +238,7 @@ class PenulLinkTemaheaderController extends Controller
          [
          'jen_dok' => 1,
          'jen_pelanggaran' => 1, // url is unique
-          'penyaji_data1' =>  $model->created_by,
+          'penyaji_data1' =>  Yii::$app->user->identity->id,
           'analis1'=> 4,
           'analisa_prosedur_rha' => $model->dap_rha,
           'analisa_prosedur_rha2' => $model->dap_rha2,
@@ -280,6 +282,8 @@ public function actionCopylinktema($id)
           'dap_rha5' => $model->dap_rha5,
           'dap_rha6' => $model->dap_rha6,
           'dap_rha7' => $model->dap_rha7,
+          'created_at'=> Yii::$app->formatter->asTimestamp(date('Y-d-m h:i:s')),
+          'created_by'=> Yii::$app->user->identity->id,
                   ], 
       //  // [  'visits' => new \yii\db\Expression('visits + 1'),    ]
          $params)->execute();

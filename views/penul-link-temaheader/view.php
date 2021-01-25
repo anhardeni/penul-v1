@@ -85,10 +85,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'periode_tarik_data',
             'link_upload_berkas',
             'ket',
-            'created_at',
+            'created_at:datetime',
             'created_by',
             'updated_by',
-            'updated_at',
+            'updated_at:date',
         ],
     ]) ?>
 <?= Html::img(Yii::getAlias('@web').'/uploads/'.$model->data_gambar_filename,['class'=> 'w3-round-small', 'style'=> 'float:left;']);?>

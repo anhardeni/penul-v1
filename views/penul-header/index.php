@@ -27,12 +27,12 @@ $gridColumns=[['class' => 'yii\grid\SerialColumn'],
 // ],
 
 [
-                'attribute' => 'penyaji_data1',
-                'label' => 'Penyaji data1',
+    'attribute' => 'penyaji_data1',
+    'label' => 'Penyaji data1',
             //     'format'=>'text',//raw, html
             // 'content'=>function($data){
             //     return $data->getParentName()
-                'value' => function($model){
+    'value' => function($model){
                     return $model->getPenyajiData1Name();//getPenyajiData1Name()
                 },
                 'filterType' => GridView::FILTER_SELECT2,
@@ -42,33 +42,19 @@ $gridColumns=[['class' => 'yii\grid\SerialColumn'],
                 ],
                 'filterInputOptions' => ['placeholder' => 'penyaji', 'id' => 'grid--penyaji_data1']
             ],
-//'penyajiData1.name',
-
-    //         [
-    // 'attribute' => 'penyaji_data1',
-    // 'filter' => \yii\helpers\ArrayHelper::map(\app\models\PenulAnalisPenyaji::find()->orderBy('id')->asArray()->all(), 'id','name'),
- // //   'filterType' => GridView::\kartik\widgets\Select2(),
- //    'filterWidgetOptions' => [
- //        'options' => ['prompt' => ''],
- //        'pluginOptions' => [
- //            'allowClear' => true,
- //            'width'=>'resolve'
- //        ],
- //    ],
-//],
            //  'penyaji_data1',
             // 'analis1',
             // 'analis2',
             // 'analis3',
             // 'nd',
             // 'nd_tgl',
-'rha',
-'rha_tgl',
+            'rha',
+            'rha_tgl',
 
-[
- 'attribute' => 'updated_by', 
- 'value' => 'user.username'
-],
+            [
+             'attribute' => 'updated_by', 
+             'value' => 'user.username'
+         ],
             // 'npp',
             // 'npp_tgl',
             // 'st',
@@ -80,29 +66,29 @@ $gridColumns=[['class' => 'yii\grid\SerialColumn'],
             // 'updated_at',
             // 'updated_by',
 
-['class' => 'app\widgets\grid\ActionColumn',   'template' => Mimin::filterActionColumn([
-  'update','delete','view'],$this->context->route),    ],    ];
+         ['class' => 'app\widgets\grid\ActionColumn',   'template' => Mimin::filterActionColumn([
+          'view'],$this->context->route),    ],    ];
 
 
-/* @var $this yii\web\View */
-/* @var $searchModel app\controllers\PenulHeaderiSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+         /* @var $this yii\web\View */
+         /* @var $searchModel app\controllers\PenulHeaderiSearch */
+         /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Daftar Penul Header';
-$this->params['breadcrumbs'][] = $this->title;
-?>
-<div class="penul-header-index">
+         $this->title = 'Daftar Penul Header';
+         $this->params['breadcrumbs'][] = $this->title;
+         ?>
+         <div class="penul-header-index">
 
-    <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+            <?php Pjax::begin(); ?>
+            <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p> <?php if ((Mimin::checkRoute($this->context->id."/create"))){ ?>        <?=  Html::a('Penul Header Baru', ['create'], ['class' => 'btn btn-success']) ?>
-    <?php } ?>    </p>
+            <p> <?php if ((Mimin::checkRoute($this->context->id."/create"))){ ?>        <?=  Html::a('Penul Header Baru', ['create'], ['class' => 'btn btn-success']) ?>
+            <?php } ?>    </p>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => $gridColumns,      
-    ]); ?>
-    <?php Pjax::end(); ?>
-</div>
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => $gridColumns,      
+            ]); ?>
+            <?php Pjax::end(); ?>
+        </div>

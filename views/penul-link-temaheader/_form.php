@@ -17,7 +17,14 @@ use kartik\file\FileInput;
     <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
         <?= $form->errorSummary($model) ?> <!-- ADDED HERE -->
 
-    <?= $form->field($model, 'link_tema')->textInput() ?>
+    <?= $form->field($model, 'link_tema')->
+    widget(\kartik\widgets\Select2::classname(), [
+                            'data' => \yii\helpers\ArrayHelper::map(\app\models\PenulTema::find()->orderBy('id')->asArray()->all(), 'id','tema'),
+                            'options' => ['placeholder' => 'klik pilih'],
+                            'pluginOptions' => [
+                                'allowClear' => true
+                            ],
+                        ]); ?>
 
     <?= $form->field($model, 'link_header')->textInput() ?>
 

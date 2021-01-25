@@ -42,6 +42,8 @@ use yii\bootstrap4\Nav;
 
     <li class="active"><a class="nav-link" href="<?= Url::to(["/penul-datatransaks"]) ?>"><i class="fa fa-car"></i> <span>Data Penul</span></a></li>
 
+      <li class="active"><a class="nav-link" href="<?= Url::to(["/uploadsimpul"]) ?>"><i class="fa fa-car"></i> <span> Export excel simpul</span></a></li>
+
    
     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true">Referensi</a>
     

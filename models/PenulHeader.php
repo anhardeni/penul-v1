@@ -87,7 +87,7 @@ class PenulHeader extends \yii\db\ActiveRecord
             [['analisa_prosedur_rha', 'analisa_prosedur_rha2','analisa_prosedur_rha3','analisa_prosedur_rha4','analisa_prosedur_rha5',
             'analisa_prosedur_rha6','analisa_prosedur_rha7'], 'string'], 
             [['kesimpulan_laop'], 'string', 'max' => 255],
-            [['laop','st' ,'nd', 'rha', 'kkp', 'npp', 'nhpu'], 'string', 'max' => 25],
+            [['laop','st' ,'nd', 'rha', 'kkp', 'npp', 'nhpu'], 'string', 'max' => 30],
             [['jen_dok'], 'exist', 'skipOnError' => true, 'targetClass' => JenDok::className(), 'targetAttribute' => ['jen_dok' => 'id']],
             [['jen_pelanggaran'], 'exist', 'skipOnError' => true, 'targetClass' => JenPelanggaran::className(), 'targetAttribute' => ['jen_pelanggaran' => 'id']],
             [['analis1'], 'exist', 'skipOnError' => true, 'targetClass' => PenulAnalisPenyaji::className(), 'targetAttribute' => ['analis1' => 'id']],

@@ -97,6 +97,10 @@ $config = [
 'sourceLanguage' => 'en-US',
 'basePath' => dirname(__DIR__),
 'bootstrap' => ['log'],
+'aliases' => [
+          '@Psr/SimpleCache' => '@vendor/psr/simple-cache/src',
+        '@PhpOffice' => '@vendor/phpoffice/phpspreadsheet/src',
+    ],
 
 'components' => [
 

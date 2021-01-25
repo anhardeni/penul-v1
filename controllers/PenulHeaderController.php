@@ -20,6 +20,8 @@ use yii\db\Query;
 use yii\db\Command;
 use yii\db\Connection;
 use yii\data\ActiveDataProvider;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 /**
  * PenulHeaderController implements the CRUD actions for PenulHeader model.
@@ -179,9 +181,6 @@ class PenulHeaderController extends Controller
     ]);
   }
 
-
-
-  
 
     /**
      * Deletes an existing PenulHeader model.
@@ -453,60 +452,70 @@ public function actionPindahdata($id)
       $ctkJenPelanggaran = \app\models\JenPelanggaran::find()->where (['id'=>$ctkPenulHeader->jen_pelanggaran])->one();
 
 
-              // Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/';
-              // $path = Yii::$app->params['uploadPath'] . $ctkAnalis2ttd->web_filename;
+          // Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/';
+         // $path = Yii::$app->params['uploadPath'] . $ctkAnalis2ttd->web_filename;
 
           // Initalize the TBS instance
           $OpenTBS = new \hscstudio\export\OpenTBS; // new instance of TBS
           $template = Yii::getAlias('@hscstudio/export').'/templates/opentbs/template_RHA_v1.xlsx';
           // $template = Yii::getAlias('@web').'/templatepenul/'.'templaterhav1.xlsx';
           //$TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN);
-          //$TBS->PlugIn(TBS_INSTALL,TBS_AGGREGATE);
+          //$OpenTBS->PlugIn(TBS_AGGREGATE);
+
            $OpenTBS->LoadTemplate($template); // Also merge some [onload] automatic fields (depends of the type of document).
-           $OpenTBS->VarRef['xid']=$ctkPenulHeader -> id;
-           $OpenTBS->VarRef['xrha']=$ctkPenulHeader -> rha;
-           $OpenTBS->VarRef['xtglrha']=$ctkPenulHeader -> rha_tgl ;
-           $OpenTBS->VarRef['xkesimpulan_rha_nilaipotensi']=$ctkPenulHeader -> kesimpulan_rha_nilaipotensi;
-           $OpenTBS->VarRef['xjendok']= $ctkJendok -> name;
-           $OpenTBS->VarRef['xjendok1']= $ctkJendok -> name;
-           $OpenTBS->VarRef['xjendok2']= $ctkJendok -> name;
-           $OpenTBS->VarRef['xjen_pelanggaran']= $ctkJenPelanggaran -> name;
-           $vowel = array("&nbsp", ";", "â");
-           $OpenTBS->VarRef['xanalisa_prosedur_rha']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha));
-           $OpenTBS->VarRef['xanalisa_prosedur_rha2']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha2));
-           $OpenTBS->VarRef['xanalisa_prosedur_rha3']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha3));
-           $OpenTBS->VarRef['xanalisa_prosedur_rha4']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha4));
-           $OpenTBS->VarRef['xanalisa_prosedur_rha5']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha5));
-           $OpenTBS->VarRef['xanalisa_prosedur_rha6']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha6));
-           $OpenTBS->VarRef['xanalisa_prosedur_rha7']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha7));
+           
+if (isset($_POST['debug']) && ($_POST['debug']=='current')) $OpenTBS->Plugin(OPENTBS_DEBUG_XML_CURRENT, true); // Display the intented XML of the current sub-file, and exit.
+if (isset($_POST['debug']) && ($_POST['debug']=='info'))    $OpenTBS->Plugin(OPENTBS_DEBUG_INFO, true); // Display information about the document, and exit.
+if (isset($_POST['debug']) && ($_POST['debug']=='show'))    $OpenTBS->Plugin(OPENTBS_DEBUG_XML_SHOW); // Tells TBS to display information when the document is merged. No exit.
 
-           $OpenTBS->VarRef['xpenyaji1']=$ctkAnalisPenyaji1 -> name;
-           $OpenTBS->VarRef['xanalis1']=$ctkAnalis1 -> name;
-           $OpenTBS->VarRef['xanalis2']=$ctkAnalis2 -> name;
-           $OpenTBS->VarRef['xanalis3']=$ctkAnalis3 -> name;
 
-           $OpenTBS->VarRef['xanalis2ttd']=$ctkAnalis2ttd -> web_filename;
-           $OpenTBS->VarRef['xfilettd']= $path ;
 
-           $b1 = [];
-           foreach($ctkPenulDatatransaks as $ctkPenulDatatransakss){
-            $b1[] = [
+
+$OpenTBS->VarRef['xid']=$ctkPenulHeader -> id;
+$OpenTBS->VarRef['xrha']=$ctkPenulHeader -> rha;
+$OpenTBS->VarRef['xtglrha']=$ctkPenulHeader -> rha_tgl ;
+$OpenTBS->VarRef['xkesimpulan_rha_nilaipotensi']=$ctkPenulHeader -> kesimpulan_rha_nilaipotensi;
+$OpenTBS->VarRef['xjendok']= $ctkJendok -> name;
+$OpenTBS->VarRef['xjendok1']= $ctkJendok -> name;
+$OpenTBS->VarRef['xjendok2']= $ctkJendok -> name;
+$OpenTBS->VarRef['xjen_pelanggaran']= $ctkJenPelanggaran -> name;
+$vowel = array("&nbsp", ";", "â");
+$OpenTBS->VarRef['xanalisa_prosedur_rha']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha));
+$OpenTBS->VarRef['xanalisa_prosedur_rha2']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha2));
+$OpenTBS->VarRef['xanalisa_prosedur_rha3']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha3));
+$OpenTBS->VarRef['xanalisa_prosedur_rha4']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha4));
+$OpenTBS->VarRef['xanalisa_prosedur_rha5']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha5));
+$OpenTBS->VarRef['xanalisa_prosedur_rha6']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha6));
+$OpenTBS->VarRef['xanalisa_prosedur_rha7']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha7));
+
+$OpenTBS->VarRef['xpenyaji1']=$ctkAnalisPenyaji1 -> name;
+$OpenTBS->VarRef['xanalis1']=$ctkAnalis1 -> name;
+$OpenTBS->VarRef['xanalis2']=$ctkAnalis2 -> name;
+$OpenTBS->VarRef['xanalis3']=$ctkAnalis3 -> name;
+
+$OpenTBS->VarRef['xanalis2ttd']=$ctkAnalis2ttd -> web_filename;
+$OpenTBS->VarRef['xfilettd']= $path ;
+$OpenTBS->PlugIn(OPENTBS_MERGE_SPECIAL_ITEMS);
+
+$b1 = [];
+foreach($ctkPenulDatatransaks as $ctkPenulDatatransakss){
+  $b1[] = [
              //'id' => $ctksrtb1 -> id,
-             'kode_kantor'=>$ctkPenulDatatransakss-> kode_kantor,
-             'pib'=>$ctkPenulDatatransakss-> pib,
-             'tglpib'=>$ctkPenulDatatransakss-> tglpib,
-             'npwp_imp'=>$ctkPenulDatatransakss-> npwp_imp,
-             'imp'=>$ctkPenulDatatransakss-> imp,
-             'seri_brg'=>$ctkPenulDatatransakss-> seri_brg,
-             'uraian_brg'=>$ctkPenulDatatransakss-> uraian_brg,
-             'hs'=>$ctkPenulDatatransakss-> hs,
-             'trf_bm'=>$ctkPenulDatatransakss-> trf_bm,
-             'bm_nilai_awal'=>$ctkPenulDatatransakss-> bm_nilai_awal,
-             'nilaipabean_awal'=>$ctkPenulDatatransakss-> nilaipabean_awal,
-             'hs_t'=>$ctkPenulDatatransakss-> hs_t,
-             'trf_bm_t'=>$ctkPenulDatatransakss-> trf_bm_t,
-             'bm_t_nilai_akhir'=>$ctkPenulDatatransakss-> bm_t_nilai_akhir,
-             'nilaipabean_akhir'=>$ctkPenulDatatransakss-> nilaipabean_akhir,
+   'kode_kantor'=>$ctkPenulDatatransakss-> kode_kantor,
+   'pib'=>$ctkPenulDatatransakss-> pib,
+   'tglpib'=>$ctkPenulDatatransakss-> tglpib,
+   'npwp_imp'=>$ctkPenulDatatransakss-> npwp_imp,
+   'imp'=>$ctkPenulDatatransakss-> imp,
+   'seri_brg'=>$ctkPenulDatatransakss-> seri_brg,
+   'uraian_brg'=>$ctkPenulDatatransakss-> uraian_brg,
+   'hs'=>$ctkPenulDatatransakss-> hs,
+   'trf_bm'=>$ctkPenulDatatransakss-> trf_bm,
+   'bm_nilai_awal'=>$ctkPenulDatatransakss-> bm_nilai_awal,
+   'nilaipabean_awal'=>$ctkPenulDatatransakss-> nilaipabean_awal,
+   'hs_t'=>$ctkPenulDatatransakss-> hs_t,
+   'trf_bm_t'=>$ctkPenulDatatransakss-> trf_bm_t,
+   'bm_t_nilai_akhir'=>$ctkPenulDatatransakss-> bm_t_nilai_akhir,
+   'nilaipabean_akhir'=>$ctkPenulDatatransakss-> nilaipabean_akhir,
              // 'ppn_nilai_awal'=>$ctkPenulDatatransakss-> ppn_nilai_awal,
              // 'ppn_t_nilai_akhir'=>$ctkPenulDatatransakss-> ppn_t_nilai_akhir,
              // 'pph_nilai_awal'=>$ctkPenulDatatransakss-> pph_nilai_awal,
@@ -518,50 +527,41 @@ public function actionPindahdata($id)
              // nilaipabean_akhir
 
 
-           ];
-         }       
-         $OpenTBS->MergeBlock('a1' ,$b1);
+ ];
+}       
+$OpenTBS->MergeBlock('a1' ,$b1);
 
 
-         $b2 = [];
-         foreach($ctkPenulDatatransaks as $ctkPenulDatatransakss2){
-          $b2[] = [
+$b2 = [];
+foreach($ctkPenulDatatransaks as $ctkPenulDatatransakss2){
+  $b2[] = [
              //'id' => $ctksrtb1 -> id,
-           'kode_kantor'=>$ctkPenulDatatransakss2-> kode_kantor,
-           'pib'=>$ctkPenulDatatransakss2-> pib,
+   'kode_kantor'=>$ctkPenulDatatransakss2-> kode_kantor,
+   'pib'=>$ctkPenulDatatransakss2-> pib,
 
-           'tglpib'=>$ctkPenulDatatransakss2-> tglpib,
-           'npwp_imp'=>$ctkPenulDatatransakss2-> npwp_imp,
-           'imp'=>$ctkPenulDatatransakss2-> imp,
-           'bm_t_nilai_akhir'=>$ctkPenulDatatransakss2-> bm_t_nilai_akhir,
-           'ppn_nilai_awal'=>$ctkPenulDatatransakss2-> ppn_nilai_awal,
-           'ppn_t_nilai_akhir'=>$ctkPenulDatatransakss2-> ppn_t_nilai_akhir,
-           'pph_nilai_awal'=>$ctkPenulDatatransakss2-> pph_nilai_awal,
-           'pph_t_nilai_akhir'=>$ctkPenulDatatransakss2-> pph_t_nilai_akhir,
-           'ppnbm_t_nilai_akhir'=>$ctkPenulDatatransakss2-> ppnbm_t_nilai_akhir,
-           'denda'=>$ctkPenulDatatransakss2-> denda,
-           'total_tagihan'=>$ctkPenulDatatransakss2-> total_tagihan,
-         ];
-       }       
-       $OpenTBS->MergeBlock('a2' ,$b2);
+   'tglpib'=>$ctkPenulDatatransakss2-> tglpib,
+   'npwp_imp'=>$ctkPenulDatatransakss2-> npwp_imp,
+   'imp'=>$ctkPenulDatatransakss2-> imp,
+   'bm_t_nilai_akhir'=>$ctkPenulDatatransakss2-> bm_t_nilai_akhir,
+   'ppn_nilai_awal'=>$ctkPenulDatatransakss2-> ppn_nilai_awal,
+   'ppn_t_nilai_akhir'=>$ctkPenulDatatransakss2-> ppn_t_nilai_akhir,
+   'pph_nilai_awal'=>$ctkPenulDatatransakss2-> pph_nilai_awal,
+   'pph_t_nilai_akhir'=>$ctkPenulDatatransakss2-> pph_t_nilai_akhir,
+   'ppnbm_t_nilai_akhir'=>$ctkPenulDatatransakss2-> ppnbm_t_nilai_akhir,
+   'denda'=>$ctkPenulDatatransakss2-> denda,
+   'total_tagihan'=>$ctkPenulDatatransakss2-> total_tagihan,
+ ];
+}       
+$OpenTBS->MergeBlock('a2' ,$b2);
 
-       
-       
-       
 
-      // var_dump(strip_tags($ctkPenulHeader -> analisa_prosedur_rha));
-       // var_dump($issuingcountrys->name);
-       // var_dump($issuingauthoritiesb1->name_authorities);
-      //  var_dump($ctksrt ->jenis_reference);
-       //  var_dump($unitpenerbits->unit_penerbit_en);
+        // var_dump($unitpenerbits->unit_penerbit_en);
         // var_dump($path);
         // die( ) ;
 
           // $OpenTBS->Show(OPENTBS_DOWNLOAD, 'rha'.'.xlsx'); // Also merges all [onshow] automatic fields.
          $OpenTBS->Show(OPENTBS_DOWNLOAD, 'rha'.$id.'.xlsx'); // Also merges all [onshow] automatic fields.  
          exit;
-        //  //return $this -> reload();
-        //  return $ctksrt->renderAjax();
        }
 
        public function actionCetakkkp($id)
@@ -590,18 +590,6 @@ public function actionPindahdata($id)
            $OpenTBS->VarRef['xkasi']=$ctkKasi -> name;
            $OpenTBS->VarRef['xkabid']=$ctkKabid -> name;
            $OpenTBS->VarRef['xpenyajidata1']=$ctkPenyajidata1 -> name;
-         // $OpenTBS->VarRef['xno_srtpemberitahuan']= $ctksrt -> no_srtpemberitahuan;
-         // $OpenTBS->VarRef['xtgl_srtpemberitahuan']=$ctksrt -> tgl_srtpemberitahuan;
-         // $OpenTBS->VarRef['xska_nomor']= $ctksrt -> ska_nomor;
-         // $OpenTBS->VarRef['xskatglterbit']=$ctksrt -> ska_tgl_terbit;
-         // $OpenTBS->VarRef['xska_jml_item_tercantum']= $ctksrt -> ska_jml_item_tercantum;
-         // $OpenTBS->VarRef['xska_jml_item_tidaksesuai']= $ctksrt-> ska_jml_item_tidaksesuai;
-         // $OpenTBS->VarRef['xnobpj']= $ctksrt -> nomorbpj_sspcp;
-         // $OpenTBS->VarRef['xtglbpj']= $ctksrt-> tglbpj_sspcp;
-         // $OpenTBS->VarRef['xtgljatuhtempo']= $ctksrt -> tgljatuhtempo;
-         // $OpenTBS->VarRef['xtglagms']= $ctksrt -> tglagenda;
-         // $OpenTBS->VarRef['xformalaju']=$ctksrt -> formalaju;
-         // $OpenTBS->VarRef['xpendpt']=$ctksrt -> pendpt;
 
            $b1 = [];
            foreach($ctkPenulDatatransaks as $ctkPenulDatatransakss){
@@ -622,15 +610,6 @@ public function actionPindahdata($id)
              'trf_bm_t'=>$ctkPenulDatatransakss-> trf_bm_t,
              'bm_t_nilai_akhir'=>$ctkPenulDatatransakss-> bm_t_nilai_akhir,
              'nilaipabean_akhir'=>$ctkPenulDatatransakss-> nilaipabean_akhir,
-            //  'ppn_nilai_awal'=>$ctkPenulDatatransakss-> ppn_nilai_awal,
-            //  'ppn_t_nilai_akhir'=>$ctkPenulDatatransakss-> ppn_t_nilai_akhir,
-             // 'pph_nilai_awal'=>$ctkPenulDatatransakss-> pph_nilai_awal,
-             // 'pph_t_nilai_akhir'=>$ctkPenulDatatransakss-> pph_t_nilai_akhir,
-             // 'ppnbm_t_nilai_akhir'=>$ctkPenulDatatransakss-> ppnbm_t_nilai_akhir,
-             // 'denda'=>$ctkPenulDatatransakss-> denda,
-             // 'total_tagihan'=>$ctkPenulDatatransakss-> total_tagihan,
-
-
            ];
          }       
          $OpenTBS->MergeBlock('a1' ,$b1);
@@ -702,17 +681,31 @@ public function actionPindahdata($id)
            $OpenTBS->VarRef['xid']=$ctkPenulHeader -> id;
            $OpenTBS->VarRef['xnhpu']=$ctkPenulHeader -> nhpu;
 
+           // $formatter = Yii::$app->formatter;
+           // $formatter->asDate('2014-01-01', 'long')
 
-           $OpenTBS->VarRef['xtglnhpu']=$ctkPenulHeader -> nhpu_tgl;
+
+           // Yii::$app->formatter->asDate('now', 'yyyy-MM-dd');
+           // Yii::$app->formatter->asDate('now', 'php:Y-m-d'); 
+
+
+         //  $OpenTBS->VarRef['xtglnhpu']=format($ctkPenulHeader ->((nhpu_tgl), 'php:dd-mm-yyyy'));
+           $nhpu_tgl = $ctkPenulHeader -> nhpu_tgl;
+           $OpenTBS->VarRef['xtglnhpu']= Yii::$app->formatter->asDate($nhpu_tgl, 'php:d-m-Y');
            $OpenTBS->VarRef['xnpp']=$ctkPenulHeader -> npp;
+
            $OpenTBS->VarRef['xst']=$ctkPenulHeader -> st;
            $OpenTBS->VarRef['xtglst']=$ctkPenulHeader -> st_tgl;
+
            $OpenTBS->VarRef['xrha']=$ctkPenulHeader -> rha;
            $OpenTBS->VarRef['xtglrha']=$ctkPenulHeader -> rha_tgl;
+
            $OpenTBS->VarRef['xst1']=$ctkPenulHeader -> st;
            $OpenTBS->VarRef['xtglst1']=$ctkPenulHeader -> st_tgl;
+
            $OpenTBS->VarRef['xlaop']=$ctkPenulHeader -> laop;
            $OpenTBS->VarRef['xtgllaop']=$ctkPenulHeader -> laop_tgl;
+
            $OpenTBS->VarRef['xkesimpulanlaop']=$ctkPenulHeader -> kesimpulan_laop;
            $OpenTBS->VarRef['xnilaipotensi']=$ctkPenulHeader -> kesimpulan_rha_nilaipotensi;
            $OpenTBS->VarRef['xjumlahpt']=$ctkPenulHeader -> kesimpulan_rha_jum_pt;
@@ -829,8 +822,8 @@ public function actionPindahdata($id)
              // 'hs_t'=>$ctkPenulDatatransakss-> hs_t,
              // 'trf_bm_t'=>$ctkPenulDatatransakss-> trf_bm_t,
              // 'bm_t_nilai_akhir'=>$ctkPenulDatatransakss-> bm_t_nilai_akhir,
-            //  'ppn_nilai_awal'=>$ctkPenulDatatransakss-> ppn_nilai_awal,
-            //  'ppn_t_nilai_akhir'=>$ctkPenulDatatransakss-> ppn_t_nilai_akhir,
+             // 'ppn_nilai_awal'=>$ctkPenulDatatransakss-> ppn_nilai_awal,
+             // 'ppn_t_nilai_akhir'=>$ctkPenulDatatransakss-> ppn_t_nilai_akhir,
              // 'pph_nilai_awal'=>$ctkPenulDatatransakss-> pph_nilai_awal,
              // 'pph_t_nilai_akhir'=>$ctkPenulDatatransakss-> pph_t_nilai_akhir,
              // 'ppnbm_t_nilai_akhir'=>$ctkPenulDatatransakss-> ppnbm_t_nilai_akhir,
@@ -879,7 +872,7 @@ public function actionPindahdata($id)
 
         // var_dump($ctkPfpd->web_filename);die() ;
        //  var_dump($ctkPenulDatatransaks);die() ;
-         //  var_dump($OpenTBS->VarRef['xfilettd']); die() ;
+         //  var_dump($OpenTBS->VarRef['xtglnhpu']); die() ;
           // die() ; 
 
           // $OpenTBS->Show(OPENTBS_DOWNLOAD, 'rha'.'.xlsx'); // Also merges all [onshow] automatic fields.
@@ -888,6 +881,9 @@ public function actionPindahdata($id)
         //  return $this -> reload();
         //  return $ctksrt->renderAjax();
        }
+
+
+
 
        public function actionImportdatadirect($id)
        {
@@ -946,13 +942,16 @@ public function actionPindahdata($id)
               $model->nilaipabean_akhir = (double)$sheetData[$baseRow]['Y'];
               $model->trf_ppn_t = (float)$sheetData[$baseRow]['Z'];
               $model->trf_pph_t = (float)$sheetData[$baseRow]['AA'];
-
               $model->trf_ppn = (float)$sheetData[$baseRow]['AB'];
               $model->trf_pph = (float)$sheetData[$baseRow]['AC'];
               $model->trf_ppnbm = (float)$sheetData[$baseRow]['AD'];
               $model->trf_ppnbm_t = (float)$sheetData[$baseRow]['AE'];
               $model->trf_bmad = (float)$sheetData[$baseRow]['AF'];
               $model->trf_bmad_t = (float)$sheetData[$baseRow]['AG'];
+              $model->trf_bk = (float)$sheetData[$baseRow]['AH'];
+              $model->trf_bk_t = (float)$sheetData[$baseRow]['AI'];
+              $model->bk_nilai_awal = (float)$sheetData[$baseRow]['AJ'];
+              $model->bk_nilai_akhir = (float)$sheetData[$baseRow]['AK'];
 
 
           // if ((string)$sheetData[$baseRow]['P'] == "HH")(  $model ->jalur = "Hijau");
@@ -969,13 +968,37 @@ public function actionPindahdata($id)
 
            //   $model->nilaipabean_akhir = ($model->nilaipabean_awal);
          // selisih BM , PPN dan pph
-              $model->bm_t_nilai_akhir = floor($model->trf_bm_t/100 *  $model->nilaipabean_akhir)- ($model->trf_bm/100 *  $model->nilaipabean_awal) ;
+              $model->bm_t_nilai_akhir = (float)(($model->trf_bm_t/100 *  $model->nilaipabean_akhir)- ($model->trf_bm/100 *  $model->nilaipabean_awal));
 
-              $model->ppn_t_nilai_akhir = floor(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *  $model->trf_ppn_t ) - $model->ppn_nilai_awal);
 
-              $model->pph_t_nilai_akhir = floor(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *   $model->trf_pph_t )- $model->pph_nilai_awal);
+              if (($model->ppn_nilai_awal) > 0   ){
+            $model->ppn_t_nilai_akhir = (float)(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *  $model->trf_ppn_t/100 ) - $model->ppn_nilai_awal); // potensi ppn
+            ;
+          //     return $path ;
+          }else{ 
+            $model->ppn_t_nilai_akhir = 0 ; // potensi ppn
+          };
 
-              $model->total_tagihan = floor($model->bm_t_nilai_akhir +  $model->ppn_t_nilai_akhir + $model->pph_t_nilai_akhir);
+              // $model->ppn_t_nilai_akhir = (float)(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *  $model->trf_ppn_t/100 ) - $model->ppn_nilai_awal); // potensi ppn
+
+
+          if (($model->pph_nilai_awal) > 0  ){
+          $model->pph_t_nilai_akhir = (float)(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *   $model->trf_pph_t/100 )- $model->pph_nilai_awal); // potensi pph
+          ;
+          //     return $path ;
+        }else{ 
+            $model->pph_t_nilai_akhir = 0 ; // potensi ppn
+          };
+
+
+
+
+
+              // $model->pph_t_nilai_akhir = (float)(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *   $model->trf_pph_t/100 )- $model->pph_nilai_awal); // potensi pph
+
+              // $model->ppnbm_t_nilai_akhir = floor(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *   $model->trf_ppnbm_t )- ($model->ppnbm_nilai_awal));
+
+          $model->total_tagihan = floor($model->bm_t_nilai_akhir +  $model->ppn_t_nilai_akhir + $model->pph_t_nilai_akhir);
 
           // if ((string)$sheetData[$baseRow]['P'] == "HH")(  $model ->jalur = "Hijau");
           // if ((string)$sheetData[$baseRow]['P'] == "HL")(  $model ->jalur = "Hijau");
@@ -1000,50 +1023,50 @@ public function actionPindahdata($id)
          // $model->seri_brg = (string)$sheetData[$baseRow]['Q'];
          // $model->seri_brg = (string)$sheetData[$baseRow]['S'];
          // $model->seri_brg = (string)$sheetData[$baseRow]['T'];
-              $model->created_at = date('Y-m-d H:i:s');
-              $model->created_by = Yii::$app->user->identity->id ;
-              $model->updated_at = date('Y-m-d H:i:s');
-              $model->updated_by = Yii::$app->user->identity->id ;
+          $model->created_at = date('Y-m-d H:i:s');
+          $model->created_by = Yii::$app->user->identity->id ;
+          $model->updated_at = date('Y-m-d H:i:s');
+          $model->updated_by = Yii::$app->user->identity->id ;
 
-              $model->save();
-              $baseRow++;
-            }
-            Yii::$app->getSession()->setFlash('success', 'Success');
+          $model->save();
+          $baseRow++;
+        }
+        Yii::$app->getSession()->setFlash('success', 'Success');
       // echo $baseRow;
       // var_dump($model->trf_bm_t);
-      //  var_dump($model->total_tagihan);
-      //  die( ) ;
-          }
-          else{
-            Yii::$app->getSession()->setFlash('error', 'Error');
-          }
-        }
-
-        return $this->render('importdatadirect',[
-          'modelImport' => $modelImport,
-          'dataProvider' => $dataProvider,
-
-        ]);
-
+       // var_dump($model->pph_t_nilai_akhir);
+       // die( ) ;
       }
+      else{
+        Yii::$app->getSession()->setFlash('error', 'Error');
+      }
+    }
+
+    return $this->render('importdatadirect',[
+      'modelImport' => $modelImport,
+      'dataProvider' => $dataProvider,
+
+    ]);
+
+  }
 
 
 
-      public function actionCetaknhputtd($id)
-      {
+  public function actionCetaknhputtd($id)
+  {
 
 
-        $ctkPenulHeader = \app\models\PenulHeader::findOne($id);
-        $ctkPenulDatatransaks = \app\models\PenulDatatransaks::find()->andwhere (['link_header'=>$ctkPenulHeader->id,'flag_pusat' => 'setuju'])->all();
-        $ctkPenulDatatransaksImp = \app\models\PenulDatatransaks::find()->andwhere (['link_header'=>$ctkPenulHeader->id,'flag_pusat' => 'setuju'])->one();
-        $ctkAnalisPenyaji1 = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->penyaji_data1])->one();
-        $ctkPfpd = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->pfpd])->one();
-        $ctkKasi = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->kasi])->one();
-        $ctkKabid = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->kabid])->one();
-        $ctkJendok = \app\models\JenDok::find()->where (['id'=>$ctkPenulHeader->jen_dok])->one();
+    $ctkPenulHeader = \app\models\PenulHeader::findOne($id);
+    $ctkPenulDatatransaks = \app\models\PenulDatatransaks::find()->andwhere (['link_header'=>$ctkPenulHeader->id,'flag_pusat' => 'setuju'])->all();
+    $ctkPenulDatatransaksImp = \app\models\PenulDatatransaks::find()->andwhere (['link_header'=>$ctkPenulHeader->id,'flag_pusat' => 'setuju'])->one();
+    $ctkAnalisPenyaji1 = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->penyaji_data1])->one();
+    $ctkPfpd = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->pfpd])->one();
+    $ctkKasi = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->kasi])->one();
+    $ctkKabid = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->kabid])->one();
+    $ctkJendok = \app\models\JenDok::find()->where (['id'=>$ctkPenulHeader->jen_dok])->one();
 
 
-        Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/';
+    Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/';
             // $path = Yii::$app->params['uploadPath'] . $ctkPfpdttd->web_filename;
 
           // Initalize the TBS instance
@@ -1436,13 +1459,19 @@ public function actionPindahdata($id)
 
            //   $model->nilaipabean_akhir = ($model->nilaipabean_awal);
          // selisih BM , PPN dan pph
-              $model->bm_t_nilai_akhir = floor($model->trf_bm_t/100 *  $model->nilaipabean_akhir)- ($model->trf_bm/100 *  $model->nilaipabean_awal) ;
+              $model->bm_t_nilai_akhir = float($model->trf_bm_t/100 *$model->nilaipabean_akhir)-($model->trf_bm/100 * $model->nilaipabean_awal) ;
 
-              $model->ppn_t_nilai_akhir = floor(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *  $model->trf_ppn_t ) - $model->ppn_nilai_awal);
+              $model->ppn_t_nilai_akhir = float((((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+$model->nilaipabean_akhir)) *  $model->trf_ppn_t/100 ) - $model->ppn_nilai_awal);
 
-              $model->pph_t_nilai_akhir = floor(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) *   $model->trf_pph_t )- $model->pph_nilai_awal);
+              $model->pph_t_nilai_akhir = float((((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir)) *   $model->trf_pph_t/100 ) - $model->pph_nilai_awal);
 
-              $model->total_tagihan = floor($model->bm_t_nilai_akhir +  $model->ppn_t_nilai_akhir + $model->pph_t_nilai_akhir);
+              // $model->ppn_t_nilai_akhir = float((($model->bm_t_nilai_akhir +  $model->nilaipabean_akhir) *  $model->trf_ppn_t ) - $model->ppn_nilai_awal);
+
+              // $model->pph_t_nilai_akhir = float((($model->bm_t_nilai_akhir +  $model->nilaipabean_akhir) *   $model->trf_pph_t ) - $model->pph_nilai_awal);
+
+
+
+              $model->total_tagihan = float($model->bm_t_nilai_akhir +  $model->ppn_t_nilai_akhir + $model->pph_t_nilai_akhir);
 
 
          // $model->seri_brg = (string)$sheetData[$baseRow]['O'];
@@ -1477,4 +1506,216 @@ public function actionPindahdata($id)
 
       }
 
-    }
+      public function actionExcelRha($id){
+
+        $ctkPenulHeader = \app\models\PenulHeader::findOne($id);
+        $ctkPenulDatatransaks = \app\models\PenulDatatransaks::find()->where (['link_header'=>$ctkPenulHeader->id])->all();
+        $ctkAnalisPenyaji1 = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->penyaji_data1])->one();
+        $ctkAnalis1 = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->analis1])->one();
+        $ctkAnalis2 = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->analis2])->one();
+        $ctkAnalis3 = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->analis3])->one();
+        $ctkAnalis2ttd = \app\models\PenulAnalisPenyaji::find('web_filename')->where (['id'=>$ctkPenulHeader->analis2])->one();
+        $ctkJendok = \app\models\JenDok::find()->where (['id'=>$ctkPenulHeader->jen_dok])->one();
+        $ctkJenPelanggaran = \app\models\JenPelanggaran::find()->where (['id'=>$ctkPenulHeader->jen_pelanggaran])->one();
+
+        $template = Yii::getAlias('@hscstudio/export').'/templates/opentbs/template_RHA_sp.xlsx';
+    //  $objReader = \PHPSpreadsheet_IOFactory::createReader('Excel2007');
+
+        $spreadsheet = IOFactory::load($template);
+
+        $spreadsheet->getActiveSheet()->getPageSetup()
+        ->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+        $spreadsheet->getActiveSheet()->getPageSetup()
+        ->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4); 
+
+
+        // Set document properties
+        $spreadsheet->getProperties()->setCreator('Dens_2021')
+        ->setLastModifiedBy('Maarten Balliauw')
+        ->setTitle('Office 2007 XLSX Test Document')
+        ->setSubject('Office 2007 XLSX Test Document')
+        ->setDescription('Test document for Office 2007 XLSX, generated using PHP classes.')
+        ->setKeywords('office 2007 openxml php')
+        ->setCategory('Test result file');
+
+        // Add some data
+       $baseRow=12; // line 2
+       //$baseRows=28 +  $baseRow ;
+
+       foreach($ctkPenulDatatransaks as $ctkPenulDatatransakss){
+        $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRow, $baseRow-11);
+        // $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRows, $baseRows-39);
+
+        $spreadsheet->getActiveSheet()->setCellValue('B'.$baseRow, $ctkPenulDatatransakss->kode_kantor);
+        //  $spreadsheet->getActiveSheet()->setCellValue('B'.$baseRows,$ctkPenulDatatransakss->kode_kantor );
+
+        $spreadsheet->getActiveSheet()->setCellValue('C'.$baseRow, $ctkPenulDatatransakss->pib);
+       //  $spreadsheet->getActiveSheet()->setCellValue('C'.$baseRows, $ctkPenulDatatransakss->pib);
+
+        $spreadsheet->getActiveSheet()->setCellValue('D'.$baseRow, $ctkPenulDatatransakss->tglpib);
+       //  $spreadsheet->getActiveSheet()->setCellValue('D'.$baseRows, $ctkPenulDatatransakss->tglpib);
+
+        $spreadsheet->getActiveSheet()->setCellValue('E'.$baseRow, $ctkPenulDatatransakss->npwp_imp);
+       // $spreadsheet->getActiveSheet()->setCellValue('E'.$baseRows, $ctkPenulDatatransakss->npwp_imp);
+
+        $spreadsheet->getActiveSheet()->setCellValue('F'.$baseRow, $ctkPenulDatatransakss->imp);
+        //  $spreadsheet->getActiveSheet()->setCellValue('F'.$baseRows, $ctkPenulDatatransakss->imp);
+
+        $spreadsheet->getActiveSheet()->setCellValue('G'.$baseRow, $ctkPenulDatatransakss->seri_brg);
+        // $spreadsheet->getActiveSheet()->setCellValue('G'.$baseRows, $ctkPenulDatatransakss->bm_t_nilai_akhir);
+
+        $spreadsheet->getActiveSheet()->setCellValue('H'.$baseRow, $ctkPenulDatatransakss->uraian_brg);
+        $spreadsheet->getActiveSheet()->setCellValue('I'.$baseRow, $ctkPenulDatatransakss->hs);
+
+        $spreadsheet->getActiveSheet()->setCellValue('J'.$baseRow, $ctkPenulDatatransakss->trf_bm);
+      //  $spreadsheet->getActiveSheet()->setCellValue('J'.$baseRows, $ctkPenulDatatransakss->ppn_t_nilai_akhir);
+
+        $spreadsheet->getActiveSheet()->setCellValue('K'.$baseRow, $ctkPenulDatatransakss->nilaipabean_awal);
+
+      //  $spreadsheet->getActiveSheet()->setCellValue('K'.$baseRows, $ctkPenulDatatransakss->pph_t_nilai_akhir);
+
+
+        $spreadsheet->getActiveSheet()->setCellValue('L'.$baseRow, $ctkPenulDatatransakss->hs_t);
+       //    $spreadsheet->getActiveSheet()->setCellValue('L'.$baseRows, $ctkPenulDatatransakss->ppnbm_t_nilai_akhir);
+
+
+        $spreadsheet->getActiveSheet()->setCellValue('M'.$baseRow, $ctkPenulDatatransakss->trf_bm_t);
+       // $spreadsheet->getActiveSheet()->setCellValue('M'.$baseRows, $ctkPenulDatatransakss->denda);
+
+        $spreadsheet->getActiveSheet()->setCellValue('N'.$baseRow, $ctkPenulDatatransakss->nilaipabean_akhir);
+
+       // $spreadsheet->getActiveSheet()->setCellValue('N'.$baseRows, $ctkPenulDatatransakss->total_tagihan);
+
+        $baseRow++;
+      }
+
+     
+      $baseRow1= $baseRow + 1; 
+      $baseRow2= $baseRow1 + 1; 
+      $baseRow3= $baseRow2 + 1; 
+      $baseRow4= $baseRow3 + 1; 
+      $baseRow5= $baseRow4 + 1; 
+      $baseRow6= $baseRow5 + 1; 
+      $baseRow7= $baseRow6 + 1; 
+      $baseRow8= $baseRow7 + 1; 
+      $baseRow9= $baseRow8 + 1;
+      $baseRow10= $baseRow9 + 1;
+      $baseRow11= $baseRow10 + 1;
+      $baseRow12= $baseRow11 + 1;
+      $baseRow13= $baseRow12 + 1;
+      $baseRow14= $baseRow13 + 1;
+      $baseRow15= $baseRow14 + 1;
+
+      $spreadsheet->setActiveSheetIndex(0);
+      $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRow1,'E.')
+      ->setCellValue('B'.$baseRow1,'ANALISIS/PROSEDUR');
+      $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRow2,'1')
+     ->setCellValue('B'.$baseRow2,'Undang-Undang Nomor 17 Tahun 2006 Tentang Perubahan atas Undang-Undang Nomor 10 Tahun 1995 Tentang Kepabeanan pada Pasal 17 ayat (1) menyebutkan bahwa Direktur Jenderal dapat menetapkan kembali tarif dan nilai pabean untuk penghitungan bea masuk dalam jangka waktu 2 (dua) tahun terhitung sejak tanggal pemberitahuan pabean.');
+     $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRow3,'2')
+     ->setCellValue('B'.$baseRow3,'Dokumen BC 2.0 terbit setelah berlakunya PMK 06/PMK.010/2017 yaitu tanggal 26 Januari 2017, menggunakan HS Klasifikasi 8 digit.');
+
+      // $spreadsheet->getActiveSheet()->setCellValue('B'.$baseRow3,'kembali tarif dan nilai pabean untuk penghitungan bea masuk dalam jangka waktu 2 (dua) tahun terhitung sejak tanggal pemberitahuan pabean.');
+     // ->setCellValue('O3', $ctkPenulHeader -> 'id')
+     // ->setCellValue('E3', $ctkJendok -> 'name')
+     // ->setCellValue('E4', $$ctkJenPelanggaran -> 'name');
+
+  $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRow14,'NO.')
+  ->setCellValue('B'.$baseRow14,'KODE KANTOR')
+  ->setCellValue('C'.$baseRow14,'NOMOR')
+  ->setCellValue('D'.$baseRow14,'TANGGAL')
+  ->setCellValue('E'.$baseRow14,'NPWP')
+  ->setCellValue('F'.$baseRow14,'PERUSAHAAN')
+  ->setCellValue('G'.$baseRow14,'BEA MASUK')
+  ->setCellValue('H'.$baseRow14,'BMAD/BMI/BMP')
+  ->setCellValue('I'.$baseRow14,'BEA KELUAR')
+  ->setCellValue('J'.$baseRow14,'PPN')
+  ->setCellValue('K'.$baseRow14,'PPh')
+  ->setCellValue('L'.$baseRow14,'PPnBM')
+  ->setCellValue('M'.$baseRow14,'DENDA')
+  ->setCellValue('N'.$baseRow14,'TOTAL');
+
+    $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRow15,'1.')
+  ->setCellValue('B'.$baseRow15,'2')
+  ->setCellValue('C'.$baseRow15,'3')
+  ->setCellValue('D'.$baseRow15,'4')
+  ->setCellValue('E'.$baseRow15,'5')
+  ->setCellValue('F'.$baseRow15,'6')
+  ->setCellValue('G'.$baseRow15,'7')
+  ->setCellValue('H'.$baseRow15,'8')
+  ->setCellValue('I'.$baseRow15,'9')
+  ->setCellValue('J'.$baseRow15,'10')
+  ->setCellValue('K'.$baseRow15,'11')
+  ->setCellValue('L'.$baseRow15,'12')
+  ->setCellValue('M'.$baseRow15,'13')
+  ->setCellValue('N'.$baseRow15,'14');
+
+
+$baseRows= $baseRow15 +  1;
+ foreach($ctkPenulDatatransaks as $ctkPenulDatatransaksss){
+    
+   $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRows, $baseRows);
+   $spreadsheet->getActiveSheet()->setCellValue('B'.$baseRows,$ctkPenulDatatransaksss->kode_kantor );
+   $spreadsheet->getActiveSheet()->setCellValue('C'.$baseRows, $ctkPenulDatatransaksss->pib);
+   $spreadsheet->getActiveSheet()->setCellValue('D'.$baseRows, $ctkPenulDatatransaksss->tglpib);
+   $spreadsheet->getActiveSheet()->setCellValue('E'.$baseRows, $ctkPenulDatatransaksss->npwp_imp);
+   $spreadsheet->getActiveSheet()->setCellValue('F'.$baseRows, $ctkPenulDatatransaksss->imp);
+   $spreadsheet->getActiveSheet()->setCellValue('G'.$baseRows, $ctkPenulDatatransaksss->bm_t_nilai_akhir);
+   $spreadsheet->getActiveSheet()->setCellValue('J'.$baseRows, $ctkPenulDatatransaksss->ppn_t_nilai_akhir);
+   $spreadsheet->getActiveSheet()->setCellValue('K'.$baseRows, $ctkPenulDatatransaksss->pph_t_nilai_akhir);
+   $spreadsheet->getActiveSheet()->setCellValue('L'.$baseRows, $ctkPenulDatatransaksss->ppnbm_t_nilai_akhir);
+   $spreadsheet->getActiveSheet()->setCellValue('M'.$baseRows, $ctkPenulDatatransaksss->denda);
+   $spreadsheet->getActiveSheet()->setCellValue('N'.$baseRows, $ctkPenulDatatransaksss->total_tagihan);
+   $baseRows++;
+ }
+
+
+        // Miscellaneous glyphs, UTF-8
+      $spreadsheet->getActiveSheet()->setCellValue('I1', $ctkPenulHeader ->rha);
+      $spreadsheet->getActiveSheet()->setCellValue('O3', $ctkPenulHeader ->id);
+      $spreadsheet->getActiveSheet()->setCellValue('E3', $ctkJendok ->name);
+      $spreadsheet->getActiveSheet()->setCellValue('E4', $ctkJenPelanggaran ->name);
+      $spreadsheet->getActiveSheet()->setCellValue('G9', '=E3');
+     //    $spreadsheet->getActiveSheet()->setCellValue('F31', '=G9');
+
+        // Rename worksheet
+      $spreadsheet->getActiveSheet()->setTitle('RHA');
+
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+      $spreadsheet->setActiveSheetIndex(0);
+
+
+
+
+//same ending
+      $response = Yii::$app->getResponse();
+      $headers = $response->getHeaders();
+
+            // Redirect output to a client’s web browser (Xlsx)
+      $headers->set('Content-Type', 'application/vnd.ms-excel');
+      $headers->set('Content-Disposition','attachment;filename="rha_new.xlsx"');
+
+      $headers->set('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+      $headers->set('Cache-Control: max-age=1');
+
+        // If you're serving to IE over SSL, then the following may be needed
+         $headers->set('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+         $headers->set('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+         $headers->set('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+         $headers->set('Pragma: public'); // HTTP/1.0
+         ob_start();        
+         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+         $writer->save("php://output");
+         $content = ob_get_contents();
+         ob_clean();
+         return $content;
+
+      //  exit;
+
+
+
+
+
+       }
+
+     }

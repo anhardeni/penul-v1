@@ -74,7 +74,7 @@ class PenulDatatransaks extends \yii\db\ActiveRecord
             [['trf_bm_t','trf_ppn','trf_pph','trf_ppnbm','trf_ppnbm_t','trf_bmad','trf_bmad_t' ,'bm_t_nilai_akhir', 'trf_bm', 'trf_ppn_t','trf_pph_t','kurs', 'bm_nilai_awal', 'ppn_nilai_awal', 'ppn_t_nilai_akhir', 'pph_nilai_awal', 'pph_t_nilai_akhir', 'ppnbm_t_nilai_akhir', 'nilaipabean_awal', 'nilaipabean_akhir', 'denda', 'total_tagihan'], 'number'],
             [['flag_pusat_ket'], 'string', 'max' => 20],
             [['kode_kantor', 'pib'], 'string', 'max' => 6],
-            [['npwp_imp'], 'string', 'max' => 16],
+            [['npwp_imp'], 'string', 'max' => 30],
             [['imp'], 'string', 'max' => 50],
             [['uraian_brg'], 'string', 'max' => 254],
             [['hs_t', 'hs'], 'string', 'max' => 15],
