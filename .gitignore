@@ -25,3 +25,12 @@ composer.phar
 phpunit.phar
 # local phpunit config
 /phpunit.xml
+
+# user upload dir
+/web/uploads/*
+
+# server log
+/log
+
+# keep directory
+!web/uploads/.gitkeep
