@@ -1,0 +1,9 @@
+﻿<?php
+
+return [
+    'class' => 'yii\db\Connection',
+    'dsn' => 'mysql:host=localhost;port=3306;dbname=db_penul',
+    'username' => 'INPUT_YOUR_DB_USERNAME',
+    'password' => 'INPUT_YOUR_DB_PASSWORD',
+    'charset' => 'utf8',
+];
