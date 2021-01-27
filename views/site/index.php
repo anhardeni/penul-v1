@@ -8,6 +8,8 @@
 
     <div class="jumbotron">
         <h1>SELAMAT DATANG!</h1>
+        <h1>Sistem Informasi Penelitian Ulang dan Analisa</h1>
+         <h1>KPU BEA DAN CUKAI SOEKARNO - HATTA</h1>
 
         
 

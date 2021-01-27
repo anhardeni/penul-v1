@@ -560,6 +560,9 @@ $OpenTBS->MergeBlock('a2' ,$b2);
         // die( ) ;
 
           // $OpenTBS->Show(OPENTBS_DOWNLOAD, 'rha'.'.xlsx'); // Also merges all [onshow] automatic fields.
+          ob_start();
+         $content = ob_get_contents();
+         ob_end_clean();
          $OpenTBS->Show(OPENTBS_DOWNLOAD, 'rha'.$id.'.xlsx'); // Also merges all [onshow] automatic fields.  
          exit;
        }
@@ -646,6 +649,9 @@ $OpenTBS->MergeBlock('a2' ,$b2);
        //  die( ) ;
 
           // $OpenTBS->Show(OPENTBS_DOWNLOAD, 'rha'.'.xlsx'); // Also merges all [onshow] automatic fields.
+         ob_start();
+         $content = ob_get_contents();
+         ob_end_clean();
          $OpenTBS->Show(OPENTBS_DOWNLOAD, 'kkp'.$id.'.xlsx'); // Also merges all [onshow] automatic fields.  
          exit;
         //  //return $this -> reload();
@@ -1589,68 +1595,53 @@ $OpenTBS->MergeBlock('a2' ,$b2);
         $baseRow++;
       }
 
-     
-      $baseRow1= $baseRow + 1; 
-      $baseRow2= $baseRow1 + 1; 
-      $baseRow3= $baseRow2 + 1; 
-      $baseRow4= $baseRow3 + 1; 
-      $baseRow5= $baseRow4 + 1; 
-      $baseRow6= $baseRow5 + 1; 
-      $baseRow7= $baseRow6 + 1; 
-      $baseRow8= $baseRow7 + 1; 
-      $baseRow9= $baseRow8 + 1;
-      $baseRow10= $baseRow9 + 1;
-      $baseRow11= $baseRow10 + 1;
-      $baseRow12= $baseRow11 + 1;
-      $baseRow13= $baseRow12 + 1;
-      $baseRow14= $baseRow13 + 1;
-      $baseRow15= $baseRow14 + 1;
+
 
       $spreadsheet->setActiveSheetIndex(0);
-      $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRow1,'E.')
-      ->setCellValue('B'.$baseRow1,'ANALISIS/PROSEDUR');
-      $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRow2,'1')
-     ->setCellValue('B'.$baseRow2,'Undang-Undang Nomor 17 Tahun 2006 Tentang Perubahan atas Undang-Undang Nomor 10 Tahun 1995 Tentang Kepabeanan pada Pasal 17 ayat (1) menyebutkan bahwa Direktur Jenderal dapat menetapkan kembali tarif dan nilai pabean untuk penghitungan bea masuk dalam jangka waktu 2 (dua) tahun terhitung sejak tanggal pemberitahuan pabean.');
-     $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRow3,'2')
-     ->setCellValue('B'.$baseRow3,'Dokumen BC 2.0 terbit setelah berlakunya PMK 06/PMK.010/2017 yaitu tanggal 26 Januari 2017, menggunakan HS Klasifikasi 8 digit.');
+      $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 1),'E.')
+      ->setCellValue('B'.(string)($baseRow + 1),'ANALISIS/PROSEDUR');
+      $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 2),'1')
+     ->setCellValue('B'.(string)($baseRow + 2),'Undang-Undang Nomor 17 Tahun 2006 Tentang Perubahan atas Undang-Undang Nomor 10 Tahun 1995 Tentang Kepabeanan pada Pasal 17 ayat (1) menyebutkan bahwa Direktur Jenderal dapat menetapkan kembali tarif dan nilai pabean untuk penghitungan bea masuk dalam jangka waktu 2 (dua) tahun terhitung sejak tanggal pemberitahuan pabean.');
+     $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 3),'2')
+     ->setCellValue('B'.(string)($baseRow + 3),'Dokumen BC 2.0 terbit setelah berlakunya PMK 06/PMK.010/2017 yaitu tanggal 26 Januari 2017, menggunakan HS Klasifikasi 8 digit.');
 
       // $spreadsheet->getActiveSheet()->setCellValue('B'.$baseRow3,'kembali tarif dan nilai pabean untuk penghitungan bea masuk dalam jangka waktu 2 (dua) tahun terhitung sejak tanggal pemberitahuan pabean.');
      // ->setCellValue('O3', $ctkPenulHeader -> 'id')
      // ->setCellValue('E3', $ctkJendok -> 'name')
      // ->setCellValue('E4', $$ctkJenPelanggaran -> 'name');
 
-  $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRow14,'NO.')
-  ->setCellValue('B'.$baseRow14,'KODE KANTOR')
-  ->setCellValue('C'.$baseRow14,'NOMOR')
-  ->setCellValue('D'.$baseRow14,'TANGGAL')
-  ->setCellValue('E'.$baseRow14,'NPWP')
-  ->setCellValue('F'.$baseRow14,'PERUSAHAAN')
-  ->setCellValue('G'.$baseRow14,'BEA MASUK')
-  ->setCellValue('H'.$baseRow14,'BMAD/BMI/BMP')
-  ->setCellValue('I'.$baseRow14,'BEA KELUAR')
-  ->setCellValue('J'.$baseRow14,'PPN')
-  ->setCellValue('K'.$baseRow14,'PPh')
-  ->setCellValue('L'.$baseRow14,'PPnBM')
-  ->setCellValue('M'.$baseRow14,'DENDA')
-  ->setCellValue('N'.$baseRow14,'TOTAL');
+  $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 13),'NO.')
+  ->setCellValue('B'.(string)($baseRow + 13),'KODE KANTOR')
+  ->setCellValue('C'.(string)($baseRow + 13),'NOMOR')
+  ->setCellValue('D'.(string)($baseRow + 13),'TANGGAL')
+  ->setCellValue('E'.(string)($baseRow + 13),'NPWP')
+  ->setCellValue('F'.(string)($baseRow + 13),'PERUSAHAAN')
+  ->setCellValue('G'.(string)($baseRow + 13),'BEA MASUK')
+  ->setCellValue('H'.(string)($baseRow + 13),'BMAD/BMI/BMP')
+  ->setCellValue('I'.(string)($baseRow + 13),'BEA KELUAR')
+  ->setCellValue('J'.(string)($baseRow + 13),'PPN')
+  ->setCellValue('K'.(string)($baseRow + 13),'PPh')
+  ->setCellValue('L'.(string)($baseRow + 13),'PPnBM')
+  ->setCellValue('M'.(string)($baseRow + 13),'DENDA')
+  ->setCellValue('N'.(string)($baseRow + 13),'TOTAL');
 
-    $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRow15,'1.')
-  ->setCellValue('B'.$baseRow15,'2')
-  ->setCellValue('C'.$baseRow15,'3')
-  ->setCellValue('D'.$baseRow15,'4')
-  ->setCellValue('E'.$baseRow15,'5')
-  ->setCellValue('F'.$baseRow15,'6')
-  ->setCellValue('G'.$baseRow15,'7')
-  ->setCellValue('H'.$baseRow15,'8')
-  ->setCellValue('I'.$baseRow15,'9')
-  ->setCellValue('J'.$baseRow15,'10')
-  ->setCellValue('K'.$baseRow15,'11')
-  ->setCellValue('L'.$baseRow15,'12')
-  ->setCellValue('M'.$baseRow15,'13')
-  ->setCellValue('N'.$baseRow15,'14');
+    $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 14),'1.')
+  ->setCellValue('B'.(string)($baseRow + 14),'2')
+  ->setCellValue('C'.(string)($baseRow + 14),'3')
+  ->setCellValue('D'.(string)($baseRow + 14),'4')
+  ->setCellValue('E'.(string)($baseRow + 14),'5')
+  ->setCellValue('F'.(string)($baseRow + 14),'6')
+  ->setCellValue('G'.(string)($baseRow + 14),'7')
+  ->setCellValue('H'.(string)($baseRow + 14),'8')
+  ->setCellValue('I'.(string)($baseRow + 14),'9')
+  ->setCellValue('J'.(string)($baseRow + 14),'10')
+  ->setCellValue('K'.(string)($baseRow + 14),'11')
+  ->setCellValue('L'.(string)($baseRow + 14),'12')
+  ->setCellValue('M'.(string)($baseRow + 14),'13')
+  ->setCellValue('N'.(string)($baseRow + 14),'14');
 
 
-$baseRows= $baseRow15 +  1;
+$baseRows= $baseRow +  15;
  foreach($ctkPenulDatatransaks as $ctkPenulDatatransaksss){
     
    $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRows, $baseRows);
@@ -1675,7 +1666,21 @@ $baseRows= $baseRow15 +  1;
       $spreadsheet->getActiveSheet()->setCellValue('E3', $ctkJendok ->name);
       $spreadsheet->getActiveSheet()->setCellValue('E4', $ctkJenPelanggaran ->name);
       $spreadsheet->getActiveSheet()->setCellValue('G9', '=E3');
-     //    $spreadsheet->getActiveSheet()->setCellValue('F31', '=G9');
+      $spreadsheet->getActiveSheet()->setCellValue('F'.(string)($baseRows + 1), 'TOTAL');
+      $spreadsheet->getActiveSheet()->setCellValue('F'.(string)($baseRows + 2), 'PEMBULATAN');
+      $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRows + 4), 'G')
+      ->setCellValue('B'.(string)($baseRows + 4), 'KESIMPULAN');
+      $spreadsheet->getActiveSheet()->setCellValue('B'.(string)($baseRows + 6), 'Berdasarkan hasil analisis tersebut ditemukan potensi tambah bayar pada barang - barang tersebut  dengan berbagai tipe sebesar ')
+      ->setCellValue('h'.(string)($baseRows + 6), $ctkPenulHeader->kesimpulan_rha_nilaipotensi);
+       $spreadsheet->getActiveSheet()->setCellValue('C'.(string)($baseRows + 8), 'Penyaji Data')
+      ->setCellValue('G'.(string)($baseRows + 8), 'Analis 1')
+      ->setCellValue('J'.(string)($baseRows + 8), 'Analis 2')
+      ->setCellValue('M'.(string)($baseRows + 8), 'Analis 3');
+
+         $spreadsheet->getActiveSheet()->setCellValue('C'.(string)($baseRows + 12),  $ctkAnalisPenyaji1->name)
+      ->setCellValue('G'.(string)($baseRows + 12), $ctkAnalis1->name)
+      ->setCellValue('J'.(string)($baseRows + 12), $ctkAnalis2->name)
+      ->setCellValue('M'.(string)($baseRows + 12), $ctkAnalis3->name);
 
         // Rename worksheet
       $spreadsheet->getActiveSheet()->setTitle('RHA');
@@ -1705,10 +1710,13 @@ $baseRows= $baseRow15 +  1;
          $headers->set('Pragma: public'); // HTTP/1.0
          ob_start();        
          $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-         $writer->save("php://output");
          $content = ob_get_contents();
-         ob_clean();
+         ob_end_clean();
          return $content;
+         $writer->save("php://output");
+         
+         //ob_end_clean();
+         
 
       //  exit;
 
