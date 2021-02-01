@@ -22,7 +22,12 @@ use yii\db\Connection;
 use yii\data\ActiveDataProvider;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Color;
+use PhpOffice\PhpSpreadsheet\Calculation\Calculation;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 /**
  * PenulHeaderController implements the CRUD actions for PenulHeader model.
  */
@@ -479,6 +484,7 @@ $OpenTBS->VarRef['xjendok']= $ctkJendok -> name;
 $OpenTBS->VarRef['xjendok1']= $ctkJendok -> name;
 $OpenTBS->VarRef['xjendok2']= $ctkJendok -> name;
 $OpenTBS->VarRef['xjen_pelanggaran']= $ctkJenPelanggaran -> name;
+
 $vowel = array("&nbsp", ";", "â");
 $OpenTBS->VarRef['xanalisa_prosedur_rha']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha));
 $OpenTBS->VarRef['xanalisa_prosedur_rha2']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha2));
@@ -560,9 +566,9 @@ $OpenTBS->MergeBlock('a2' ,$b2);
         // die( ) ;
 
           // $OpenTBS->Show(OPENTBS_DOWNLOAD, 'rha'.'.xlsx'); // Also merges all [onshow] automatic fields.
-          ob_start();
-         $content = ob_get_contents();
-         ob_end_clean();
+ob_start();
+$content = ob_get_contents();
+ob_end_clean();
          $OpenTBS->Show(OPENTBS_DOWNLOAD, 'rha'.$id.'.xlsx'); // Also merges all [onshow] automatic fields.  
          exit;
        }
@@ -649,9 +655,9 @@ $OpenTBS->MergeBlock('a2' ,$b2);
        //  die( ) ;
 
           // $OpenTBS->Show(OPENTBS_DOWNLOAD, 'rha'.'.xlsx'); // Also merges all [onshow] automatic fields.
-         ob_start();
-         $content = ob_get_contents();
-         ob_end_clean();
+       ob_start();
+       $content = ob_get_contents();
+       ob_end_clean();
          $OpenTBS->Show(OPENTBS_DOWNLOAD, 'kkp'.$id.'.xlsx'); // Also merges all [onshow] automatic fields.  
          exit;
         //  //return $this -> reload();
@@ -872,14 +878,14 @@ $OpenTBS->MergeBlock('a2' ,$b2);
        // ];
        // $OpenTBS->MergeBlock('a3' ,$b3);
 
-      // var_dump(strip_tags($ctkPenulHeader -> analisa_prosedur_rha));die() ;
+       // var_dump(strip_tags($ctkPenulHeader -> analisa_prosedur_rha));die() ;
        // var_dump($ctkPenulHeader -> nhpu_tgl);die() ;
        //  var_dump($path);die( ) ;
 
         // var_dump($ctkPfpd->web_filename);die() ;
-       //  var_dump($ctkPenulDatatransaks);die() ;
-         //  var_dump($OpenTBS->VarRef['xtglnhpu']); die() ;
-          // die() ; 
+        //  var_dump($ctkPenulDatatransaks);die() ;
+        //  var_dump($OpenTBS->VarRef['xtglnhpu']); die() ;
+        // die() ; 
 
           // $OpenTBS->Show(OPENTBS_DOWNLOAD, 'rha'.'.xlsx'); // Also merges all [onshow] automatic fields.
          $OpenTBS->Show(OPENTBS_DOWNLOAD, 'nhpu'.$id.'.docx'); // Also merges all [onshow] automatic fields.  
@@ -1524,10 +1530,11 @@ $OpenTBS->MergeBlock('a2' ,$b2);
         $ctkJendok = \app\models\JenDok::find()->where (['id'=>$ctkPenulHeader->jen_dok])->one();
         $ctkJenPelanggaran = \app\models\JenPelanggaran::find()->where (['id'=>$ctkPenulHeader->jen_pelanggaran])->one();
 
-        $template = Yii::getAlias('@hscstudio/export').'/templates/opentbs/template_RHA_sp.xlsx';
-    //  $objReader = \PHPSpreadsheet_IOFactory::createReader('Excel2007');
+       // $template = Yii::getAlias('@hscstudio/export').'/templates/opentbs/template_RHA_sp.xlsx';
 
-        $spreadsheet = IOFactory::load($template);
+      //  $spreadsheet = IOFactory::load($template);
+
+        $spreadsheet = new Spreadsheet();
 
         $spreadsheet->getActiveSheet()->getPageSetup()
         ->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
@@ -1543,6 +1550,8 @@ $OpenTBS->MergeBlock('a2' ,$b2);
         ->setDescription('Test document for Office 2007 XLSX, generated using PHP classes.')
         ->setKeywords('office 2007 openxml php')
         ->setCategory('Test result file');
+
+
 
         // Add some data
        $baseRow=12; // line 2
@@ -1590,118 +1599,366 @@ $OpenTBS->MergeBlock('a2' ,$b2);
 
         $spreadsheet->getActiveSheet()->setCellValue('N'.$baseRow, $ctkPenulDatatransakss->nilaipabean_akhir);
 
-       // $spreadsheet->getActiveSheet()->setCellValue('N'.$baseRows, $ctkPenulDatatransakss->total_tagihan);
+        $spreadsheet->getActiveSheet()->setCellValue('O'.$baseRow, '=O8');
 
         $baseRow++;
       }
 
 
 
+      $vowel = array("&nbsp", ";", "â");
+      $xanalisa_prosedur_rha = str_replace($vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha));
+      $xanalisa_prosedur_rha2= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha2));
+      $xanalisa_prosedur_rha3 = str_replace($vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha3));
+      $xanalisa_prosedur_rha4= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha4));
+      $xanalisa_prosedur_rha5 = str_replace($vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha5));
+      $xanalisa_prosedur_rha6= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha6));
+      $xanalisa_prosedur_rha7= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha7));
+
       $spreadsheet->setActiveSheetIndex(0);
       $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 1),'E.')
       ->setCellValue('B'.(string)($baseRow + 1),'ANALISIS/PROSEDUR');
+      $spreadsheet->getActiveSheet()->mergeCells('B'.(string)($baseRow + 1).':D'.(string)($baseRow + 1));
+
       $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 2),'1')
-     ->setCellValue('B'.(string)($baseRow + 2),'Undang-Undang Nomor 17 Tahun 2006 Tentang Perubahan atas Undang-Undang Nomor 10 Tahun 1995 Tentang Kepabeanan pada Pasal 17 ayat (1) menyebutkan bahwa Direktur Jenderal dapat menetapkan kembali tarif dan nilai pabean untuk penghitungan bea masuk dalam jangka waktu 2 (dua) tahun terhitung sejak tanggal pemberitahuan pabean.');
-     $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 3),'2')
-     ->setCellValue('B'.(string)($baseRow + 3),'Dokumen BC 2.0 terbit setelah berlakunya PMK 06/PMK.010/2017 yaitu tanggal 26 Januari 2017, menggunakan HS Klasifikasi 8 digit.');
+      ->setCellValue('B'.(string)($baseRow + 2),'Undang-Undang Nomor 17 Tahun 2006 Tentang Perubahan atas Undang-Undang Nomor 10 Tahun 1995 Tentang Kepabeanan pada Pasal 17 ayat (1) menyebutkan bahwa Direktur Jenderal dapat menetapkan kembali tarif dan nilai pabean untuk penghitungan bea masuk dalam jangka waktu 2 (dua) tahun terhitung sejak tanggal pemberitahuan pabean.');
+      $spreadsheet->getActiveSheet()->mergeCells('B'.(string)($baseRow + 2).':N'.(string)($baseRow + 2));
+      $spreadsheet->getActiveSheet()->getStyle('B'.(string)($baseRow + 2))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+      $spreadsheet->getActiveSheet()->getRowDimension((string)($baseRow + 2))->setRowHeight(60);
 
-      // $spreadsheet->getActiveSheet()->setCellValue('B'.$baseRow3,'kembali tarif dan nilai pabean untuk penghitungan bea masuk dalam jangka waktu 2 (dua) tahun terhitung sejak tanggal pemberitahuan pabean.');
-     // ->setCellValue('O3', $ctkPenulHeader -> 'id')
-     // ->setCellValue('E3', $ctkJendok -> 'name')
-     // ->setCellValue('E4', $$ctkJenPelanggaran -> 'name');
+      $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 3),'2')
+      ->setCellValue('B'.(string)($baseRow + 3),'Dokumen BC 2.0 terbit setelah berlakunya PMK 06/PMK.010/2017 yaitu tanggal 26 Januari 2017, menggunakan HS Klasifikasi 8 digit.');
+      $spreadsheet->getActiveSheet()->mergeCells('B'.(string)($baseRow + 3).':N'.(string)($baseRow + 3));
+      $spreadsheet->getActiveSheet()->getStyle('B'.(string)($baseRow + 3))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 
-  $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 13),'NO.')
-  ->setCellValue('B'.(string)($baseRow + 13),'KODE KANTOR')
-  ->setCellValue('C'.(string)($baseRow + 13),'NOMOR')
-  ->setCellValue('D'.(string)($baseRow + 13),'TANGGAL')
-  ->setCellValue('E'.(string)($baseRow + 13),'NPWP')
-  ->setCellValue('F'.(string)($baseRow + 13),'PERUSAHAAN')
-  ->setCellValue('G'.(string)($baseRow + 13),'BEA MASUK')
-  ->setCellValue('H'.(string)($baseRow + 13),'BMAD/BMI/BMP')
-  ->setCellValue('I'.(string)($baseRow + 13),'BEA KELUAR')
-  ->setCellValue('J'.(string)($baseRow + 13),'PPN')
-  ->setCellValue('K'.(string)($baseRow + 13),'PPh')
-  ->setCellValue('L'.(string)($baseRow + 13),'PPnBM')
-  ->setCellValue('M'.(string)($baseRow + 13),'DENDA')
-  ->setCellValue('N'.(string)($baseRow + 13),'TOTAL');
+      $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 4),'3')
+      ->setCellValue('B'.(string)($baseRow + 4),  ($xanalisa_prosedur_rha));
+      $spreadsheet->getActiveSheet()->mergeCells('B'.(string)($baseRow + 4).':N'.(string)($baseRow + 4));
+      $spreadsheet->getActiveSheet()->getStyle('B'.(string)($baseRow + 4))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)->setWrapText(true);
+      $spreadsheet->getActiveSheet()->getRowDimension((string)($baseRow + 4))->setRowHeight(60);
 
-    $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 14),'1.')
-  ->setCellValue('B'.(string)($baseRow + 14),'2')
-  ->setCellValue('C'.(string)($baseRow + 14),'3')
-  ->setCellValue('D'.(string)($baseRow + 14),'4')
-  ->setCellValue('E'.(string)($baseRow + 14),'5')
-  ->setCellValue('F'.(string)($baseRow + 14),'6')
-  ->setCellValue('G'.(string)($baseRow + 14),'7')
-  ->setCellValue('H'.(string)($baseRow + 14),'8')
-  ->setCellValue('I'.(string)($baseRow + 14),'9')
-  ->setCellValue('J'.(string)($baseRow + 14),'10')
-  ->setCellValue('K'.(string)($baseRow + 14),'11')
-  ->setCellValue('L'.(string)($baseRow + 14),'12')
-  ->setCellValue('M'.(string)($baseRow + 14),'13')
-  ->setCellValue('N'.(string)($baseRow + 14),'14');
+      $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 5),'4')
+      ->setCellValue('B'.(string)($baseRow + 5),'Latar Belakang Penetapan');
+      $spreadsheet->getActiveSheet()->mergeCells('B'.(string)($baseRow + 5).':D'.(string)($baseRow + 5));
 
 
-$baseRows= $baseRow +  15;
- foreach($ctkPenulDatatransaks as $ctkPenulDatatransaksss){
-    
-   $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRows, $baseRows);
-   $spreadsheet->getActiveSheet()->setCellValue('B'.$baseRows,$ctkPenulDatatransaksss->kode_kantor );
-   $spreadsheet->getActiveSheet()->setCellValue('C'.$baseRows, $ctkPenulDatatransaksss->pib);
-   $spreadsheet->getActiveSheet()->setCellValue('D'.$baseRows, $ctkPenulDatatransaksss->tglpib);
-   $spreadsheet->getActiveSheet()->setCellValue('E'.$baseRows, $ctkPenulDatatransaksss->npwp_imp);
-   $spreadsheet->getActiveSheet()->setCellValue('F'.$baseRows, $ctkPenulDatatransaksss->imp);
-   $spreadsheet->getActiveSheet()->setCellValue('G'.$baseRows, $ctkPenulDatatransaksss->bm_t_nilai_akhir);
-   $spreadsheet->getActiveSheet()->setCellValue('J'.$baseRows, $ctkPenulDatatransaksss->ppn_t_nilai_akhir);
-   $spreadsheet->getActiveSheet()->setCellValue('K'.$baseRows, $ctkPenulDatatransaksss->pph_t_nilai_akhir);
-   $spreadsheet->getActiveSheet()->setCellValue('L'.$baseRows, $ctkPenulDatatransaksss->ppnbm_t_nilai_akhir);
-   $spreadsheet->getActiveSheet()->setCellValue('M'.$baseRows, $ctkPenulDatatransaksss->denda);
-   $spreadsheet->getActiveSheet()->setCellValue('N'.$baseRows, $ctkPenulDatatransaksss->total_tagihan);
-   $baseRows++;
- }
+      $spreadsheet->getActiveSheet()->setCellValue('B'.(string)($baseRow + 6),  ($xanalisa_prosedur_rha2))
+      ->mergeCells('B'.(string)($baseRow + 6).':N'.(string)($baseRow + 6))
+      ->getStyle('B'.(string)($baseRow + 6))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)->setWrapText(true);
+      $spreadsheet->getActiveSheet()->getRowDimension((string)($baseRow + 6))->setRowHeight(60);
 
+
+
+      $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 7),'5')
+      ->setCellValue('B'.(string)($baseRow + 7),'Identifikasi Permasalahan')
+      ->mergeCells('B'.(string)($baseRow + 7).':D'.(string)($baseRow + 7))
+      ->getStyle('B'.(string)($baseRow + 7))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)->setWrapText(true);
+
+
+      $spreadsheet->getActiveSheet()->setCellValue('B'.(string)($baseRow + 8),  ($xanalisa_prosedur_rha3))
+      ->mergeCells('B'.(string)($baseRow + 8).':N'.(string)($baseRow + 8))
+      ->getStyle('B'.(string)($baseRow + 8))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)->setWrapText(true);
+      $spreadsheet->getActiveSheet()->getRowDimension((string)($baseRow + 8))->setRowHeight(60);
+
+      $spreadsheet->getActiveSheet()->setCellValue('B'.(string)($baseRow + 9),  ($xanalisa_prosedur_rha4))
+      ->mergeCells('B'.(string)($baseRow + 9).':N'.(string)($baseRow + 9))
+      ->getStyle('B'.(string)($baseRow + 9))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)->setWrapText(true);
+      $spreadsheet->getActiveSheet()->getRowDimension((string)($baseRow + 9))->setRowHeight(60);
+
+
+      $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 10),'6')
+      ->setCellValue('B'.(string)($baseRow + 10),'Identifikasi Barang')
+      ->mergeCells('B'.(string)($baseRow + 10).':D'.(string)($baseRow + 10))
+      ->getStyle('B'.(string)($baseRow + 10))->getAlignment()->setHorizontal(Alignment::VERTICAL_TOP);
+      $spreadsheet->getActiveSheet()->getRowDimension((string)($baseRow + 10))->setRowHeight(110);
+
+      // if (($path_dg) === null ){
+      //      // $path2= $ctkPenyajidata1 -> web_filename;
+      //         $path_dg='QUH6Mq6AjRY2IUp5dRZz0Ht2sYpd2bsV.jpg';
+      //          //return $path ;
+      //       }
+      //       elseif (($path_dg) === '' ){
+      //       //$path2= $ctkPenyajidata1 -> web_filename;
+      //         $path_dg='QUH6Mq6AjRY2IUp5dRZz0Ht2sYpd2bsV.jpg';
+      //          //return $path ;
+      //       }
+      //       else{ 
+      //         $path_dg= $ctkPenulHeader -> datagambar_filename;};     
+
+      $path_dg = $ctkPenulHeader -> datagambar_filename;
+      
+
+      $drawing = new Drawing();
+      $drawing->setName('PhpSpreadsheet logo');
+      $drawing->setDescription('PhpSpreadsheet logo');
+     // $drawing->setPath(__DIR__ . '/../images/PhpSpreadsheet_logo.png');
+      $drawing->setPath(__DIR__ . '/../web/uploads/'.$path_dg);
+      $drawing->setHeight(70);
+      $drawing->setCoordinates('E'.(string)($baseRow + 10));
+      $drawing->setOffsetX(20);
+      $drawing->setWorksheet($spreadsheet->getActiveSheet());
+
+
+      $spreadsheet->getActiveSheet()->setCellValue('B'.(string)($baseRow + 11),  ($xanalisa_prosedur_rha5))
+      ->mergeCells('B'.(string)($baseRow + 11).':N'.(string)($baseRow + 11))
+      ->getStyle('B'.(string)($baseRow + 11))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)->setWrapText(true);
+      $spreadsheet->getActiveSheet()->getRowDimension((string)($baseRow + 11))->setRowHeight(120);
+
+
+      $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 12),'7')
+      ->setCellValue('B'.(string)($baseRow + 12),'Penetapan HS Code')
+      ->mergeCells('B'.(string)($baseRow + 12).':D'.(string)($baseRow + 12))
+      ->getStyle('B'.(string)($baseRow + 12))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+
+
+      $spreadsheet->getActiveSheet()->setCellValue('B'.(string)($baseRow + 13),($xanalisa_prosedur_rha6))
+      ->mergeCells('B'.(string)($baseRow + 13).':N'.(string)($baseRow + 13))
+      ->getStyle('B'.(string)($baseRow + 13))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)->setWrapText(true);
+      $spreadsheet->getActiveSheet()->getRowDimension((string)($baseRow + 13))->setRowHeight(90);
+
+      $spreadsheet->getActiveSheet()->setCellValue('B'.(string)($baseRow + 14),  ($xanalisa_prosedur_rha7))
+      ->mergeCells('B'.(string)($baseRow + 14).':N'.(string)($baseRow + 14))
+      ->getStyle('B'.(string)($baseRow + 14))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)->setWrapText(true);
+      $spreadsheet->getActiveSheet()->getRowDimension((string)($baseRow + 14))->setRowHeight(50);
+
+
+
+      $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 16),'F.')
+      ->setCellValue('B'.(string)($baseRow + 16),'POTENSI TAGIHAN')
+      ->mergeCells('B'.(string)($baseRow + 16).':D'.(string)($baseRow + 16));
+
+
+
+
+      
+
+      $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 18),'NO.')
+      ->setCellValue('B'.(string)($baseRow + 18),'KODE KANTOR')
+      ->setCellValue('C'.(string)($baseRow + 18),'NOMOR')
+      ->setCellValue('D'.(string)($baseRow + 18),'TANGGAL')
+      ->setCellValue('E'.(string)($baseRow + 18),'NPWP')
+      ->setCellValue('F'.(string)($baseRow + 18),'PERUSAHAAN')
+      ->setCellValue('G'.(string)($baseRow + 18),'BEA MASUK')
+      ->setCellValue('H'.(string)($baseRow + 18),'BMAD/BMI/BMP')
+      ->setCellValue('I'.(string)($baseRow + 18),'BEA KELUAR')
+      ->setCellValue('J'.(string)($baseRow + 18),'PPN')
+      ->setCellValue('K'.(string)($baseRow + 18),'PPh')
+      ->setCellValue('L'.(string)($baseRow + 18),'PPnBM')
+      ->setCellValue('M'.(string)($baseRow + 18),'DENDA')
+      ->setCellValue('N'.(string)($baseRow + 18),'TOTAL');
+      
+
+      $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 19),'1.')
+      ->setCellValue('B'.(string)($baseRow + 19),'2')
+      ->setCellValue('C'.(string)($baseRow + 19),'3')
+      ->setCellValue('D'.(string)($baseRow + 19),'4')
+      ->setCellValue('E'.(string)($baseRow + 19),'5')
+      ->setCellValue('F'.(string)($baseRow + 19),'6')
+      ->setCellValue('G'.(string)($baseRow + 19),'7')
+      ->setCellValue('H'.(string)($baseRow + 19),'8')
+      ->setCellValue('I'.(string)($baseRow + 19),'9')
+      ->setCellValue('J'.(string)($baseRow + 19),'10')
+      ->setCellValue('K'.(string)($baseRow + 19),'11')
+      ->setCellValue('L'.(string)($baseRow + 19),'12')
+      ->setCellValue('M'.(string)($baseRow + 19),'13')
+      ->setCellValue('N'.(string)($baseRow + 19),'14');
+
+
+      $baseRows= $baseRow +  20;
+      foreach($ctkPenulDatatransaks as $ctkPenulDatatransaksss){
+
+        $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRows, $baseRows)
+        ->setCellValue('B'.$baseRows,$ctkPenulDatatransaksss->kode_kantor )
+        ->setCellValue('C'.$baseRows, $ctkPenulDatatransaksss->pib)
+        ->setCellValue('D'.$baseRows, $ctkPenulDatatransaksss->tglpib)
+        ->setCellValue('E'.$baseRows, $ctkPenulDatatransaksss->npwp_imp)
+        ->setCellValue('F'.$baseRows, $ctkPenulDatatransaksss->imp)
+        ->setCellValue('G'.$baseRows, $ctkPenulDatatransaksss->bm_t_nilai_akhir)
+        ->setCellValue('J'.$baseRows, $ctkPenulDatatransaksss->ppn_t_nilai_akhir)
+        ->setCellValue('K'.$baseRows, $ctkPenulDatatransaksss->pph_t_nilai_akhir)
+        ->setCellValue('L'.$baseRows, $ctkPenulDatatransaksss->ppnbm_t_nilai_akhir)
+        ->setCellValue('M'.$baseRows, $ctkPenulDatatransaksss->denda)
+        ->setCellValue('N'.$baseRows, $ctkPenulDatatransaksss->total_tagihan);
+      //  ->getStyle('B'.$baseRows)->getFont()->setSize(11);
+        $baseRows++;
+      }
+
+$spreadsheet->getActiveSheet()->getStyle('G61')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 
         // Miscellaneous glyphs, UTF-8
-      $spreadsheet->getActiveSheet()->setCellValue('I1', $ctkPenulHeader ->rha);
-      $spreadsheet->getActiveSheet()->setCellValue('O3', $ctkPenulHeader ->id);
-      $spreadsheet->getActiveSheet()->setCellValue('E3', $ctkJendok ->name);
-      $spreadsheet->getActiveSheet()->setCellValue('E4', $ctkJenPelanggaran ->name);
-      $spreadsheet->getActiveSheet()->setCellValue('G9', '=E3');
-      $spreadsheet->getActiveSheet()->setCellValue('F'.(string)($baseRows + 1), 'TOTAL');
-      $spreadsheet->getActiveSheet()->setCellValue('F'.(string)($baseRows + 2), 'PEMBULATAN');
-      $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRows + 4), 'G')
-      ->setCellValue('B'.(string)($baseRows + 4), 'KESIMPULAN');
-      $spreadsheet->getActiveSheet()->setCellValue('B'.(string)($baseRows + 6), 'Berdasarkan hasil analisis tersebut ditemukan potensi tambah bayar pada barang - barang tersebut  dengan berbagai tipe sebesar ')
-      ->setCellValue('h'.(string)($baseRows + 6), $ctkPenulHeader->kesimpulan_rha_nilaipotensi);
-       $spreadsheet->getActiveSheet()->setCellValue('C'.(string)($baseRows + 8), 'Penyaji Data')
-      ->setCellValue('G'.(string)($baseRows + 8), 'Analis 1')
-      ->setCellValue('J'.(string)($baseRows + 8), 'Analis 2')
-      ->setCellValue('M'.(string)($baseRows + 8), 'Analis 3');
+      $spreadsheet->getActiveSheet()
+      ->setCellValue('A10','NO.')
+      ->setCellValue('B10','KODE KANTOR')
+->setCellValue('C10','NOMOR')
+->setCellValue('D10','TANGGAL')
+->setCellValue('E10','NPWP')
+->setCellValue('F10','PERUSAHAAN')
+->setCellValue('G10','NO SERI BARANG')
+->setCellValue('H10','URAIAN BARANG')
+->setCellValue('I10','HS')
+->setCellValue('J10','TARIF')
+->setCellValue('K10','NILAI')
+->setCellValue('L10','HS')
+->setCellValue('M10','TARIF')
+->setCellValue('N10','NILAI')
+->setCellValue('O10','KET');
 
-         $spreadsheet->getActiveSheet()->setCellValue('C'.(string)($baseRows + 12),  $ctkAnalisPenyaji1->name)
-      ->setCellValue('G'.(string)($baseRows + 12), $ctkAnalis1->name)
-      ->setCellValue('J'.(string)($baseRows + 12), $ctkAnalis2->name)
-      ->setCellValue('M'.(string)($baseRows + 12), $ctkAnalis3->name);
+$spreadsheet->getActiveSheet()->setCellValue('A11','1.')
+->setCellValue('B11','2')
+->setCellValue('C11','3')
+->setCellValue('D11','4')
+->setCellValue('E11','5')
+->setCellValue('F11','6')
+->setCellValue('G11','7')
+->setCellValue('H11','8')
+->setCellValue('I11','9')
+->setCellValue('J11','10')
+->setCellValue('K11','11')
+->setCellValue('L11','12')
+->setCellValue('M11','13')
+->setCellValue('N11','14')
+->setCellValue('O11','15');
+
+
+
+$spreadsheet->getActiveSheet()
+->setCellValue('H1', 'RISALAH HASIL ANALISIS (RHA) NOMOR')
+->setCellValue('I1', $ctkPenulHeader ->rha);
+
+$spreadsheet->getActiveSheet()
+->setCellValue('A3', 'A')
+->setCellValue('B3', 'JENIS DOKUMEN')
+->setCellValue('E3', $ctkJendok ->name)
+->setCellValue('O3', 'ref_id-'.$ctkPenulHeader ->id);;
+
+$spreadsheet->getActiveSheet()
+->setCellValue('A4', 'B')
+->setCellValue('B4', 'JENIS PELANGGARAN')
+->setCellValue('E4', $ctkJenPelanggaran ->name);
+
+$spreadsheet->getActiveSheet()
+->setCellValue('A5', 'C')
+->setCellValue('B5', 'DOKUMEN/BUKTI PENDUKUNG')
+->setCellValue('E5', 'Dokumen pemberitahuan barang dan dokumen pendukung lainnya');
+
+$spreadsheet->getActiveSheet()
+->setCellValue('A7', 'D')
+->setCellValue('B7', 'DATA TRANSAKSI');
+
+$spreadsheet->getActiveSheet()->setCellValue('O6', $ctkJenPelanggaran->id)
+->getStyle('O6')->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE);
+
+$spreadsheet->getActiveSheet()->setCellValue('O8', '=IF(O6 = 1,"salah tarif","salah nilai")')
+->getStyle('O8')->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE);
+
+
+$spreadsheet->getActiveSheet()
+->setCellValue('G9', '=E3')
+->setCellValue('F9', 'JENIS DOKUMEN')
+->setCellValue('I9', 'DIBERITAHUKAN')
+->setCellValue('L9', 'SEHARUSNYA');
+$spreadsheet->getActiveSheet()->setCellValue('F'.(string)($baseRows + 1), 'TOTAL');
+
+//$SUMRANGE = 'D2:D'.$i;
+$baseRowG = $baseRow + 20;
+$baseRows_t = $baseRows -1;
+
+//$SUMRANGE = 'G'.$baseRowG.':G'.$baseRows - 1;
+
+$SUMRANGE_bm = 'G'.$baseRowG.':G'.$baseRows_t;
+$SUMRANGE_ppn = 'J'.$baseRowG.':J'.$baseRows_t;
+$SUMRANGE_pph = 'K'.$baseRowG.':K'.$baseRows_t;
+$SUMRANGE_total = 'G'.(string)($baseRows + 1).':M'.(string)($baseRows + 1);
+$SUMROUNDUP_total = 'G'.(string)($baseRows + 2).':M'.(string)($baseRows + 2);
+  // var_dump($SUMRANGE); 
+  // die();
+$spreadsheet->getActiveSheet()->setCellValue('G'.($baseRows + 1), '=SUM('.$SUMRANGE_bm.')')
+
+->setCellValue('J'.($baseRows + 1), '=SUM('.$SUMRANGE_ppn.')')
+->setCellValue('K'.($baseRows + 1), '=SUM('.$SUMRANGE_pph.')')
+->setCellValue('N'.($baseRows + 1), '=SUM('.$SUMRANGE_total.')');
+
+
+$spreadsheet->getActiveSheet()
+->setCellValue('F'.(string)($baseRows + 2), 'PEMBULATAN')
+->setCellValue('G'.(string)($baseRows + 2), '=ROUNDUP(G'.(string)($baseRows + 1).',-3)')
+->setCellValue('J'.(string)($baseRows + 2), '=ROUNDUP(J'.(string)($baseRows + 1).',-3)')
+->setCellValue('K'.(string)($baseRows + 2), '=ROUNDUP(K'.(string)($baseRows + 1).',-3)')
+->setCellValue('N'.(string)($baseRows + 2), '=SUM('.$SUMROUNDUP_total.')');
+
+$spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRows + 4), 'G')
+->setCellValue('B'.(string)($baseRows + 4), 'KESIMPULAN');
+
+$spreadsheet->getActiveSheet()->setCellValue('B'.(string)($baseRows + 6), 'Berdasarkan hasil analisis tersebut ditemukan potensi tambah bayar pada barang - barang tersebut  dengan berbagai tipe sebesar ')
+->setCellValue('I'.(string)($baseRows + 6), $ctkPenulHeader->kesimpulan_rha_nilaipotensi);
+
+$spreadsheet->getActiveSheet()->setCellValue('C'.(string)($baseRows + 8), 'Penyaji Data')
+->setCellValue('G'.(string)($baseRows + 8), 'Analis 1')
+->setCellValue('J'.(string)($baseRows + 8), 'Analis 2')
+->setCellValue('M'.(string)($baseRows + 8), 'Analis 3');
+
+$spreadsheet->getActiveSheet()->setCellValue('C'.(string)($baseRows + 12),  $ctkAnalisPenyaji1->name)
+->setCellValue('G'.(string)($baseRows + 12), $ctkAnalis1->name)
+->setCellValue('J'.(string)($baseRows + 12), $ctkAnalis2->name)
+->setCellValue('M'.(string)($baseRows + 12), $ctkAnalis3->name);
 
         // Rename worksheet
-      $spreadsheet->getActiveSheet()->setTitle('RHA');
+
+
+$spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(15);
+$spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(20);
+$spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+$spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+$spreadsheet->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+$spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(20);
+$spreadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(15);
+$spreadsheet->getActiveSheet()->getColumnDimension('K')->setWidth(15);
+$spreadsheet->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+$spreadsheet->getActiveSheet()->getColumnDimension('M')->setWidth(15);
+$spreadsheet->getActiveSheet()->getColumnDimension('N')->setWidth(20);
+
+
+
+$spreadsheet->getActiveSheet()->getStyle('A1:N'.(string)($baseRows + 13))->getFont()->setSize(12)
+->setName('Arial');
+$spreadsheet->getActiveSheet()->getStyle('A10:O11')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+$spreadsheet->getActiveSheet()->getStyle('A'.(string)($baseRow + 18).':N'.(string)($baseRow + 19))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+
+
+$styleThinBlackBorderOutline = [
+  'borders' => [
+    'allBorders' => [
+      'borderStyle' => Border::BORDER_THIN,
+      'color' => ['argb' => 'FF000000'],
+    ],
+
+
+  ],
+];
+
+$spreadsheet->getActiveSheet()->getStyle('A10:O'.(string)($baseRow))->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('A'.(string)($baseRow+18).':N'.(string)($baseRows))->applyFromArray($styleThinBlackBorderOutline);
+
+$spreadsheet->getActiveSheet()->setTitle('RHA');
 
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
-      $spreadsheet->setActiveSheetIndex(0);
+$spreadsheet->setActiveSheetIndex(0);
 
 
-
+$nf0 = "rha_newREF_ID-".$ctkPenulHeader->id.".xlsx";
 
 //same ending
-      $response = Yii::$app->getResponse();
-      $headers = $response->getHeaders();
+$response = Yii::$app->getResponse();
+$headers = $response->getHeaders();
 
             // Redirect output to a client’s web browser (Xlsx)
-      $headers->set('Content-Type', 'application/vnd.ms-excel');
-      $headers->set('Content-Disposition','attachment;filename="rha_new.xlsx"');
+$headers->set('Content-Type', 'application/vnd.ms-excel');
+$headers->set('Content-Disposition','attachment;filename='.$nf0);
 
-      $headers->set('Cache-Control: max-age=0');
+$headers->set('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
-      $headers->set('Cache-Control: max-age=1');
+$headers->set('Cache-Control: max-age=1');
 
         // If you're serving to IE over SSL, then the following may be needed
          $headers->set('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
@@ -1710,13 +1967,359 @@ $baseRows= $baseRow +  15;
          $headers->set('Pragma: public'); // HTTP/1.0
          ob_start();        
          $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-         $content = ob_get_contents();
-         ob_end_clean();
-         return $content;
          $writer->save("php://output");
-         
-         //ob_end_clean();
-         
+         $content = ob_get_contents();
+         ob_clean();
+         return $content;
+
+      //  exit;
+
+
+
+
+
+       }
+
+             public function actionExcelKkp($id){
+
+        $ctkPenulHeader = \app\models\PenulHeader::findOne($id);
+        
+         $ctkPenulDatatransaks = \app\models\PenulDatatransaks::find()->andwhere (['link_header'=>$ctkPenulHeader->id,'flag_pusat' => 'setuju'])->all();
+         $ctkAnalisPenyaji1 = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->penyaji_data1])->one();
+        $ctkAnalis1 = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->analis1])->one();
+        $ctkAnalis2 = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->analis2])->one();
+        $ctkAnalis3 = \app\models\PenulAnalisPenyaji::find()->where (['id'=>$ctkPenulHeader->analis3])->one();
+        $ctkAnalis2ttd = \app\models\PenulAnalisPenyaji::find('web_filename')->where (['id'=>$ctkPenulHeader->analis2])->one();
+        $ctkJendok = \app\models\JenDok::find()->where (['id'=>$ctkPenulHeader->jen_dok])->one();
+        $ctkJenPelanggaran = \app\models\JenPelanggaran::find()->where (['id'=>$ctkPenulHeader->jen_pelanggaran])->one();
+
+
+        $spreadsheet = new Spreadsheet();
+
+        $spreadsheet->getActiveSheet()->getPageSetup()
+        ->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+        $spreadsheet->getActiveSheet()->getPageSetup()
+        ->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4); 
+
+
+        // Set document properties
+        $spreadsheet->getProperties()->setCreator('Dens_2021')
+        ->setLastModifiedBy('Maarten Balliauw')
+        ->setTitle('Office 2007 XLSX Test Document')
+        ->setSubject('Office 2007 XLSX Test Document')
+        ->setDescription('Test document for Office 2007 XLSX, generated using PHP classes.')
+        ->setKeywords('office 2007 openxml php')
+        ->setCategory('Test result file');
+
+
+
+        // Add some data
+       $baseRow=12; // line 2
+       //$baseRows=28 +  $baseRow ;
+
+       foreach($ctkPenulDatatransaks as $ctkPenulDatatransakss){
+        $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRow, $baseRow-11);
+        // $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRows, $baseRows-39);
+
+        $spreadsheet->getActiveSheet()->setCellValue('B'.$baseRow, $ctkPenulDatatransakss->kode_kantor);
+        //  $spreadsheet->getActiveSheet()->setCellValue('B'.$baseRows,$ctkPenulDatatransakss->kode_kantor );
+
+        $spreadsheet->getActiveSheet()->setCellValue('C'.$baseRow, $ctkPenulDatatransakss->pib);
+       //  $spreadsheet->getActiveSheet()->setCellValue('C'.$baseRows, $ctkPenulDatatransakss->pib);
+
+        $spreadsheet->getActiveSheet()->setCellValue('D'.$baseRow, $ctkPenulDatatransakss->tglpib);
+       //  $spreadsheet->getActiveSheet()->setCellValue('D'.$baseRows, $ctkPenulDatatransakss->tglpib);
+
+      //
+
+        $spreadsheet->getActiveSheet()->setCellValue('E'.$baseRow, $ctkPenulDatatransakss->npwp_imp);
+       // $spreadsheet->getActiveSheet()->setCellValue('E'.$baseRows, $ctkPenulDatatransakss->npwp_imp);
+
+        $spreadsheet->getActiveSheet()->setCellValue('F'.$baseRow, $ctkPenulDatatransakss->imp);
+        //  $spreadsheet->getActiveSheet()->setCellValue('F'.$baseRows, $ctkPenulDatatransakss->imp);
+
+        $spreadsheet->getActiveSheet()->setCellValue('G'.$baseRow, $ctkPenulDatatransakss->seri_brg);
+        // $spreadsheet->getActiveSheet()->setCellValue('G'.$baseRows, $ctkPenulDatatransakss->bm_t_nilai_akhir);
+
+        $spreadsheet->getActiveSheet()->setCellValue('H'.$baseRow, $ctkPenulDatatransakss->uraian_brg);
+        $spreadsheet->getActiveSheet()->setCellValue('I'.$baseRow, $ctkPenulDatatransakss->hs);
+
+        $spreadsheet->getActiveSheet()->setCellValue('J'.$baseRow, $ctkPenulDatatransakss->trf_bm);
+      //  $spreadsheet->getActiveSheet()->setCellValue('J'.$baseRows, $ctkPenulDatatransakss->ppn_t_nilai_akhir);
+
+        $spreadsheet->getActiveSheet()->setCellValue('K'.$baseRow, $ctkPenulDatatransakss->nilaipabean_awal);
+
+      //  $spreadsheet->getActiveSheet()->setCellValue('K'.$baseRows, $ctkPenulDatatransakss->pph_t_nilai_akhir);
+
+
+        $spreadsheet->getActiveSheet()->setCellValue('L'.$baseRow, $ctkPenulDatatransakss->hs_t);
+       //    $spreadsheet->getActiveSheet()->setCellValue('L'.$baseRows, $ctkPenulDatatransakss->ppnbm_t_nilai_akhir);
+
+
+        $spreadsheet->getActiveSheet()->setCellValue('M'.$baseRow, $ctkPenulDatatransakss->trf_bm_t);
+       // $spreadsheet->getActiveSheet()->setCellValue('M'.$baseRows, $ctkPenulDatatransakss->denda);
+
+        $spreadsheet->getActiveSheet()->setCellValue('N'.$baseRow, $ctkPenulDatatransakss->nilaipabean_akhir);
+
+        $spreadsheet->getActiveSheet()->setCellValue('O'.$baseRow, '=O8');
+
+        $baseRow++;
+      }
+
+
+
+      $vowel = array("&nbsp", ";", "â");
+      $xanalisa_prosedur_rha = str_replace($vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha));
+
+
+      $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 4),'3')
+      ->setCellValue('B'.(string)($baseRow + 4),  ($xanalisa_prosedur_rha));
+      $spreadsheet->getActiveSheet()->mergeCells('B'.(string)($baseRow + 4).':N'.(string)($baseRow + 4));
+      $spreadsheet->getActiveSheet()->getStyle('B'.(string)($baseRow + 4))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)->setWrapText(true);
+      $spreadsheet->getActiveSheet()->getRowDimension((string)($baseRow + 4))->setRowHeight(60);
+
+           
+
+      $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 18),'NO.')
+      ->setCellValue('B'.(string)($baseRow + 18),'KODE KANTOR')
+      ->setCellValue('C'.(string)($baseRow + 18),'NOMOR')
+      ->setCellValue('D'.(string)($baseRow + 18),'TANGGAL')
+      ->setCellValue('E'.(string)($baseRow + 18),'NPWP')
+      ->setCellValue('F'.(string)($baseRow + 18),'PERUSAHAAN')
+      ->setCellValue('G'.(string)($baseRow + 18),'BEA MASUK')
+      ->setCellValue('H'.(string)($baseRow + 18),'BMAD/BMI/BMP')
+      ->setCellValue('I'.(string)($baseRow + 18),'BEA KELUAR')
+      ->setCellValue('J'.(string)($baseRow + 18),'PPN')
+      ->setCellValue('K'.(string)($baseRow + 18),'PPh')
+      ->setCellValue('L'.(string)($baseRow + 18),'PPnBM')
+      ->setCellValue('M'.(string)($baseRow + 18),'DENDA')
+      ->setCellValue('N'.(string)($baseRow + 18),'TOTAL');
+      
+
+      $spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRow + 19),'1.')
+      ->setCellValue('B'.(string)($baseRow + 19),'2')
+      ->setCellValue('C'.(string)($baseRow + 19),'3')
+      ->setCellValue('D'.(string)($baseRow + 19),'4')
+      ->setCellValue('E'.(string)($baseRow + 19),'5')
+      ->setCellValue('F'.(string)($baseRow + 19),'6')
+      ->setCellValue('G'.(string)($baseRow + 19),'7')
+      ->setCellValue('H'.(string)($baseRow + 19),'8')
+      ->setCellValue('I'.(string)($baseRow + 19),'9')
+      ->setCellValue('J'.(string)($baseRow + 19),'10')
+      ->setCellValue('K'.(string)($baseRow + 19),'11')
+      ->setCellValue('L'.(string)($baseRow + 19),'12')
+      ->setCellValue('M'.(string)($baseRow + 19),'13')
+      ->setCellValue('N'.(string)($baseRow + 19),'14');
+
+
+      $baseRows= $baseRow +  20;
+      foreach($ctkPenulDatatransaks as $ctkPenulDatatransaksss){
+
+        $spreadsheet->getActiveSheet()->setCellValue('A'.$baseRows, $baseRows)
+        ->setCellValue('B'.$baseRows,$ctkPenulDatatransaksss->kode_kantor )
+        ->setCellValue('C'.$baseRows, $ctkPenulDatatransaksss->pib)
+        ->setCellValue('D'.$baseRows, $ctkPenulDatatransaksss->tglpib)
+       // ->setCellValue('E'.$baseRows, $ctkPenulDatatransaksss->npwp_imp)
+        ->setCellValue('F'.$baseRows, $ctkPenulDatatransaksss->imp)
+        ->setCellValue('G'.$baseRows, $ctkPenulDatatransaksss->bm_t_nilai_akhir)
+        ->setCellValue('J'.$baseRows, $ctkPenulDatatransaksss->ppn_t_nilai_akhir)
+        ->setCellValue('K'.$baseRows, $ctkPenulDatatransaksss->pph_t_nilai_akhir)
+        ->setCellValue('L'.$baseRows, $ctkPenulDatatransaksss->ppnbm_t_nilai_akhir)
+        ->setCellValue('M'.$baseRows, $ctkPenulDatatransaksss->denda)
+        ->setCellValue('N'.$baseRows, $ctkPenulDatatransaksss->total_tagihan);
+      //  ->getStyle('B'.$baseRows)->getFont()->setSize(11);
+        $baseRows++;
+      }
+
+//$spreadsheet->getActiveSheet()->getStyle('G61')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+
+        // Miscellaneous glyphs, UTF-8
+      $spreadsheet->getActiveSheet()
+      ->setCellValue('A10','NO.')
+      ->setCellValue('B10','KODE KANTOR')
+->setCellValue('C10','NOMOR')
+->setCellValue('D10','TANGGAL')
+->setCellValue('E10','NPWP')
+->setCellValue('F10','PERUSAHAAN')
+->setCellValue('G10','NO SERI BARANG')
+->setCellValue('H10','URAIAN BARANG')
+->setCellValue('I10','HS')
+->setCellValue('J10','TARIF')
+->setCellValue('K10','NILAI')
+->setCellValue('L10','HS')
+->setCellValue('M10','TARIF')
+->setCellValue('N10','NILAI')
+->setCellValue('O10','KET');
+
+$spreadsheet->getActiveSheet()->setCellValue('A11','1.')
+->setCellValue('B11','2')
+->setCellValue('C11','3')
+->setCellValue('D11','4')
+->setCellValue('E11','5')
+->setCellValue('F11','6')
+->setCellValue('G11','7')
+->setCellValue('H11','8')
+->setCellValue('I11','9')
+->setCellValue('J11','10')
+->setCellValue('K11','11')
+->setCellValue('L11','12')
+->setCellValue('M11','13')
+->setCellValue('N11','14')
+->setCellValue('O11','15');
+
+
+
+$spreadsheet->getActiveSheet()
+->setCellValue('H1', 'KERTAS KERJA PENELITIAN ULANG')
+->setCellValue('H2', $ctkPenulHeader ->kkp);
+
+$spreadsheet->getActiveSheet()
+->setCellValue('A3', 'A')
+->setCellValue('B3', 'JENIS DOKUMEN')
+->setCellValue('E3', $ctkJendok ->name)
+->setCellValue('O3', 'ref_id-'.$ctkPenulHeader ->id);;
+
+$spreadsheet->getActiveSheet()
+->setCellValue('A4', 'B')
+->setCellValue('B4', 'JENIS PELANGGARAN')
+->setCellValue('E4', $ctkJenPelanggaran ->name);
+
+$spreadsheet->getActiveSheet()
+->setCellValue('A5', 'C')
+->setCellValue('B5', 'DOKUMEN/BUKTI PENDUKUNG')
+->setCellValue('E5', 'Dokumen pemberitahuan barang dan dokumen pendukung lainnya');
+
+$spreadsheet->getActiveSheet()
+->setCellValue('A7', 'D')
+->setCellValue('B7', 'DATA TRANSAKSI');
+
+$spreadsheet->getActiveSheet()->setCellValue('O6', $ctkJenPelanggaran->id)
+->getStyle('O6')->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE);
+
+$spreadsheet->getActiveSheet()->setCellValue('O8', '=IF(O6 = 1,"salah tarif","salah nilai")')
+->getStyle('O8')->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE);
+
+
+$spreadsheet->getActiveSheet()
+->setCellValue('G9', '=E3')
+->setCellValue('F9', 'JENIS DOKUMEN')
+->setCellValue('I9', 'DIBERITAHUKAN')
+->setCellValue('L9', 'SEHARUSNYA');
+$spreadsheet->getActiveSheet()->setCellValue('F'.(string)($baseRows + 1), 'TOTAL');
+
+//$SUMRANGE = 'D2:D'.$i;
+$baseRowG = $baseRow + 20;
+$baseRows_t = $baseRows -1;
+
+//$SUMRANGE = 'G'.$baseRowG.':G'.$baseRows - 1;
+
+$SUMRANGE_bm = 'G'.$baseRowG.':G'.$baseRows_t;
+$SUMRANGE_ppn = 'J'.$baseRowG.':J'.$baseRows_t;
+$SUMRANGE_pph = 'K'.$baseRowG.':K'.$baseRows_t;
+$SUMRANGE_total = 'G'.(string)($baseRows + 1).':M'.(string)($baseRows + 1);
+$SUMROUNDUP_total = 'G'.(string)($baseRows + 2).':M'.(string)($baseRows + 2);
+  // var_dump($SUMRANGE); 
+  // die();
+$spreadsheet->getActiveSheet()->setCellValue('G'.($baseRows + 1), '=SUM('.$SUMRANGE_bm.')')
+
+->setCellValue('J'.($baseRows + 1), '=SUM('.$SUMRANGE_ppn.')')
+->setCellValue('K'.($baseRows + 1), '=SUM('.$SUMRANGE_pph.')')
+->setCellValue('N'.($baseRows + 1), '=SUM('.$SUMRANGE_total.')');
+
+
+$spreadsheet->getActiveSheet()
+->setCellValue('F'.(string)($baseRows + 2), 'PEMBULATAN')
+->setCellValue('G'.(string)($baseRows + 2), '=ROUNDUP(G'.(string)($baseRows + 1).',-3)')
+->setCellValue('J'.(string)($baseRows + 2), '=ROUNDUP(J'.(string)($baseRows + 1).',-3)')
+->setCellValue('K'.(string)($baseRows + 2), '=ROUNDUP(K'.(string)($baseRows + 1).',-3)')
+->setCellValue('N'.(string)($baseRows + 2), '=SUM('.$SUMROUNDUP_total.')');
+
+$spreadsheet->getActiveSheet()->setCellValue('A'.(string)($baseRows + 4), 'SUMBER DATA : DOKUMEN')
+->setCellValue('E'.(string)($baseRows + 4), $ctkJendok ->name);
+
+
+$spreadsheet->getActiveSheet()->setCellValue('C'.(string)($baseRows + 8), 'Penyaji Data')
+->setCellValue('G'.(string)($baseRows + 8), 'Analis 1')
+->setCellValue('J'.(string)($baseRows + 8), 'Analis 2')
+->setCellValue('M'.(string)($baseRows + 8), 'Analis 3');
+
+$spreadsheet->getActiveSheet()->setCellValue('C'.(string)($baseRows + 12),  $ctkAnalisPenyaji1->name)
+->setCellValue('G'.(string)($baseRows + 12), $ctkAnalis1->name)
+->setCellValue('J'.(string)($baseRows + 12), $ctkAnalis2->name)
+->setCellValue('M'.(string)($baseRows + 12), $ctkAnalis3->name);
+
+        // Rename worksheet
+
+
+$spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(15);
+$spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(20);
+$spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+$spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+$spreadsheet->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+$spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(20);
+$spreadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(15);
+$spreadsheet->getActiveSheet()->getColumnDimension('K')->setWidth(15);
+$spreadsheet->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+$spreadsheet->getActiveSheet()->getColumnDimension('M')->setWidth(15);
+$spreadsheet->getActiveSheet()->getColumnDimension('N')->setWidth(20);
+
+
+
+$spreadsheet->getActiveSheet()->getStyle('A1:N'.(string)($baseRows + 13))->getFont()->setSize(12)
+->setName('Arial');
+$spreadsheet->getActiveSheet()->getStyle('A10:O11')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+$spreadsheet->getActiveSheet()->getStyle('A'.(string)($baseRow + 18).':N'.(string)($baseRow + 19))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+
+
+$styleThinBlackBorderOutline = [
+  'borders' => [
+    'allBorders' => [
+      'borderStyle' => Border::BORDER_THIN,
+      'color' => ['argb' => 'FF000000'],
+    ],
+
+
+  ],
+];
+
+$spreadsheet->getActiveSheet()->getStyle('A10:O'.(string)($baseRow))->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('A'.(string)($baseRow+18).':N'.(string)($baseRows))->applyFromArray($styleThinBlackBorderOutline);
+
+$spreadsheet->getActiveSheet()->setTitle('KKP');
+
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+$spreadsheet->setActiveSheetIndex(0);
+
+
+
+
+//same ending
+$response = Yii::$app->getResponse();
+$headers = $response->getHeaders();
+
+$nf1 = "kkp_newREF_ID-".$ctkPenulHeader->id.".xlsx";
+//var_dump($nf1); die;
+
+            // Redirect output to a client’s web browser (Xlsx)
+$headers->set('Content-Type', 'application/vnd.ms-excel');
+$headers->set('Content-Disposition','attachment;filename='.$nf1);
+//$headers->set('Content-Disposition','$nf1');
+$headers->set('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+$headers->set('Cache-Control: max-age=1');
+
+        // If you're serving to IE over SSL, then the following may be needed
+         $headers->set('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+         $headers->set('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+         $headers->set('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+         $headers->set('Pragma: public'); // HTTP/1.0
+         ob_start();        
+         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+         $writer->save("php://output");
+         $content = ob_get_contents();
+         ob_clean();
+         return $content;
 
       //  exit;
 

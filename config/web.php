@@ -151,6 +151,14 @@ $config = [
      ],
      'cache' => [
         'class' => 'yii\caching\FileCache',
+            //     'servers' => [
+            //     [
+            //         'host' => 'localhost',
+            //         'port' => 11211,
+            //         'weight' => 60,
+            //     ],
+                
+            // ],
     ],
     'user' => [
         'identityClass' => 'app\models\User',

@@ -100,9 +100,17 @@ $this->params['breadcrumbs'][] = $this->title;
             ]) ?>
             <?php }  ?> 
 
+                <?php  if ((Mimin::checkRoute($this->context->id."/excel-kkp")))
+            { ?> <?= Html::a('kkp new', ['excel-kkp','id' => $model->id], ['class' => 'btn btn-info',
+                'data' => [
+                    'confirm' => 'Apakah Anda yakin ingin  cetak kertas kerja penul new ??',
+                                    ],
+            ]) ?>
+            <?php }  ?>
+
               <!-- <?php if ((Mimin::checkRoute($this->context->id."/importdatadirect")))
             { ?>
-             <?= Html::a('importdata direct PPh 7.5%', ['importdatadirect02','id' => $model->id], ['class' => 'btn btn-warning',
+             <?= Html::a('importdata direct', ['importdatadirect02','id' => $model->id], ['class' => 'btn btn-warning',
                 'data' => [
                     'confirm' => 'Apakah Anda yakin ingin import data (pastikan format data excel sudah sesuai) ???',
                                     ],

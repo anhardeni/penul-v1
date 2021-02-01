@@ -10,8 +10,6 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use app\models\PenulHeader;
-use app\model\User;
-use yii\db\Expressions;
 
 /**
  * PenulLinkTemaheaderController implements the CRUD actions for PenulLinkTemaheader model.
@@ -238,7 +236,7 @@ class PenulLinkTemaheaderController extends Controller
          [
          'jen_dok' => 1,
          'jen_pelanggaran' => 1, // url is unique
-          'penyaji_data1' =>  Yii::$app->user->identity->id,
+          'penyaji_data1' =>  $model->created_by,
           'analis1'=> 4,
           'analisa_prosedur_rha' => $model->dap_rha,
           'analisa_prosedur_rha2' => $model->dap_rha2,
@@ -247,6 +245,9 @@ class PenulLinkTemaheaderController extends Controller
           'analisa_prosedur_rha5' => $model->dap_rha5,
           'analisa_prosedur_rha6' => $model->dap_rha6,
           'analisa_prosedur_rha7' => $model->dap_rha7,
+          'datagambar_filename' =>  $model->data_gambar_filename,
+          'created_at'=> Yii::$app->formatter->asTimestamp(date('Y-d-m h:i:s')),
+          'created_by'=> Yii::$app->user->identity->id,
                   ], 
       //  // [  'visits' => new \yii\db\Expression('visits + 1'),    ]
          $params)->execute();
@@ -284,6 +285,7 @@ public function actionCopylinktema($id)
           'dap_rha7' => $model->dap_rha7,
           'created_at'=> Yii::$app->formatter->asTimestamp(date('Y-d-m h:i:s')),
           'created_by'=> Yii::$app->user->identity->id,
+          
                   ], 
       //  // [  'visits' => new \yii\db\Expression('visits + 1'),    ]
          $params)->execute();

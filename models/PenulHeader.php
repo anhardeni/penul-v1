@@ -53,6 +53,7 @@ use Yii;
  * @property PenulUraianAnalisa[] $penulUraianAnalisas
  * @property PenulAnalisPenyaji $penyajiData1
  * @property PenulAnalisPenyaji $penyajiData2
+ * @property string|null $datagambar_filename
  */
 class PenulHeader extends \yii\db\ActiveRecord
 {
@@ -87,6 +88,7 @@ class PenulHeader extends \yii\db\ActiveRecord
             [['analisa_prosedur_rha', 'analisa_prosedur_rha2','analisa_prosedur_rha3','analisa_prosedur_rha4','analisa_prosedur_rha5',
             'analisa_prosedur_rha6','analisa_prosedur_rha7'], 'string'], 
             [['kesimpulan_laop'], 'string', 'max' => 255],
+            [['datagambar_filename'], 'string', 'max' => 100],
             [['laop','st' ,'nd', 'rha', 'kkp', 'npp', 'nhpu'], 'string', 'max' => 30],
             [['jen_dok'], 'exist', 'skipOnError' => true, 'targetClass' => JenDok::className(), 'targetAttribute' => ['jen_dok' => 'id']],
             [['jen_pelanggaran'], 'exist', 'skipOnError' => true, 'targetClass' => JenPelanggaran::className(), 'targetAttribute' => ['jen_pelanggaran' => 'id']],
@@ -132,6 +134,7 @@ class PenulHeader extends \yii\db\ActiveRecord
             'st_tgl' => 'St Tgl',
             'nhpu' => 'Nhpu',
             'nhpu_tgl' => 'Nhpu Tgl',
+            'datagambar_filename' => 'Data Gambar Filename',
             'created_at' => 'Created At',
             'created_by' => 'Created By',
             'updated_at' => 'Updated At',

@@ -365,7 +365,7 @@ jQuery(".dynamicform_wrapper").on("afterInsert", function(e, item) {
                 ]
             ) ?>
 
-            <label>Identitas Barang</label>
+            <label>Identifikasi Barang</label>
             <?= $form->field($model, 'analisa_prosedur_rha5')->widget(EditorClassic::className(), 
                 [
                     'toolbar' => ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote',],
