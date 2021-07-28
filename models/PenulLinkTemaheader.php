@@ -37,7 +37,8 @@ use yii\behaviors\TimestampBehavior;
  */
 class PenulLinkTemaheader extends \yii\db\ActiveRecord
 {
-    
+    use \mdm\behaviors\ar\RelationTrait;
+
     public $image1a;
     public $file1a;/**
      * {@inheritdoc}
@@ -70,9 +71,9 @@ class PenulLinkTemaheader extends \yii\db\ActiveRecord
             [['dap_rha', 'dap_rha2', 'dap_rha3', 'dap_rha4', 'dap_rha5', 'dap_rha6', 'dap_rha7'], 'string'],
             [['periode_tarik_data'], 'safe'],
             [['image1a', 'file1a'], 'safe'],
-            [['image1a'], 'file', 'extensions'=>'jpg, jpeg, gif, png, pdf'],
-            [['file1a'], 'file', 'extensions'=>'xls,xlsx'],
-            [['image1a'], 'file', 'maxSize'=>'190520'],
+            [['image1a'], 'file', 'extensions'=>'jpg, jpeg, gif, png'],
+            [['file1a'], 'file', 'extensions'=>'xls,xlsx,pdf'],
+            [['image1a'], 'file', 'maxSize'=>'190520', 'maxFiles' => 6],
             [['file1a'], 'file', 'maxSize'=>'990520'],
             [['keyword_specific'], 'string', 'max' => 50],
             [['data_pib', 'data_gambar', 'data_gambar_filename', 'data_pib_filename'], 'string', 'max' => 100],
@@ -119,6 +120,19 @@ class PenulLinkTemaheader extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery|PenulHeaderQuery
      */
+   public function getListIdm()
+    {
+        return $this->hasMany(PenulLinkThIdm::className(), ['link_th_idm' => 'id']);
+    }
+
+    public function setListIdm($value)
+    {
+        $this->loadRelated("listIdm", $value);
+    }
+
+
+
+
     public function getLinkHeader()
     {
         return $this->hasOne(PenulHeader::className(), ['id' => 'link_header']);
@@ -136,6 +150,7 @@ class PenulLinkTemaheader extends \yii\db\ActiveRecord
 
     public function getLinkTemaName(){
         $model=$this->link_tema;
+    
         return $model?$model->id:'';
     }
 

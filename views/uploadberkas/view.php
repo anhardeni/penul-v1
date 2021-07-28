@@ -39,7 +39,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id_berkas',
+            //'id_berkas',
+        'link_gambar',
+           [
+            'attribute' => 'berkas.berkas',
+            'label' => 'nama berkas',
+            ],
             'no_dok',
             'tgl_dok',
             'ket',
@@ -51,5 +56,6 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
 <?= Html::img(Yii::getAlias('@web').'/uploads/'.$model->web_filename,['class'=> 'w3-round-small', 'style'=> 'float:left;']);?>
+<?= Html::img($model->web_filename,['class'=> 'w3-round-small', 'style'=> 'float:left;']);?>
 
 </div>

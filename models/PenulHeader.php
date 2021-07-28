@@ -265,6 +265,6 @@ class PenulHeader extends \yii\db\ActiveRecord
 
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'created_by']);
+        return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }
 }

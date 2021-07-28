@@ -5,7 +5,6 @@ namespace app\controllers;
 use Yii;
 use app\models\PenulHeader;
 use app\models\PenulHeaderQuery;
-use app\models\Tabular;
 use app\controllers\PenulHeaderSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -93,29 +92,21 @@ class PenulHeaderController extends Controller
       if ($model->load(Yii::$app->request->post()) ) {
 
 
-        $modelsPenulDatatransaks = Tabular::createMultiple(PenulDatatransaks::classname());
-        Tabular::loadMultiple($modelsPenulDatatransaks, Yii::$app->request->post());
+        $modelsPenulDatatransaks = Model::createMultiple(PenulDatatransaks::classname());
+        Model::loadMultiple($modelsPenulDatatransaks, Yii::$app->request->post());
 
             // validate all models
         $valid = $model->validate();
-        $valid = Tabular::validateMultiple($modelsPenulDatatransaks) && $valid;
+        $valid = Model::validateMultiple($modelsPenulDatatransaks) && $valid;
 
         if ($valid) {
           $transaction = \Yii::$app->db->beginTransaction();
 
           try {
             if ($flag = $model->save(false)) {
-
-              foreach ($modelsPenulDatatransaks as $index => $modelPenulDatatransaks) {
-
-                      if  ($flag === false) {
-                                  break;
-                }
-
+              foreach ($modelsPenulDatatransaks as $modelPenulDatatransaks) {
                 $modelPenulDatatransaks->link_header = $model->id;
-
                 if (! ($flag = $modelPenulDatatransaks->save(false))) {
-
                   $transaction->rollBack();
                   break;
                 }
@@ -124,15 +115,12 @@ class PenulHeaderController extends Controller
 
             if ($flag) {
               $transaction->commit();
-
               return $this->redirect(['view', 'id' => $model->id]);
             }
           } catch (Exception $e) {
             $transaction->rollBack();
           }
         }
-    
-
       }
 
       return $this->render('create', [
@@ -159,13 +147,13 @@ class PenulHeaderController extends Controller
       if ($model->load(Yii::$app->request->post())) {
 
         $oldIDs = ArrayHelper::map($modelsPenulDatatransaks, 'id', 'id');
-        $modelsPenulDatatransaks =  Tabular::createMultiple(PenulDatatransaks::classname(), $modelsPenulDatatransaks);
-         Tabular::loadMultiple($modelsPenulDatatransaks, Yii::$app->request->post());
+        $modelsPenulDatatransaks = Model::createMultiple(PenulDatatransaks::classname(), $modelsPenulDatatransaks);
+        Model::loadMultiple($modelsPenulDatatransaks, Yii::$app->request->post());
         $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelsPenulDatatransaks, 'id', 'id')));
 
             // validate all models
         $valid = $model->validate();
-        $valid =  Tabular::validateMultiple($modelsPenulDatatransaks) && $valid;
+        $valid = Model::validateMultiple($modelsPenulDatatransaks) && $valid;
 
         if ($valid) {
           $transaction = \Yii::$app->db->beginTransaction();
@@ -273,21 +261,10 @@ class PenulHeaderController extends Controller
          // hanya salah tarif BM
         $model->nilaipabean_akhir = ($model->nilaipabean_awal);
           // selisih BM , PPN dan pph
-        $model->bm_t_nilai_akhir = 
-        floor($model->trf_bm_t/100 *  $model->nilaipabean_akhir)- ($model->trf_bm/100 *  $model->nilaipabean_awal) ;
-
-
-
-        $model->ppn_t_nilai_akhir = 
-        floor(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) / 10) - $model->ppn_nilai_awal);
-
-        $model->pph_t_nilai_akhir = 
-        floor(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) / 40 )- $model->pph_nilai_awal);
-
-        $model->total_tagihan = 
-        floor($model->bm_t_nilai_akhir +  $model->ppn_t_nilai_akhir + $model->pph_t_nilai_akhir);
-
-
+        $model->bm_t_nilai_akhir = floor($model->trf_bm_t/100 *  $model->nilaipabean_akhir)- ($model->trf_bm/100 *  $model->nilaipabean_awal) ;
+        $model->ppn_t_nilai_akhir = floor(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) / 10) - $model->ppn_nilai_awal);
+        $model->pph_t_nilai_akhir = floor(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) / 40 )- $model->pph_nilai_awal);
+        $model->total_tagihan = floor($model->bm_t_nilai_akhir +  $model->ppn_t_nilai_akhir + $model->pph_t_nilai_akhir);
          // $model->seri_brg = (string)$sheetData[$baseRow]['O'];
          // $model->seri_brg = (string)$sheetData[$baseRow]['P'];
          // $model->seri_brg = (string)$sheetData[$baseRow]['Q'];
@@ -297,18 +274,21 @@ class PenulHeaderController extends Controller
         $model->created_by = Yii::$app->user->identity->id ;
         $model->updated_at = date('Y-m-d H:i:s');
         $model->updated_by = Yii::$app->user->identity->id ;
-
-
-
+        
         $model->save();
-      //     var_dump($model->npwp_imp);die();
-      
         $baseRow++;
       }
       
       Yii::$app->getSession()->setFlash('success', 'Success');
      // echo $baseRow;
-
+      // var_dump($model->trf_bm_t);
+      // var_dump($model->nilaipabean_awal);
+      // var_dump($model->nilaipabean_akhir);
+      //   var_dump($model->bm_t_nilai_akhir);
+      //     var_dump($model->ppn_t_nilai_akhir);
+      //     var_dump($model->pph_t_nilai_akhir);
+      //     var_dump($model->total_tagihan);
+      //    die( ) ;
     }
     else{
       Yii::$app->getSession()->setFlash('error', 'Error');
@@ -502,13 +482,7 @@ $OpenTBS->VarRef['xjendok2']= $ctkJendok -> name;
 $OpenTBS->VarRef['xjen_pelanggaran']= $ctkJenPelanggaran -> name;
 
 $vowel = array("&nbsp", ";", "â");
-
- $OpenTBS->VarRef['xanalisa_prosedur_rha']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha));
-
-//$a1 = $ctkPenulHeader -> analisa_prosedur_rha;
-//htmlspecialchars(utf8_encode($x));
-//$OpenTBS->VarRef['xanalisa_prosedur_rha']= htmlspecialchars(utf8_encode($a1));
-
+$OpenTBS->VarRef['xanalisa_prosedur_rha']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha));
 $OpenTBS->VarRef['xanalisa_prosedur_rha2']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha2));
 $OpenTBS->VarRef['xanalisa_prosedur_rha3']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha3));
 $OpenTBS->VarRef['xanalisa_prosedur_rha4']= str_replace( $vowel,' ',strip_tags($ctkPenulHeader -> analisa_prosedur_rha4));
@@ -1001,18 +975,12 @@ ob_end_clean();
 
            //   $model->nilaipabean_akhir = ($model->nilaipabean_awal);
          // selisih BM , PPN dan pph
-             //  if (($model->nilaipabean_awal) > 1   ){
-              $model->bm_t_nilai_akhir = 
-              (float)(($model->trf_bm_t/100 *  $model->nilaipabean_akhir)- ($model->trf_bm/100 *  $model->nilaipabean_awal));
-
-           //   }else{ 
-           // $model->bm_t_nilai_akhir = 0 ; // potensi ppn
-          //};
+              $model->bm_t_nilai_akhir = (float)(($model->trf_bm_t/100 *  $model->nilaipabean_akhir)- ($model->trf_bm/100 *  $model->nilaipabean_awal));
 
 
               if (($model->ppn_nilai_awal) > 1   ){
-              $model->ppn_t_nilai_akhir = (float)(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) * $model->trf_ppn_t/100 ) - $model->ppn_nilai_awal); // potensi ppn
-            
+            $model->ppn_t_nilai_akhir = (float)(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) * $model->trf_ppn_t/100 ) - $model->ppn_nilai_awal); // potensi ppn
+            ;
           //     return $path ;
           }else{ 
             $model->ppn_t_nilai_akhir = 0 ; // potensi ppn
@@ -1023,7 +991,7 @@ ob_end_clean();
 
           if (($model->pph_nilai_awal) > 1  ){
           $model->pph_t_nilai_akhir = (float)(((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir) * $model->trf_pph_t/100 )- $model->pph_nilai_awal); // potensi pph
-          
+          ;
           //     return $path ;
         }else{ 
             $model->pph_t_nilai_akhir = 0 ; // potensi ppn
@@ -1069,7 +1037,14 @@ ob_end_clean();
           //     return $path ;
        
 
-         
+           // var_dump($model->nilaipabean_awal);
+           // var_dump($model->nilaipabean_akhir);
+           // var_dump($model->trf_bm);
+           // var_dump($model->trf_bm_t);
+           // var_dump($model->bm_nilai_awal);
+           // var_dump($model->bm_t_nilai_akhir);
+           // var_dump($model->pph_nilai_awal);
+           // var_dump($model->pph_t_nilai_akhir);
            // die( ) ;
           $model->save();
           $baseRow++;
@@ -1432,7 +1407,122 @@ ob_end_clean();
         //  return $ctksrt->renderAjax();
        }
 
-       
+       public function actionImportdatadirect02($id)
+       {
+      //$query = New Query();
+         $query = \app\models\PenulDatatransaks::find()->where(['link_header' => $id]);
+      // $query = \app\models\PenulDatatransaks::find();
+
+         $dataProvider = new ActiveDataProvider([
+          //'query' => $query->from ('penul_datatransaks')->where(['link_header' => $id]),
+          'query' => $query,
+          'sort' => [
+            'defaultOrder' => [
+              'id' => SORT_DESC
+            ]
+          ],
+        ]);
+
+
+         $modelImport = new \yii\base\DynamicModel([
+          'fileImport' => 'File Import',
+        ]);
+         $modelImport->addRule(['fileImport'], 'required');
+         $modelImport->addRule(['fileImport'], 'file', ['extensions'=>'xls,xlsx'],['maxSize'=>100240*100240]);
+
+         if (Yii::$app->request->post()) {
+          $modelImport->fileImport = \yii\web\UploadedFile::getInstance($modelImport, 'fileImport');
+          if ($modelImport->fileImport && $modelImport->validate()) {
+            $inputFileType = \PHPExcel_IOFactory::identify($modelImport->fileImport->tempName );
+            $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+            $objPHPExcel = $objReader->load($modelImport->fileImport->tempName);
+            $sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
+            $baseRow = 2;
+
+            // if ((string)$sheetData[$baseRow]['P'] == "HH")(  $model ->jalur = "Hijau")
+
+            while(!empty($sheetData[$baseRow]['A'])){
+              $model = new Penuldatatransaks();
+              $model->link_header = $id;
+              $model->npwp_imp = (string)$sheetData[$baseRow]['B']; 
+              $model->imp = (string)$sheetData[$baseRow]['C'];
+              $model->pib = (string)$sheetData[$baseRow]['D'];
+              // $tgl9= (string)$sheetData[$baseRow]['E'];
+              $newformat = date('Y-m-d',strtotime((string)$sheetData[$baseRow]['E']));
+              $model->tglpib = $newformat ;
+              $model->seri_brg = (string)$sheetData[$baseRow]['F'];
+              $model->kdskepfas = (string)$sheetData[$baseRow]['G'];
+              $model->uraian_brg = (string)$sheetData[$baseRow]['H'];
+              $model->hs = (string)$sheetData[$baseRow]['I'];
+              $model->hs_t = (string)$sheetData[$baseRow]['J']; 
+              $model->trf_bm = (float)$sheetData[$baseRow]['K'];
+              $model->trf_bm_t = (float)$sheetData[$baseRow]['L'];
+              $model->nilaipabean_awal = (double)$sheetData[$baseRow]['M'];
+              $model->bm_nilai_awal = (float)$sheetData[$baseRow]['N'];
+              $model->ppn_nilai_awal = (float)$sheetData[$baseRow]['R'];
+              $model->pph_nilai_awal = (float)$sheetData[$baseRow]['U'];
+              $model->nilaipabean_akhir = (double)$sheetData[$baseRow]['Y'];
+              $model->trf_ppn_t = (float)$sheetData[$baseRow]['Z'];
+              $model->trf_pph_t = (float)$sheetData[$baseRow]['AA'];
+
+         // if ((string)$sheetData[$baseRow]['P'] == "HH")(  $model ->jalur = "Hijau");
+         // if ((string)$sheetData[$baseRow]['P'] == "HL")(  $model ->jalur = "Hijau");
+         // if ((string)$sheetData[$baseRow]['P'] == "HM")(  $model ->jalur = "Hijau");
+         // $model->bm_t_nilai_akhir =(
+         // ((float)$sheetData[$baseRow]['L'] - (float)$sheetData[$baseRow]['K']) * (float)$sheetData[$baseRow]['M'] ;
+         // if trf_bm = 0 then  $model->nilaipabean_akhir = $model->nilaipabean_awal
+         // else
+         // hanya salah tarif BM
+
+
+           //   $model->nilaipabean_akhir = ($model->nilaipabean_awal);
+         // selisih BM , PPN dan pph
+              $model->bm_t_nilai_akhir = float($model->trf_bm_t/100 *$model->nilaipabean_akhir)-($model->trf_bm/100 * $model->nilaipabean_awal) ;
+
+              $model->ppn_t_nilai_akhir = float((((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+$model->nilaipabean_akhir)) *  $model->trf_ppn_t/100 ) - $model->ppn_nilai_awal);
+
+              $model->pph_t_nilai_akhir = float((((($model->trf_bm_t/100 *  $model->nilaipabean_akhir )+  $model->nilaipabean_akhir)) *   $model->trf_pph_t/100 ) - $model->pph_nilai_awal);
+
+              // $model->ppn_t_nilai_akhir = float((($model->bm_t_nilai_akhir +  $model->nilaipabean_akhir) *  $model->trf_ppn_t ) - $model->ppn_nilai_awal);
+
+              // $model->pph_t_nilai_akhir = float((($model->bm_t_nilai_akhir +  $model->nilaipabean_akhir) *   $model->trf_pph_t ) - $model->pph_nilai_awal);
+
+
+
+              $model->total_tagihan = float($model->bm_t_nilai_akhir +  $model->ppn_t_nilai_akhir + $model->pph_t_nilai_akhir);
+
+
+         // $model->seri_brg = (string)$sheetData[$baseRow]['O'];
+         // $model->seri_brg = (string)$sheetData[$baseRow]['P'];
+         // $model->seri_brg = (string)$sheetData[$baseRow]['Q'];
+         // $model->seri_brg = (string)$sheetData[$baseRow]['S'];
+         // $model->seri_brg = (string)$sheetData[$baseRow]['T'];
+              $model->created_at = date('Y-m-d H:i:s');
+              $model->created_by = Yii::$app->user->identity->id ;
+              $model->updated_at = date('Y-m-d H:i:s');
+              $model->updated_by = Yii::$app->user->identity->id ;
+
+              $model->save();
+              $baseRow++;
+            }
+            Yii::$app->getSession()->setFlash('success', 'Success');
+      // echo $baseRow;
+      // var_dump($model->trf_bm_t);
+      //  var_dump($model->total_tagihan);
+      //  die( ) ;
+          }
+          else{
+            Yii::$app->getSession()->setFlash('error', 'Error');
+          }
+        }
+
+        return $this->render('importdatadirect02',[
+          'modelImport' => $modelImport,
+          'dataProvider' => $dataProvider,
+
+        ]);
+
+      }
 
       public function actionExcelRha($id){
 

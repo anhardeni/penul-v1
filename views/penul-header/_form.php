@@ -3,8 +3,10 @@
 use yii\helpers\Html;
 //use yii\widgets\ActiveForm;
 use yii\bootstrap\ActiveForm;
-use wbraganca\dynamicform\DynamicFormWidget;
+//use wbraganca\dynamicform\DynamicFormWidget;
+use kidzen\dynamicform\DynamicFormWidget;
 use \stkevich\ckeditor5\EditorClassic;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\PenulHeader */
@@ -18,21 +20,57 @@ use \stkevich\ckeditor5\EditorClassic;
 
 */
 
+
+
+
+
+
+
+
 $js = '
+$(".dynamicform_wrapper").on("beforeInsert", function(e, item) {
+    console.log("beforeInsert");
+});
+
+$(".dynamicform_wrapper").on("afterInsert", function(e, item) {
+    console.log("afterInsert");
+});
+
+$(".dynamicform_wrapper").on("beforeDelete", function(e, item) {
+    if (! confirm("Are you sure you want to delete this item?")) {
+        return false;
+    }
+    return true;
+});
+
+$(".dynamicform_wrapper").on("afterDelete", function(e) {
+    console.log("Deleted item!");
+});
+
+$(".dynamicform_wrapper").on("limitReached", function(e, item) {
+    alert("Limit reached");
+});
+
 jQuery(".dynamicform_wrapper").on("afterInsert", function(e, item) {
-   jQuery(".dynamicform_wrapper .panel-title-address").each(function(index) {
+   jQuery(".dynamicform_wrapper .panel-title-PenulDatatransaks").each(function(index) {
        jQuery(this).html("PenulDatatransaks: " + (index + 1))
        });
        });
 
        jQuery(".dynamicform_wrapper").on("afterDelete", function(e) {
-           jQuery(".dynamicform_wrapper .panel-title-address").each(function(index) {
+           jQuery(".dynamicform_wrapper .panel-title-PenulDatatransaks").each(function(index) {
                jQuery(this).html("PenulDatatransaks: " + (index + 1))
                });
                });
+
+
+
                ';
 
+
+
                $this->registerJs($js);
+
                ?>
 
 
@@ -366,7 +404,7 @@ jQuery(".dynamicform_wrapper").on("afterInsert", function(e, item) {
             ) ?>
 
             <label>Identifikasi Barang</label>
-            <?= $form->field($model, 'analisa_prosedur_rha5')->widget(EditorClassic::className(), 
+            <?= $form->field($model, 'analisa_prosedur_rha5')->label(false)->widget(EditorClassic::className(), 
                 [
                     'toolbar' => ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote',],
                     'uploadUrl' => '/someUpload.php',
@@ -398,85 +436,82 @@ jQuery(".dynamicform_wrapper").on("afterInsert", function(e, item) {
             <?php DynamicFormWidget::begin([
         'widgetContainer' => 'dynamicform_wrapper', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
         'widgetBody' => '.container-items', // required: css class selector
-        'widgetItem' => '.item', // required: css class
-        'limit' => 4, // the maximum times, an element can be cloned (default 999)
+        'widgetItem' => '.tools-item', // required: css class
+        'limit' => 10, // the maximum times, an element can be cloned (default 999)
         'min' => 0, // 0 or 1 (default 1)
         'insertButton' => '.add-item', // css class
         'deleteButton' => '.remove-item', // css class
         'model' => $modelsPenulDatatransaks[0],
         'formId' => 'dynamic-form',
         'formFields' => [
- //* @property string|null $flag_pusat
- //* @property string|null $flag_pusat_ket
+'flag_pusat',
+'flag_pusat_ket',
+'npp',
+'npp_tgl',
             'kode_kantor',
-            'pib',
-            'tglpib',
-            'seri_brg',
-            'npwp_imp',
-            'imp',
-            'uraian_brg',
-            'hs_t',
-            'trf_bm_t',
-            'bm_t_nilai_akhir',
-            'hs',
-            'trf_bm',
-            //'kurs
-            'bm_nilai_awal',
-            'ppn_nilai_awal',
-            'ppn_t_nilai_akhir',
-            'pph_nilai_awal',
-            'pph_t_nilai_akhir',
-            'ppnbm_t_nilai_akhir',
-            'nilaipabean_awal',
-            'nilaipabean_akhir',
-            'denda',
-            'total_tagihan',
-            'ket',
+            // 'pib',
+            // 'tglpib',
+            // 'seri_brg',
+            // 'npwp_imp',
+            // 'imp',
+            // 'uraian_brg',
+            // 'hs_t',
+            // 'trf_bm_t',
+            // 'bm_t_nilai_akhir',
+            // 'hs',
+            // 'trf_bm',
+            // //'kurs
+            // 'bm_nilai_awal',
+            // 'ppn_nilai_awal',
+            // 'ppn_t_nilai_akhir',
+            // 'pph_nilai_awal',
+            // 'pph_t_nilai_akhir',
+            // 'ppnbm_t_nilai_akhir',
+            // 'nilaipabean_awal',
+            // 'nilaipabean_akhir',
+            // 'denda',
+            // 'total_tagihan',
+            // 'ket',
         ],
     ]); ?>
-    
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <i class="fa fa-envelope"></i> Data Penul
-            <button type="button" class="pull-right add-item btn btn-success btn-xs"><i class="fa fa-plus"></i> Add pib</button>
-            <div class="clearfix"></div>
-        </div>
-        <div class="panel-body container-items"><!-- widgetContainer -->
-            <?php foreach ($modelsPenulDatatransaks as $index => $modelPenulDatatransaks): ?>
-                <div class="item panel panel-default"><!-- widgetBody -->
-                    <div class="panel-heading">
-                        <span class="panel-title-address">PenulDatatransaks: <?= ($index + 1) ?></span>
-                        <button type="button" class="pull-right remove-item btn btn-danger btn-xs"><i class="fa fa-minus"></i></button>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="panel-body">
-                        <?php
-                            // necessary for update action.
-                        if (!$modelPenulDatatransaks->isNewRecord) {
-                            echo Html::activeHiddenInput($modelPenulDatatransaks, "[{$index}]id");
-                        }
-                        ?>
-                        <div class="row">
-                            <div class="col-sm-2">
-                                <?= $form->field($modelPenulDatatransaks, "[{$index}]flag_pusat")->dropDownList([ 'setuju' => 'Setuju', 'tolak ada SPKTNP' => 'Tolak ada SPKTNP', 'tolak sedang Audit' => 'Tolak sedang Audit', ], ['prompt' => ''])->hint('Update sesuai Keputusan NPP'); ?>
-                            </div>
 
+    <h1> Data Penul  </h1>
+ <table class="table table-bordered table-striped">
 
+    <head>
+        <tr>
+            <th class="text-center" style="width: 90px;">
+                 <button type="button" class="add-item btn btn-success btn-xs"><span class="glyphicon glyphicon-plus-sign"></span></button>
+            </th>
+            <th>flagpusat </th>
+            <th>flagpusat ket </th>
+            <th>npp</th>
+            <th>npp_tgl</th>
+             <th>kodekantor</th>
+            <th>perusahaan </th>
+            <th> pib </th>
+            <th> tgl pib </th>
+            <th> seri brg </th>
+            <th>hs </th>
+            <th>hs_t </th>
+            <th>trf BM_t </th>
+            <th>Devisa idr </th>
+            <th>BM </th>
+            <th> PPN </th>
+            <th> pph </th>
 
-                            <div class="row">
-                                <?= $form->field($modelPenulDatatransaks, "[{$index}]flag_pusat_ket")->textInput(['maxlength' => true]) ?>
-                            </div>
-                        </div>
+        </tr>
+    </head>
+    <tbody class="container-items">
 
-
-                        <div class="row">
-
-                            <div class="col-sm-2">
-                                <?= $form->field($modelPenulDatatransaks, "[{$index}]npp_no")->textInput(['maxlength' => true])->hint('diisi jika ada RHA digabung jadi 1 NPP') ?>
-                            </div>
-
-                            <div class="col-sm-2">
-                                <?= $form->field($modelPenulDatatransaks, "[{$index}]npp_tgl")->widget(\kartik\datecontrol\DateControl::classname(), [
+          <?php foreach ($modelsPenulDatatransaks as $index => $modelPenulDatatransaks): ?>
+               <tr class="tools-item">
+                <td class="text-center vcenter" style="width: 90px; verti">
+                 <button type="button" class="remove-item btn btn-danger btn-xs"><span class="glyphicon glyphicon-minus-sign"></span></button></td>
+                <td><?= $form->field($modelPenulDatatransaks, "[{$index}]flag_pusat")->dropDownList([ 'setuju' => 'Setuju', 'tolak ada SPKTNP' => 'Tolak ada SPKTNP', 'tolak sedang Audit' => 'Tolak sedang Audit', ], ['prompt' => ''])->hint('Update putusan NPP'); ?></td>
+                <td> <?= $form->field($modelPenulDatatransaks, "[{$index}]flag_pusat_ket")->textInput(['maxlength' => true]) ?></td>
+                <td><?= $form->field($modelPenulDatatransaks, "[{$index}]npp_no")->textInput(['maxlength' => true])->hint('diisi jika RHA digabung jadi 1 NPP') ?></td>
+                <td><?= $form->field($modelPenulDatatransaks, "[{$index}]npp_tgl")->widget(\kartik\datecontrol\DateControl::classname(), [
                                     'type' => \kartik\datecontrol\DateControl::FORMAT_DATE,
                                     'saveFormat' => 'php:Y-m-d',
                                     'ajaxConversion' => FALSE,
@@ -486,11 +521,42 @@ jQuery(".dynamicform_wrapper").on("afterInsert", function(e, item) {
                                             'autoclose' => true
                                         ]
                                     ],
-                                ]);?>
-                            </div>
-                            
-                        </div>
+                                ]);?></td>
+                  <td><?= $form->field($modelPenulDatatransaks, "[{$index}]kode_kantor")->textInput(['maxlength' => true])?></td>
+                <td><?= $form->field($modelPenulDatatransaks, "[{$index}]imp")->textInput(['maxlength' => true]) ?></td>
+                <td><?= $form->field($modelPenulDatatransaks, "[{$index}]pib")->textInput(['maxlength' => true]) ?></td>
+                 <td><?= $modelPenulDatatransaks->tglpib ?></td>
+                 <td><?= $modelPenulDatatransaks->seri_brg ?></td>
+                 <td><?= $modelPenulDatatransaks->hs ?></td>
+                <td><?= $modelPenulDatatransaks->hs_t ?></td>
+                 <td><?= $modelPenulDatatransaks->trf_bm_t ?></td>
+                <td><?= $modelPenulDatatransaks->nilaipabean_awal ?></td>
+                <td><?= $modelPenulDatatransaks->bm_nilai_awal ?></td>
+                 <td><?= $modelPenulDatatransaks->ppn_nilai_awal ?></td>
+                 <td><?= $modelPenulDatatransaks->pph_nilai_awal ?></td>
+               </tr>
+           <?php endforeach; ?>
+        
 
+    </tbody>
+
+  </table>
+    
+    <div class="panel panel-default">
+      
+        <div class="panel-body container-items"><!-- widgetContainer -->
+            <?php foreach ($modelsPenulDatatransaks as $index => $modelPenulDatatransaks): ?>
+                <div class="item panel panel-default"><!-- widgetBody -->
+                    
+                    <div class="panel-body">
+                        <?php
+                            // necessary for update action.
+                        if (!$modelPenulDatatransaks->isNewRecord) {
+                            echo Html::activeHiddenInput($modelPenulDatatransaks, "[{$index}]id");
+                        }
+                        ?>
+                        
+                       
                         <div class="row">
                           <div class="col-sm-2">
                             <?= $form->field($modelPenulDatatransaks, "[{$index}]st_no")->textInput(['maxlength' => true])->hint('diisi jika ada RHA digabung jadi 1 NPP') ?>
@@ -530,11 +596,10 @@ jQuery(".dynamicform_wrapper").on("afterInsert", function(e, item) {
                 </div>
 
 
-
                 <div class="row">
 
                     <div class="col-sm-3">
-                        <?= $form->field($modelPenulDatatransaks, "[{$index}]pib")->textInput(['maxlength' => true]) ?>
+                        
                     </div>
                     <div class="col-sm-4">
                         <?= $form->field($modelPenulDatatransaks, "[{$index}]tglpib")->widget(\kartik\datecontrol\DateControl::classname(), [
@@ -563,7 +628,7 @@ jQuery(".dynamicform_wrapper").on("afterInsert", function(e, item) {
                         <?= $form->field($modelPenulDatatransaks, "[{$index}]npwp_imp")->textInput(['maxlength' => true]) ?>
                     </div>
                     <div class="col-sm-4">
-                        <?= $form->field($modelPenulDatatransaks, "[{$index}]imp")->textInput(['maxlength' => true]) ?>
+                        
                     </div>
                 </div>    
                 <div class="row">
@@ -635,11 +700,7 @@ jQuery(".dynamicform_wrapper").on("afterInsert", function(e, item) {
         </div>
     </div>
 <?php endforeach; ?>
-<div class="panel-heading">
-    <i class="fa fa-envelope" aria-hidden="true"></i> Data Penul
-    <button type="button" class="pull-right add-item btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
-    <div class="clearfix"></div>
-</div>
+
 </div>
 </div>
 <?php DynamicFormWidget::end(); ?>

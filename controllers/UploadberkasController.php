@@ -59,34 +59,74 @@ class UploadberkasController extends Controller
 
     
 
-     public function actionCreate()
+    //  public function actionCreate()
+    // {
+    //     $model = new Uploadberkas();
+ 
+    //     if ($model->load(Yii::$app->request->post())) {
+    //       $image = UploadedFile::getInstance($model, 'image');
+    //        if (!is_null($image)) {
+    //          $model->src_filename = $image->name;
+    //          $ext = end((explode(".", $image->name)));
+    //           // generate a unique file name to prevent duplicate filenames
+    //           $model->web_filename = Yii::$app->security->generateRandomString().".{$ext}";
+    //           // the path to save file, you can set an uploadPath
+    //           // in Yii::$app->params (as used in example below)                       
+    //           Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/';
+    //           $path = Yii::$app->params['uploadPath'] . $model->web_filename;
+    //            $image->saveAs($path);
+    //         }
+    //         if ($model->save()) {             
+    //             return $this->redirect(['view', 'id' => $model->id]);             
+    //         }  else {
+    //             var_dump ($model->getErrors()); die();
+    //          }
+    //           }
+    //           return $this->render('create', [
+    //               'model' => $model,
+    //           ]);     
+    // }
+
+
+
+ public function actionCreate()
     {
         $model = new Uploadberkas();
+    
+
+      //  Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/';
+    //  $path = Yii::$app->params['uploadPath'] . $model->web_filename;
  
         if ($model->load(Yii::$app->request->post())) {
-          $image = UploadedFile::getInstance($model, 'image');
-           if (!is_null($image)) {
-             $model->src_filename = $image->name;
-             $ext = end((explode(".", $image->name)));
-              // generate a unique file name to prevent duplicate filenames
-              $model->web_filename = Yii::$app->security->generateRandomString().".{$ext}";
-              // the path to save file, you can set an uploadPath
-              // in Yii::$app->params (as used in example below)                       
-              Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/';
-              $path = Yii::$app->params['uploadPath'] . $model->web_filename;
-               $image->saveAs($path);
-            }
-            if ($model->save()) {             
-                return $this->redirect(['view', 'id' => $model->id]);             
-            }  else {
-                var_dump ($model->getErrors()); die();
-             }
-              }
-              return $this->render('create', [
-                  'model' => $model,
-              ]);     
-    }
+            if ($model->validate()) {
 
+            $names = UploadedFile::getInstances($model,'web_filename');
+            Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/';
+
+            foreach($names as $name){
+                   $path = Yii::$app->params['uploadPath'].md5($name->baseName).'.'.$name->extension;
+                  //$path = Yii::$app->security->generateRandomString().'.'.$name->extension;
+                
+               if($name->saveAs($path)){
+                 $filename = $name->baseName.'.'.$name->extension;
+               //  $filepath = $path ;
+                   $filepath = md5($name->baseName).'.'.$name->extension; 
+                    //$filepath = md5($name->baseName).'.'.$name->extension; 
+
+
+                 Yii::$app->db->createCommand()->insert('uploadberkas',['src_filename'=>$filename, 'web_filename'=>$filepath])->execute();
+                 // https://www.youtube.com/watch?v=_4VRsrK5ZPU        
+                                }
+                            }
+               ;
+            }
+            return $this->redirect(['index']);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
+    }
     /**
      * Updates an existing Uploadberkas model.
      * If update is successful, the browser will be redirected to the 'view' page.

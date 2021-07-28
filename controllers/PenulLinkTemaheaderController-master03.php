@@ -98,12 +98,12 @@ class PenulLinkTemaheaderController extends Controller
 
 
 
-        $modelsPenulDatatransaksTh = Model::createMultiple(PenulDatatransaksTh::classname());
-        Model::loadMultiple($modelsPenulDatatransaksTh, Yii::$app->request->post());
+      //  $modelsPenulDatatransaksTh = Model::createMultiple(PenulDatatransaksTh::classname());
+      //  Model::loadMultiple($modelsPenulDatatransaksTh, Yii::$app->request->post());
 
         // validate all models
         $valid = $model->validate();
-        $valid = Model::validateMultiple($modelsPenulDatatransaksTh) && $valid;
+        $valid = Model::validateMultiple($modelsPenulDatatransaks) && $valid;
         $image1a = UploadedFile::getInstance($model, 'image1a');
         $file1a = UploadedFile::getInstance($model, 'file1a');
 
@@ -112,15 +112,10 @@ class PenulLinkTemaheaderController extends Controller
           $transaction = \Yii::$app->db->beginTransaction();
 
           try {
-
             if ($flag = $model->save(false)) {
-
               foreach ($modelsPenulDatatransaksTh as $modelPenulDatatransaksTh) {
-
                 $modelPenulDatatransaksTh->link_header_th = $model->id;
-
                 if (! ($flag = $modelPenulDatatransakth->save(false))) {
-                  
                   $transaction->rollBack();
                   break;
                 }

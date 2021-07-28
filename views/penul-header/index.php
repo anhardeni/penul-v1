@@ -8,8 +8,7 @@ use yii\widgets\Pjax;
 use kartik\grid\GridView;
 
 $gridColumns=[['class' => 'yii\grid\SerialColumn'], 
-['attribute' => 'id',
-'label'=> 'ref-id'],
+['attribute' => 'id','label'=> 'ref-id'],
 'noagenda',
             //'jen_dok',
            // 'jen_pelanggaran',
@@ -29,9 +28,6 @@ $gridColumns=[['class' => 'yii\grid\SerialColumn'],
 [
     'attribute' => 'penyaji_data1',
     'label' => 'Penyaji data1',
-            //     'format'=>'text',//raw, html
-            // 'content'=>function($data){
-            //     return $data->getParentName()
     'value' => function($model){
                     return $model->getPenyajiData1Name();//getPenyajiData1Name()
                 },
@@ -51,10 +47,22 @@ $gridColumns=[['class' => 'yii\grid\SerialColumn'],
             'rha',
             'rha_tgl',
 
-            [
-             'attribute' => 'updated_by', 
-             'value' => 'user.username'
-         ],
+         //    [
+         //     'attribute' => 'updated_by', 
+         //     'value' => 'user.username'
+         // ],
+
+         [
+    'attribute' => 'updated_by',
+    'label' => 'updated_by',
+        'value' => 'user.username',
+                'filterType' => GridView::FILTER_SELECT2,
+                'filter' => \yii\helpers\ArrayHelper::map(\app\models\User::find()->asArray()->all(), 'id','username'),
+                'filterWidgetOptions' => [
+                 'pluginOptions' => ['allowClear' => true],
+             ],
+             'filterInputOptions' => ['placeholder' => 'username', 'id' => 'grid--username']
+        ],
             // 'npp',
             // 'npp_tgl',
             // 'st',

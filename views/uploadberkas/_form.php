@@ -14,7 +14,15 @@ use kartik\file\FileInput;
    <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
         <?= $form->errorSummary($model) ?> <!-- ADDED HERE -->
 
-    <?= $form->field($model, 'id_berkas')->textInput() ?>
+
+
+    <?= $form->field($model, 'id_berkas')->widget(\kartik\widgets\Select2::classname(), [
+                            'data' => \yii\helpers\ArrayHelper::map(\app\models\Berkas::find()->orderBy('id')->asArray()->all(), 'id','berkas'),
+                            'options' => ['placeholder' => 'klik pilih'],
+                            'pluginOptions' => [
+                                'allowClear' => true
+                            ],
+                        ]);?>
 
     <?= $form->field($model, 'no_dok')->textInput() ?>
 
@@ -31,12 +39,9 @@ use kartik\file\FileInput;
     ]); ?>
 
     <?= $form->field($model, 'ket')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'image')->widget(FileInput::classname(), [
-              'options' => ['accept' => 'image/*'],
-               'pluginOptions'=>['allowedFileExtensions'=>['jpg','doc', 'xls','gif','jpeg','pdf','png'],'showUpload' => false,],
-          ]);   ?>
 
    
+   <?= $form->field($model, 'web_filename[]')->fileinput (['multiple'=>true, 'accept' => 'image/*']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

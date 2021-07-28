@@ -10,7 +10,7 @@ use yii\bootstrap4\Nav;
 
 <aside id="sidebar-wrapper">
   <div class="sidebar-brand">
-    <a href="<?= Url::to(["/"]) ?>">Tim Penul BC Soetta </a>
+    <a href="<?= Url::to(["/"]) ?>">Tim Penul KPU Priok </a>
   </div>
   <div class="sidebar-brand sidebar-brand-sm">
     <a href="<?= Url::to(["/"]) ?>">DJBC</a>
@@ -19,6 +19,7 @@ use yii\bootstrap4\Nav;
   <ul class="sidebar-menu">
     <li class="menu-header">Dashboard</li>
     <li class="active"><a class="nav-link" href="<?= Url::to(["/"]) ?>"><i class="fa fa-columns"></i> <span>Dashboard</span></a></li>
+        <li class="active"><a class="nav-link" href="<?= Url::to(["/rha-vs-npp"]) ?>"><i class="fa fa-columns"></i> <span>Rekap RHA vs NPP</span></a></li>
     
     <li class="menu-header">User / Group </li>
     <li class="active"><a class="nav-link" href="<?= Url::to(["/dsab"]) ?>"><i class="fa fa-route"></i> <span>DSAB</span></a></li>
